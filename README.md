@@ -103,6 +103,8 @@ cd Burwell
 
 The executable will be created at `build/bin/burwell.exe`.
 
+**Important**: The resulting `burwell.exe` is fully statically linked and runs natively on any Windows 10/11 system without requiring MSYS2, MinGW, or any additional runtime libraries. It only depends on standard Windows system DLLs that are always present.
+
 #### Alternative: Manual Build
 If you prefer manual building:
 ```bash

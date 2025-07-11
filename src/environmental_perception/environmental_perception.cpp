@@ -115,20 +115,51 @@ struct EnvironmentalPerception::EnvironmentalPerceptionImpl {
     ULONG_PTR gdiplusToken;
     bool gdiplusInitialized;
     
-    EnvironmentalPerceptionImpl() : gdiplusInitialized(false) {
-        // Initialize GDI+ for screen capture
-        Gdiplus::Status status = Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
-        if (status == Gdiplus::Ok) {
-            gdiplusInitialized = true;
-            SLOG_DEBUG().message("GDI+ initialized successfully");
-        } else {
-            SLOG_ERROR().message("Failed to initialize GDI+");
+    bool TryInitializeGdiPlus() {
+        // First check if gdiplus.dll is available
+        HMODULE hGdiPlus = LoadLibraryW(L"gdiplus.dll");
+        if (!hGdiPlus) {
+            DWORD error = GetLastError();
+            SLOG_WARNING()
+                .message("gdiplus.dll not found or cannot be loaded")
+                .context("error_code", static_cast<int>(error))
+                .context("note", "Screenshot functionality will be disabled");
+            return false;
         }
+        
+        // Try to initialize GDI+
+        try {
+            Gdiplus::Status status = Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+            if (status == Gdiplus::Ok) {
+                SLOG_DEBUG().message("GDI+ initialized successfully");
+                return true;
+            } else {
+                SLOG_WARNING()
+                    .message("GDI+ initialization failed")
+                    .context("status", static_cast<int>(status))
+                    .context("note", "Screenshot functionality will be disabled");
+                FreeLibrary(hGdiPlus);
+                return false;
+            }
+        } catch (...) {
+            SLOG_ERROR().message("Exception during GDI+ initialization");
+            FreeLibrary(hGdiPlus);
+            return false;
+        }
+    }
+    
+    EnvironmentalPerceptionImpl() : gdiplusInitialized(false) {
+        // Delay GDI+ initialization and make it optional
+        gdiplusInitialized = TryInitializeGdiPlus();
     }
     
     ~EnvironmentalPerceptionImpl() {
         if (gdiplusInitialized) {
-            Gdiplus::GdiplusShutdown(gdiplusToken);
+            try {
+                Gdiplus::GdiplusShutdown(gdiplusToken);
+            } catch (...) {
+                // Ignore shutdown errors
+            }
         }
     }
 };

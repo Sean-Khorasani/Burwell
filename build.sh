@@ -36,7 +36,11 @@ fi
 
 # Step 2: Configure with CMake
 echo -e "\n${YELLOW}🔵 Configuring with CMake...${NC}"
-cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
+# Configure for Windows native build without MSYS2 runtime dependencies
+cmake .. -G "MinGW Makefiles" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_CXX_FLAGS="-D_WIN32_WINNT=0x0601" \
+    -DCMAKE_EXE_LINKER_FLAGS="-static -Wl,--subsystem,console"
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ CMake configuration successful${NC}"

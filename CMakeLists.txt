@@ -7,17 +7,25 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Build options
+option(BURWELL_NO_GDIPLUS "Build without GDI+ support (for compatibility)" OFF)
+
 # Compiler warning flags for better code quality
 if(MSVC)
     add_compile_options(/W4 /WX /permissive-)
+    # Use static runtime to avoid MSVC redistributables
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 else()
-    # For MinGW/cross-compilation, we need to be less pedantic due to Windows headers
+    # For MinGW, minimize runtime dependencies
     add_compile_options(-Wall -Wextra -Werror)
-    # Disable specific warnings that conflict with Windows headers
     add_compile_options(-Wno-unknown-pragmas)
-    # For non-Windows targets, we can be more strict
-    if(NOT WIN32 AND NOT MINGW)
-        add_compile_options(-Wpedantic)
+    
+    # Link only to Windows system libraries, avoid MinGW runtime
+    if(MINGW)
+        # Use Windows native libraries directly
+        add_compile_options(-D_WIN32_WINNT=0x0601)  # Windows 7 minimum
+        # Static linking to avoid runtime dependencies
+        add_link_options(-static-libgcc -static-libstdc++ -static)
     endif()
 endif()
 
