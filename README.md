@@ -240,23 +240,23 @@ clang-format -i src/**/*.cpp src/**/*.h
 
 ## 🔵 Roadmap
 
-### Version 2.1 (Current)
-- [x] Enterprise security framework
-- [x] Thread-safe architecture
-- [x] Dependency injection
-- [x] Comprehensive documentation
+### Version 2.0 (Next Release - Q2 2025)
+- [ ] **Modern GUI Interface**: Chat-based interface for natural interaction with Burwell
+- [ ] **Visual Workflow Designer**: Drag-and-drop interface to create/edit automation workflows without coding
+- [ ] **Live Automation Recorder**: Record your actions and let Burwell learn and generalize them
+- [ ] **Plugin Architecture**: Allow third-party extensions for industry-specific testing (game testing, medical software, etc.)
 
-### Version 2.2 (Planned)
-- [ ] GUI interface (modern chat UI)
-- [ ] Plugin system
-- [ ] Remote control capabilities
-- [ ] Machine learning integration
+### Version 2.5 (Q4 2025)
+- [ ] **Local Model Training**: Train small, specialized models for repetitive tasks (OCR for specific UIs, custom element detection)
+- [ ] **Multi-Agent Collaboration**: Multiple Burwell instances working together on complex test suites
+- [ ] **Remote Desktop Control**: Control and test applications on remote machines via RDP/VNC
+- [ ] **Advanced Debugging Tools**: Step-through automation execution, breakpoints, variable inspection
 
-### Version 3.0 (Future)
-- [ ] Cross-platform support (Linux, macOS)
-- [ ] Cloud integration
-- [ ] Natural language understanding
-- [ ] Visual automation designer
+### Version 3.0 (2026)
+- [ ] **Cross-Platform Support**: Native Linux and macOS implementations
+- [ ] **Hybrid Cloud Execution**: Run heavy workloads in cloud while maintaining local control
+- [ ] **Voice Command Integration**: "Hey Burwell, test the login flow with 100 random users"
+- [ ] **AI-Powered Test Generation**: Automatically generate comprehensive test cases from application analysis
 
 ## 🔵 License
 
