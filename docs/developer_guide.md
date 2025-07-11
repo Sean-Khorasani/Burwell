@@ -12,7 +12,9 @@
 
 ## Introduction
 
-Burwell is an enterprise-grade desktop automation agent built with C++17. This guide provides comprehensive information for developers working on or extending the Burwell platform.
+Burwell is an enterprise-grade desktop automation agent built with C++17 for Windows. This guide provides comprehensive information for developers working on or extending the Burwell platform.
+
+**Platform Support**: Currently Windows 10/11 only. Linux and macOS support is planned for future releases.
 
 ### Design Philosophy
 - **Learn, Abstract, Reuse**: The system learns from user requests, abstracts solutions, and reuses them
@@ -64,32 +66,62 @@ Burwell is an enterprise-grade desktop automation agent built with C++17. This g
 - Handles async notifications
 
 #### OCAL (OS Control Abstraction Layer)
-- Abstracts OS-specific operations
+- Abstracts Windows-specific operations
 - Provides uniform interface for system control
-- Handles Windows API calls
+- Handles Windows API calls (USER32, KERNEL32, etc.)
+- Future versions will add Linux/macOS abstraction layers
 
 ## Getting Started
 
-### Prerequisites
-- Windows 10/11 (primary target)
-- MSYS2 MinGW-w64 toolchain
-- CMake 3.10 or higher
-- C++17 compatible compiler
-- nlohmann/json library
+### Development Environment Setup
+
+#### Step 1: Install MSYS2
+1. Download MSYS2 from https://www.msys2.org/
+2. Install to default location (C:\msys64)
+3. Run MSYS2 and update: `pacman -Syu`
+
+#### Step 2: Install Development Tools
+Open **MSYS2 MinGW 64-bit** terminal and run:
+```bash
+# Core build tools
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-make
+
+# Required libraries
+pacman -S mingw-w64-x86_64-nlohmann-json
+
+# Development tools
+pacman -S git vim
+
+# Optional: clang-format for code formatting
+pacman -S mingw-w64-x86_64-clang-tools-extra
+```
 
 ### Building the Project
 
-#### Linux Cross-Compilation
+#### Using Build Script (Recommended)
+From **MSYS2 MinGW 64-bit** terminal:
+```bash
+git clone https://github.com/Sean-Khorasani/Burwell.git
+cd Burwell
+./build.sh
+```
+
+#### Manual Build
 ```bash
 mkdir build && cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake
+cmake .. -G "MinGW Makefiles"
 cmake --build .
 ```
 
-#### Windows Native Build
+#### Cross-Compilation from WSL/Linux
+For development on WSL or Linux (compile only, cannot run):
 ```bash
+# Install cross-compiler
+sudo apt-get install g++-mingw-w64-x86-64
+
+# Build
 mkdir build && cd build
-cmake ..
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake
 cmake --build .
 ```
 

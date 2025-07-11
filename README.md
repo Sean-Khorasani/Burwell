@@ -5,7 +5,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)](https://www.microsoft.com/windows)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Burwell is an enterprise-grade desktop automation agent that learns, abstracts, and reuses solutions. Built with modern C++17, it provides a secure, scalable, and maintainable platform for Windows automation.
+Burwell is an enterprise-grade desktop automation agent that learns, abstracts, and reuses solutions. Built with modern C++17, it currently provides a secure, scalable, and maintainable platform for Windows automation, with Linux and macOS support planned for future releases.
 
 ## 🌟 Key Features
 
@@ -13,37 +13,61 @@ Burwell is an enterprise-grade desktop automation agent that learns, abstracts, 
 - **Enterprise Security**: Encrypted credentials, comprehensive input validation, secure by design
 - **High Performance**: Multi-threaded architecture with priority-based task scheduling
 - **Extensible**: Plugin architecture with dependency injection
-- **Cross-Platform Build**: Develop on Linux, deploy on Windows
+- **Windows Native**: Currently Windows 10/11 only, with cross-platform support planned
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Windows 10/11 (target platform)
-- MSYS2 with MinGW-w64 (for Windows development)
-- CMake 3.10+
-- C++17 compatible compiler
+- Windows 10/11 (required)
+- MSYS2 (download from https://www.msys2.org/)
 - Git
 
-### Building from Source
+### Building from Source (Windows with MSYS2)
 
-#### Windows Build
+#### Step 1: Install MSYS2
+1. Download MSYS2 from https://www.msys2.org/
+2. Install to default location (C:\msys64)
+3. Run MSYS2 and update the package database:
 ```bash
-git clone https://github.com/Sean-Khorasani/Burwell.git
-cd burwell
-mkdir build && cd build
-cmake ..
-cmake --build . --config Release
+pacman -Syu
 ```
 
-#### Linux Cross-Compilation
+#### Step 2: Install Build Tools and Dependencies
+Open **MSYS2 MinGW 64-bit** terminal and run:
 ```bash
+# Install MinGW-w64 toolchain
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-cmake mingw-w64-x86_64-make
+
+# Install required libraries
+pacman -S mingw-w64-x86_64-nlohmann-json
+
+# Install Git if not already installed
+pacman -S git
+```
+
+#### Step 3: Clone and Build Burwell
+Still in the **MSYS2 MinGW 64-bit** terminal:
+```bash
+# Clone the repository
 git clone https://github.com/Sean-Khorasani/Burwell.git
-cd burwell
+cd Burwell
+
+# Build using the provided script
+./build.sh
+```
+
+The executable will be created at `build/bin/burwell.exe`.
+
+#### Alternative: Manual Build
+If you prefer manual building:
+```bash
 mkdir build && cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake
+cmake .. -G "MinGW Makefiles"
 cmake --build .
 ```
+
+**Note**: Currently, Burwell only supports Windows. Linux and macOS support is planned for future releases.
 
 ### Running Burwell
 

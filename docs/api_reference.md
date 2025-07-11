@@ -1,5 +1,7 @@
 # Burwell API Reference
 
+**Platform Note**: This API reference documents the Windows implementation of Burwell. Cross-platform abstractions are planned for future releases to support Linux and macOS.
+
 ## Table of Contents
 1. [Core Interfaces](#core-interfaces)
 2. [Orchestrator API](#orchestrator-api)
@@ -256,7 +258,7 @@ public:
 
 ### OCAL (OS Control Abstraction Layer)
 
-Platform-independent OS operations.
+Windows OS operations abstraction. Currently uses Windows API (USER32, KERNEL32). Future versions will provide cross-platform abstractions for Linux and macOS.
 
 ```cpp
 class OCAL {

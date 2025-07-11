@@ -12,18 +12,26 @@
 
 ## Introduction
 
-Burwell is an AI-powered desktop automation agent that executes automation tasks through JSON scripts. This guide covers how to create and use automation scripts.
+Burwell is an AI-powered desktop automation agent for Windows that executes automation tasks through JSON scripts. This guide covers how to create and use automation scripts on Windows 10/11 systems.
+
+**Note**: Burwell currently supports Windows only. Linux and macOS support is planned for future releases.
 
 ## Getting Started
 
 ### Running Burwell
 
+**Prerequisites**: Ensure you have built Burwell using MSYS2 MinGW as described in the README.
+
 ```bash
+# From Windows Command Prompt or PowerShell:
 # Run with a specific script
-./burwell.exe --script path/to/script.json
+burwell.exe --script test_scripts/example_automation.json
 
 # Run with custom configuration
-./burwell.exe --config path/to/config.json --script path/to/script.json
+burwell.exe --config config/burwell.json --script test_scripts/example_automation.json
+
+# From MSYS2 MinGW terminal:
+./build/bin/burwell.exe --script test_scripts/example_automation.json
 ```
 
 ## Script System

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Burwell Build Script
+# Burwell Build Script for MSYS2 MinGW
 # This script builds the project and sets up the runtime environment
+# Requirements: Run this from MSYS2 MinGW 64-bit terminal with required packages installed
 
 set -e  # Exit on any error
 
