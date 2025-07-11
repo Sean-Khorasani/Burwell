@@ -20,7 +20,7 @@ Burwell is an enterprise-grade desktop automation agent that learns, abstracts, 
 ### Prerequisites
 
 - Windows 10/11 (required)
-- MSYS2 (download from https://www.msys2.org/)
+- MSYS2
 - Git
 
 ### Building from Source (Windows with MSYS2)
