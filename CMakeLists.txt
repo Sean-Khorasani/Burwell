@@ -123,12 +123,5 @@ add_custom_command(TARGET copy_resources POST_BUILD
 # Make burwell depend on copy_resources
 add_dependencies(burwell copy_resources)
 
-# Test executable for structured logger
-add_executable(test_structured_logger test/test_structured_logger.cpp)
-target_link_libraries(test_structured_logger
-    burwell_common
-    pthread
-)
-target_include_directories(test_structured_logger PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 
