@@ -1,0 +1,40 @@
+{
+  "name": "Test IF_NOT_CONTAINS Command",
+  "description": "Demonstrates the IF_NOT_CONTAINS conditional command",
+  "variables": {
+    "window_list": "Chrome - Google Search, Notepad - Untitled, Edge - Microsoft",
+    "search_term": "Firefox"
+  },
+  "commands": [
+    {
+      "command": "IF_NOT_CONTAINS",
+      "parameters": {
+        "variable": "window_list",
+        "substring": "Firefox",
+        "store_as": "firefox_not_found"
+      }
+    },
+    {
+      "command": "IF_NOT_CONTAINS",
+      "parameters": {
+        "variable": "window_list",
+        "substring": "Chrome",
+        "store_as": "chrome_not_found"
+      }
+    },
+    {
+      "command": "GET_VARIABLE",
+      "parameters": {
+        "name": "firefox_not_found"
+      },
+      "result_variable": "result1"
+    },
+    {
+      "command": "GET_VARIABLE",
+      "parameters": {
+        "name": "chrome_not_found"
+      },
+      "result_variable": "result2"
+    }
+  ]
+}

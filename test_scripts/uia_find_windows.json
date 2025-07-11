@@ -1,0 +1,19 @@
+{
+  "name": "uia_find_windows",
+  "description": "Find windows by class pattern using atomic operations (replaces UIA_FIND_WINDOWS)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "${class_pattern}",
+        "store_as": "${store_as}"
+      },
+      "metadata": {
+        "description": "Enumerate windows filtered by class name pattern"
+      }
+    }
+  ]
+}

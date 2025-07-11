@@ -1,0 +1,32 @@
+{
+  "name": "test_variable_priority",
+  "description": "Test that EXECUTE_SCRIPT variables override script variables",
+  "version": "1.0",
+  "author": "Burwell Variable Priority Test",
+  "variables": {
+    "test_key": "SCRIPT_VALUE",
+    "test_modifier": "SCRIPT_MODIFIER"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Script Variable: test_key=${test_key}, test_modifier=${test_modifier}"
+      },
+      "metadata": {
+        "description": "Test that variables are correctly resolved"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "result"
+      },
+      "metadata": {
+        "description": "Get the result to verify variable resolution"
+      }
+    }
+  ]
+}

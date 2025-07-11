@@ -1,0 +1,95 @@
+{
+  "description": "Check DeepSeek response status using PowerShell parser",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Extract page text using Ctrl+A, Ctrl+C",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "A"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "A"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "C"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "C"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Step 2: Get clipboard content",
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "pageContent"
+      }
+    },
+    {
+      "comment": "Step 3: Save content to temp file for PowerShell",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo ${pageContent} > clipboard_content.txt"
+      }
+    },
+    {
+      "comment": "Step 4: Run PowerShell parser script",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -File test_scripts\\parse_deepseek_response.ps1 -ClipboardFile clipboard_content.txt"
+      }
+    },
+    {
+      "comment": "Step 5: Clean up temp file",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "del clipboard_content.txt 2>nul"
+      }
+    }
+  ]
+}

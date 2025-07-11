@@ -1,0 +1,56 @@
+{
+  "description": "Find Firefox window with DeepSeek tab - workaround without array indexing",
+  "parameters": {},
+  "variables": {
+    "firefoxWindows": []
+  },
+  "sequence": [
+    {
+      "comment": "Step 1: Enumerate all windows to find Firefox",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Get the first Firefox window handle manually",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -Command \"Get-Process firefox -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty MainWindowHandle\"",
+        "store_as": "firefoxHandle"
+      }
+    },
+    {
+      "comment": "Step 3: Focus the Firefox window using the handle",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firefoxHandle}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 4: Get current window title",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxHandle}",
+        "store_as": "currentTitle"
+      }
+    },
+    {
+      "comment": "Step 5: Begin tab cycling to find DeepSeek",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_firefox_tabs_workaround.json",
+        "pass_variables": {
+          "firefoxHandle": "${firefoxHandle}"
+        },
+        "result_variable": "cycleResult"
+      }
+    }
+  ]
+}

@@ -1,0 +1,393 @@
+{
+  "description": "Comprehensive web automation test with DeepSeek interaction and PowerShell parsing",
+  "parameters": {
+    "targetTabTitle": "deepseek",
+    "userPrompt": "What is the best template for a software engineer's resume?",
+    "checkInterval": 1000,
+    "maxAttempts": 60,
+    "powershellScript": "test_scripts/parse_deepseek_response.ps1",
+    "outputFile": "deepseek_response.txt"
+  },
+  "sequence": [
+    {
+      "comment": "Step 1: Minimize all windows to start fresh",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_wins.json",
+        "result_variable": "minimizeResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    },
+    {
+      "comment": "Step 2: Find all Firefox windows",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows.json",
+        "pass_variables": {
+          "className": "MozillaWindowClass"
+        },
+        "result_variable": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 3: Loop through Firefox windows to find DeepSeek tab",
+      "command": "FOREACH",
+      "parameters": {
+        "items": "${firefoxWindows}",
+        "itemVariable": "currentWindow",
+        "sequence": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${currentWindow}"
+            }
+          },
+          {
+            "command": "WAIT",
+            "parameters": {
+              "duration": 300
+            }
+          },
+          {
+            "command": "UIA_GET_WINDOW_TITLE",
+            "parameters": {
+              "hwnd": "${currentWindow}",
+              "store_as": "currentTitle"
+            }
+          },
+          {
+            "command": "CONDITIONAL",
+            "parameters": {
+              "condition": "${currentTitle} contains '${targetTabTitle}'",
+              "then": [
+                {
+                  "command": "SET_VARIABLE",
+                  "parameters": {
+                    "name": "deepseekWindowFound",
+                    "value": "true"
+                  }
+                },
+                {
+                  "command": "SET_VARIABLE",
+                  "parameters": {
+                    "name": "deepseekWindow",
+                    "value": "${currentWindow}"
+                  }
+                },
+                {
+                  "command": "BREAK"
+                }
+              ]
+            }
+          },
+          {
+            "comment": "If not found in title, check tabs using Ctrl+Tab",
+            "command": "CONDITIONAL",
+            "parameters": {
+              "condition": "${deepseekWindowFound} != 'true'",
+              "then": [
+                {
+                  "command": "REPEAT",
+                  "parameters": {
+                    "count": 10,
+                    "sequence": [
+                      {
+                        "command": "EXECUTE_SCRIPT",
+                        "parameters": {
+                          "script_path": "test_scripts/uia_send_hotkey.json",
+                          "pass_variables": {
+                            "modifiers": ["VK_CONTROL"],
+                            "key": "VK_TAB"
+                          }
+                        }
+                      },
+                      {
+                        "command": "WAIT",
+                        "parameters": {
+                          "duration": 500
+                        }
+                      },
+                      {
+                        "command": "UIA_GET_WINDOW_TITLE",
+                        "parameters": {
+                          "hwnd": "${currentWindow}",
+                          "store_as": "tabTitle"
+                        }
+                      },
+                      {
+                        "command": "CONDITIONAL",
+                        "parameters": {
+                          "condition": "${tabTitle} contains '${targetTabTitle}'",
+                          "then": [
+                            {
+                              "command": "SET_VARIABLE",
+                              "parameters": {
+                                "name": "deepseekWindowFound",
+                                "value": "true"
+                              }
+                            },
+                            {
+                              "command": "SET_VARIABLE",
+                              "parameters": {
+                                "name": "deepseekWindow",
+                                "value": "${currentWindow}"
+                              }
+                            },
+                            {
+                              "command": "BREAK"
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Step 4: Verify we found the DeepSeek tab",
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${deepseekWindowFound} != 'true'",
+        "then": [
+          {
+            "command": "LOG",
+            "parameters": {
+              "message": "ERROR: Could not find DeepSeek tab",
+              "level": "ERROR"
+            }
+          },
+          {
+            "command": "EXIT",
+            "parameters": {
+              "code": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Step 5: Focus on DeepSeek window and clear any existing input",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${deepseekWindow}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    },
+    {
+      "comment": "Click in the input area (you may need to adjust coordinates)",
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "left"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "comment": "Select all and delete existing text",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "pass_variables": {
+          "modifiers": ["VK_CONTROL"],
+          "key": "A"
+        }
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "comment": "Step 6: Type the prompt",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "pass_variables": {
+          "text": "${userPrompt}"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    },
+    {
+      "comment": "Step 7: Press Enter to submit",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 2000
+      }
+    },
+    {
+      "comment": "Step 8: Loop to check if response is complete",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "attemptCount",
+        "value": 0
+      }
+    },
+    {
+      "command": "WHILE",
+      "parameters": {
+        "condition": "${attemptCount} < ${maxAttempts}",
+        "sequence": [
+          {
+            "comment": "Select all and copy page content",
+            "command": "EXECUTE_SCRIPT",
+            "parameters": {
+              "script_path": "test_scripts/uia_extract_page_text.json"
+            }
+          },
+          {
+            "command": "UIA_GET_CLIPBOARD",
+            "parameters": {
+              "store_as": "pageContent"
+            }
+          },
+          {
+            "comment": "Execute PowerShell script to parse the content",
+            "command": "SYSTEM_COMMAND",
+            "parameters": {
+              "command": "powershell -ExecutionPolicy Bypass -File \"${powershellScript}\" -PageContent \"${pageContent}\" -OutputFile \"${outputFile}\""
+            }
+          },
+          {
+            "command": "GET_COMMAND_OUTPUT",
+            "parameters": {
+              "store_as": "parserOutput"
+            }
+          },
+          {
+            "command": "CONDITIONAL",
+            "parameters": {
+              "condition": "${parserOutput} contains 'GENERATION_COMPLETE'",
+              "then": [
+                {
+                  "command": "LOG",
+                  "parameters": {
+                    "message": "DeepSeek response generation complete!",
+                    "level": "INFO"
+                  }
+                },
+                {
+                  "command": "LOG",
+                  "parameters": {
+                    "message": "Response saved to: ${outputFile}",
+                    "level": "INFO"
+                  }
+                },
+                {
+                  "command": "BREAK"
+                }
+              ],
+              "else": [
+                {
+                  "command": "CONDITIONAL",
+                  "parameters": {
+                    "condition": "${parserOutput} contains 'STILL_GENERATING'",
+                    "then": [
+                      {
+                        "command": "LOG",
+                        "parameters": {
+                          "message": "Still generating response... (attempt ${attemptCount}/${maxAttempts})",
+                          "level": "DEBUG"
+                        }
+                      }
+                    ],
+                    "else": [
+                      {
+                        "command": "LOG",
+                        "parameters": {
+                          "message": "Parser output: ${parserOutput}",
+                          "level": "WARNING"
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "command": "INCREMENT_VARIABLE",
+            "parameters": {
+              "name": "attemptCount"
+            }
+          },
+          {
+            "command": "WAIT",
+            "parameters": {
+              "duration": "${checkInterval}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Step 9: Final status check",
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${attemptCount} >= ${maxAttempts}",
+        "then": [
+          {
+            "command": "LOG",
+            "parameters": {
+              "message": "WARNING: Max attempts reached. Response may not be complete.",
+              "level": "WARNING"
+            }
+          }
+        ],
+        "else": [
+          {
+            "command": "LOG",
+            "parameters": {
+              "message": "SUCCESS: DeepSeek response captured and saved!",
+              "level": "INFO"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

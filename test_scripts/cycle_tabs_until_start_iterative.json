@@ -1,0 +1,102 @@
+{
+  "description": "Iterative tab cycling with safety counter (max 50 tabs)",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Initialize cycle counter",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "0"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "cycleCount"
+      }
+    },
+    {
+      "comment": "Cycle 1",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/single_tab_cycle_check.json",
+        "variables": {
+          "startingTabTitle": "${startingTabTitle}",
+          "targetWindow": "${targetWindow}",
+          "cycleNumber": "1"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStart"
+      }
+    },
+    {
+      "comment": "Cycle 2",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/single_tab_cycle_check.json",
+        "variables": {
+          "startingTabTitle": "${startingTabTitle}",
+          "targetWindow": "${targetWindow}",
+          "cycleNumber": "2"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStart"
+      }
+    },
+    {
+      "comment": "Cycle 3",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/single_tab_cycle_check.json",
+        "variables": {
+          "startingTabTitle": "${startingTabTitle}",
+          "targetWindow": "${targetWindow}",
+          "cycleNumber": "3"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStart"
+      }
+    },
+    {
+      "comment": "Continue for up to 20 cycles (covers most real scenarios)",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/continue_cycling_remaining.json",
+        "variables": {
+          "startingTabTitle": "${startingTabTitle}",
+          "targetWindow": "${targetWindow}"
+        }
+      }
+    }
+  ]
+}

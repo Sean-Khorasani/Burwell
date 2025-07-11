@@ -1,0 +1,68 @@
+{
+  "name": "uia_send_hotkey",
+  "description": "Send hotkey combination using atomic UIA commands (replaces UIA_SEND_HOTKEY)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus target window before sending hotkey"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "${modifier}"
+      },
+      "metadata": {
+        "description": "Press modifier key down"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Press main key down"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Release main key"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "${modifier}"
+      },
+      "metadata": {
+        "description": "Release modifier key"
+      }
+    },
+    {
+      "step": 6,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Brief wait for hotkey to take effect"
+      }
+    }
+  ]
+}

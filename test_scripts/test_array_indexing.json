@@ -1,0 +1,22 @@
+{
+  "description": "Test array indexing with firefoxWindows variable",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Try to use array indexing directly",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "windowTitle"
+      }
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "name": "monitor_deepseek_response",
+  "description": "Monitor DeepSeek response completion using PowerShell",
+  "version": "1.0",
+  "author": "Burwell Response Monitor",
+  "variables": {
+    "currentCycle": 1,
+    "maxWaitCycles": 30,
+    "waitInterval": "2000ms",
+    "responseComplete": false,
+    "lastPageContent": "",
+    "currentPageContent": ""
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[MONITOR] Starting response monitoring - max cycles: ${maxWaitCycles}"
+      },
+      "metadata": {
+        "description": "Log monitoring start"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_status.json",
+        "result_variable": "pageContentResult",
+        "variables": {}
+      },
+      "metadata": {
+        "description": "Extract current page content"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "currentPageContent"
+      },
+      "metadata": {
+        "description": "Get extracted content"
+      }
+    },
+    {
+      "step": 4,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"Write-Host '[POWERSHELL] Cycle ${currentCycle}/${maxWaitCycles} - Content length:' (Get-Clipboard).Length\""
+      },
+      "metadata": {
+        "description": "PowerShell status check"
+      }
+    },
+    {
+      "step": 5,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "${waitInterval}"
+      },
+      "metadata": {
+        "description": "Wait before next check"
+      }
+    },
+    {
+      "step": 6,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_status.json",
+        "result_variable": "pageContentResult2",
+        "variables": {}
+      },
+      "metadata": {
+        "description": "Extract page content again"
+      }
+    },
+    {
+      "step": 7,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "newPageContent"
+      },
+      "metadata": {
+        "description": "Get new content"
+      }
+    },
+    {
+      "step": 8,
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "currentPageContent",
+        "value": "${newPageContent}",
+        "store_as": "contentUnchanged"
+      },
+      "metadata": {
+        "description": "Check if content stopped changing (response complete)"
+      }
+    },
+    {
+      "step": 9,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"if ('${contentUnchanged}' -eq 'true') { Write-Host '[POWERSHELL] Content stable - response appears complete' } else { Write-Host '[POWERSHELL] Content still changing - waiting...' }\""
+      },
+      "metadata": {
+        "description": "PowerShell analysis of content stability"
+      }
+    },
+    {
+      "step": 10,
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "contentUnchanged"
+      },
+      "metadata": {
+        "description": "Stop if content has stabilized (response complete)"
+      }
+    },
+    {
+      "step": 11,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[MONITOR] Cycle ${currentCycle} complete - content still changing, continuing monitoring"
+      },
+      "metadata": {
+        "description": "Log cycle completion"
+      }
+    }
+  ]
+}

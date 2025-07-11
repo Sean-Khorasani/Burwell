@@ -1,0 +1,187 @@
+{
+  "description": "Complete DeepSeek automation with proper variable handling",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Minimize all windows",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_windows_only.json"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Step 2: Search for DeepSeek tab across all Firefox windows",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/comprehensive_firefox_search_fixed.json",
+        "result_variable": "searchComplete"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Step 3: Focus on the prompt area - click in the center of the window",
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "x": 960,
+        "y": 540,
+        "button": "left"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 4: Tab to the input area (DeepSeek usually requires 3-4 tabs)",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 5: Clear any existing text",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "key1": "VK_CONTROL",
+          "key2": "A"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Step 6: Type the prompt using clipboard",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "What is the best template for a software engineer's resume?"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "key1": "VK_CONTROL",
+          "key2": "V"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 7: Submit the prompt",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      }
+    },
+    {
+      "comment": "Final: Confirmation message",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DeepSeek automation completed successfully!"
+      }
+    }
+  ]
+}

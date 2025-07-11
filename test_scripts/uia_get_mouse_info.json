@@ -1,0 +1,20 @@
+{
+  "description": "Get comprehensive mouse position and state information",
+  "parameters": {
+    "store_as": "Variable name to store mouse info (default: mouseInfo)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_GET_MOUSE_POSITION",
+      "parameters": {
+        "store_as": "${store_as}"
+      }
+    },
+    {
+      "command": "UIA_GET_FOREGROUND_WINDOW",
+      "parameters": {
+        "store_as": "foregroundWindow"
+      }
+    }
+  ]
+}

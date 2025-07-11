@@ -1,0 +1,59 @@
+{
+  "description": "Close current tab in browser using Ctrl+W",
+  "parameters": {
+    "browserHwnd": "Browser window handle (optional - uses foreground if not specified)"
+  },
+  "sequence": [
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${browserHwnd} != null",
+        "then": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${browserHwnd}",
+              "store_as": "focusResult"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "W"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "W"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    }
+  ]
+}

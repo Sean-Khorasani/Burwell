@@ -1,0 +1,78 @@
+{
+  "name": "uia_extract_page_text",
+  "description": "Extract page text using Ctrl+A, Ctrl+C and clipboard (replaces UIA_EXTRACT_PAGE_TEXT)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus target window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "A"
+        }
+      },
+      "metadata": {
+        "description": "Select all text (Ctrl+A)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      },
+      "metadata": {
+        "description": "Wait for selection"
+      }
+    },
+    {
+      "step": 4,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "C"
+        }
+      },
+      "metadata": {
+        "description": "Copy selected text (Ctrl+C)"
+      }
+    },
+    {
+      "step": 5,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      },
+      "metadata": {
+        "description": "Wait for copy operation"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "${store_as}"
+      },
+      "metadata": {
+        "description": "Get copied text from clipboard"
+      }
+    }
+  ]
+}

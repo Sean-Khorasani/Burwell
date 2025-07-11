@@ -1,0 +1,53 @@
+{
+  "name": "uia_type_text_safe",
+  "description": "Type text safely using clipboard (replaces UIA_TYPE_TEXT_SAFE)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus target window if specified"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${text}"
+      },
+      "metadata": {
+        "description": "Set text to clipboard"
+      }
+    },
+    {
+      "step": 3,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "V"
+        }
+      },
+      "metadata": {
+        "description": "Paste text using Ctrl+V"
+      }
+    },
+    {
+      "step": 4,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Wait for paste operation"
+      }
+    }
+  ]
+}

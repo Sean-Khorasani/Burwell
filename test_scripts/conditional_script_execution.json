@@ -1,0 +1,62 @@
+{
+  "name": "conditional_script_execution_test",
+  "description": "Tests conditional execution flow based on nested script results",
+  "version": "1.0",
+  "author": "Burwell",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_wins.json",
+        "result_variable": "window_operation_result",
+        "continue_on_failure": true
+      },
+      "metadata": {
+        "description": "Execute window minimization script with continue_on_failure=true"
+      }
+    },
+    {
+      "step": 2,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo Script 1 completed. Result stored in window_operation_result variable."
+      },
+      "metadata": {
+        "description": "Show that we continued after first script (regardless of result)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/nonexistent_script.json",
+        "result_variable": "failed_script_result",
+        "continue_on_failure": true
+      },
+      "metadata": {
+        "description": "Try to execute non-existent script with continue_on_failure=true"
+      }
+    },
+    {
+      "step": 4,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo Failed script was handled gracefully due to continue_on_failure=true"
+      },
+      "metadata": {
+        "description": "Show that execution continued despite script failure"
+      }
+    },
+    {
+      "step": 5,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo TEST COMPLETED: Nested script execution with conditional flow demonstrated"
+      },
+      "metadata": {
+        "description": "Final completion message"
+      }
+    }
+  ]
+}

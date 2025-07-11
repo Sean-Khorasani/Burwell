@@ -1,0 +1,21 @@
+{
+  "description": "Test with correct parameter name",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Test 2: Using window parameter (should work)",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${firefoxWindows[0]}"
+      }
+    }
+  ]
+}

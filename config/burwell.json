@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "description": "Burwell Main Configuration",
+    "last_modified": "2025-01-01T00:00:00Z"
+  },
+  "llm_provider": {
+    "active_provider": "openrouter",
+    "fallback_provider": "together_ai",
+    "auto_detect_capabilities": true,
+    "providers": {
+      "openrouter": {
+        "config_file": "llm_providers/openrouter.json",
+        "enabled": true,
+        "priority": 1,
+        "description": "OpenRouter - Access to multiple models including Gemini Flash 1.5 with vision"
+      },
+      "together_ai": {
+        "config_file": "llm_providers/together_ai.json",
+        "enabled": true,
+        "priority": 2,
+        "description": "Together AI - Text-only models like Llama 3"
+      },
+      "openai": {
+        "config_file": "llm_providers/openai.json", 
+        "enabled": true,
+        "priority": 3,
+        "description": "OpenAI - GPT-4 models with vision capabilities"
+      },
+      "local": {
+        "config_file": "llm_providers/local.json",
+        "enabled": true,
+        "priority": 4,
+        "description": "Local models - Self-hosted or offline models"
+      }
+    }
+  },
+  "logging": {
+    "log_file": "logs/burwell.log",
+    "log_level": "DEBUG",
+    "max_file_size_mb": 10,
+    "max_backup_files": 5,
+    "enable_console_output": true,
+    "source_location_levels": "DEBUG|ERROR"
+  },
+  "orchestrator": {
+    "auto_mode": false,
+    "confirmation_required": true,
+    "max_concurrent_tasks": 2,
+    "execution_timeout_ms": 300000,
+    "enable_learning": true,
+    "enable_error_recovery": true,
+    "max_script_nesting_level": 3
+  },
+  "environmental_perception": {
+    "enable_screenshots": true,
+    "enable_ocr": true,
+    "ocr_confidence_threshold": 0.7,
+    "screenshot_format": "png",
+    "cache_screenshots": false,
+    "cache_duration_minutes": 5
+  },
+  "security": {
+    "require_user_confirmation": true,
+    "allowed_applications": [],
+    "blocked_applications": [],
+    "safe_mode": true,
+    "audit_log_enabled": true
+  },
+  "performance": {
+    "enable_caching": true,
+    "cache_size_mb": 100,
+    "parallel_execution": true,
+    "max_worker_threads": 4
+  },
+  "ui": {
+    "enable_notifications": true,
+    "show_progress": true,
+    "minimize_to_tray": false,
+    "theme": "dark"
+  },
+  "task_engine": {
+    "task_directory": "tasks",
+    "auto_load_tasks": true,
+    "task_timeout_ms": 300000
+  }
+}

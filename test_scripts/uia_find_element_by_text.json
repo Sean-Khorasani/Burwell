@@ -1,0 +1,101 @@
+{
+  "name": "uia_find_element_by_text",
+  "description": "Find element by text using browser find function (replaces UIA_FIND_ELEMENT_BY_TEXT)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus browser window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "F"
+        }
+      },
+      "metadata": {
+        "description": "Open browser find dialog (Ctrl+F)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      },
+      "metadata": {
+        "description": "Wait for find dialog to open"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${text}"
+      },
+      "metadata": {
+        "description": "Set search text to clipboard"
+      }
+    },
+    {
+      "step": 5,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "V"
+        }
+      },
+      "metadata": {
+        "description": "Paste search text (Ctrl+V)"
+      }
+    },
+    {
+      "step": 6,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      },
+      "metadata": {
+        "description": "Wait for search to execute"
+      }
+    },
+    {
+      "step": 7,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_ESCAPE"
+        }
+      },
+      "metadata": {
+        "description": "Close find dialog (ESC)"
+      }
+    },
+    {
+      "step": 8,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Wait for dialog to close"
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Launch process using atomic operation",
+  "parameters": {
+    "command": "Command or application path to launch",
+    "parameters": "Command line parameters (optional)",
+    "directory": "Working directory (optional)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_LAUNCH_APPLICATION",
+      "parameters": {
+        "path": "${command}",
+        "store_as": "launchResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 1000
+      }
+    },
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    }
+  ]
+}

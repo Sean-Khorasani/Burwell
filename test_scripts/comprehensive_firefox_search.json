@@ -1,0 +1,65 @@
+{
+  "description": "Comprehensive search through ALL Firefox windows and ALL tabs",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Search Window 1 - Complete tab scan",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/search_all_tabs_in_window.json",
+        "variables": {
+          "targetWindow": "${firefoxWindows[0]}",
+          "windowIndex": "1"
+        },
+        "result_variable": "window1Result"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "window1Result",
+        "substring": "DEEPSEEK_FOUND",
+        "store_as": "foundInWindow1"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInWindow1"
+      }
+    },
+    {
+      "comment": "Search Window 2 - Complete tab scan",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/search_all_tabs_in_window.json",
+        "variables": {
+          "targetWindow": "${firefoxWindows[1]}",
+          "windowIndex": "2"
+        },
+        "result_variable": "window2Result"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "window2Result",
+        "substring": "DEEPSEEK_FOUND",
+        "store_as": "foundInWindow2"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInWindow2"
+      }
+    },
+    {
+      "comment": "If we reach here, DeepSeek not found in any window",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Searched ALL tabs in ALL Firefox windows - DeepSeek not found"
+      }
+    }
+  ]
+}

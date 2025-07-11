@@ -1,0 +1,58 @@
+{
+  "name": "minimize_all_windows_direct",
+  "description": "Minimizes all open windows by pressing Windows+D directly",
+  "version": "1.0",
+  "author": "Burwell",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_LWIN"
+      },
+      "metadata": {
+        "description": "Press Windows key down"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "D"
+      },
+      "metadata": {
+        "description": "Press D key down"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "D"
+      },
+      "metadata": {
+        "description": "Release D key"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_LWIN"
+      },
+      "metadata": {
+        "description": "Release Windows key"
+      }
+    },
+    {
+      "step": 5,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for windows to minimize"
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "description": "Cycle through Firefox tabs with proper variable handling",
+  "parameters": {
+    "hwnd": "Firefox window handle",
+    "searchPattern": "Pattern to search for in tab titles",
+    "maxIterations": "Maximum number of tabs to check (default: 50)"
+  },
+  "variables": {
+    "maxIterations": "${maxIterations:50}"
+  },
+  "sequence": [
+    {
+      "comment": "Store the search pattern in a variable",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "searchPattern",
+        "value": "${searchPattern}"
+      }
+    },
+    {
+      "comment": "Get initial tab title (landing tab)",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${hwnd}",
+        "store_as": "landingTabTitle"
+      }
+    },
+    {
+      "comment": "Initialize loop counter",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "tabIterations",
+        "value": "0"
+      }
+    },
+    {
+      "comment": "Initialize found flag",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "foundTarget",
+        "value": "false"
+      }
+    },
+    {
+      "comment": "Main tab cycling loop",
+      "command": "WHILE_LOOP",
+      "parameters": {
+        "condition": {
+          "type": "AND",
+          "conditions": [
+            {
+              "type": "LESS_THAN",
+              "variable": "tabIterations",
+              "value": "${maxIterations}"
+            },
+            {
+              "type": "EQUALS",
+              "variable": "foundTarget",
+              "value": "false"
+            }
+          ]
+        },
+        "body": [
+          {
+            "comment": "Get current tab title",
+            "command": "UIA_GET_WINDOW_TITLE",
+            "parameters": {
+              "hwnd": "${hwnd}",
+              "store_as": "currentTabTitle"
+            }
+          },
+          {
+            "comment": "Check if current tab contains search pattern",
+            "command": "IF_CONTAINS",
+            "parameters": {
+              "variable": "currentTabTitle",
+              "substring": "${searchPattern}",
+              "store_as": "isTargetTab"
+            }
+          },
+          {
+            "comment": "If found, set flag and break",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "isTargetTab"
+            }
+          },
+          {
+            "comment": "Navigate to next tab",
+            "command": "EXECUTE_SCRIPT",
+            "parameters": {
+              "script_path": "test_scripts/uia_send_hotkey.json",
+              "variables": {
+                "key1": "VK_CONTROL",
+                "key2": "VK_TAB"
+              }
+            }
+          },
+          {
+            "command": "WAIT",
+            "parameters": {
+              "duration": "500ms"
+            }
+          },
+          {
+            "comment": "Increment counter",
+            "command": "SET_VARIABLE",
+            "parameters": {
+              "name": "tabIterations",
+              "value": "${tabIterations}+1"
+            }
+          },
+          {
+            "comment": "Get new tab title after navigation",
+            "command": "UIA_GET_WINDOW_TITLE",
+            "parameters": {
+              "hwnd": "${hwnd}",
+              "store_as": "newTabTitle"
+            }
+          },
+          {
+            "comment": "Check if we've cycled back to landing tab",
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "newTabTitle",
+              "value": "${landingTabTitle}",
+              "store_as": "cycledComplete"
+            }
+          },
+          {
+            "comment": "Break if we've completed a full cycle",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "cycledComplete"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Store the result - whether target was found",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "result",
+        "value": "${isTargetTab:false}"
+      }
+    }
+  ]
+}

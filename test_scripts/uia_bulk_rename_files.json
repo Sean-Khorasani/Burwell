@@ -1,0 +1,41 @@
+{
+  "description": "Bulk rename files by pattern using file operations",
+  "parameters": {
+    "directory": "Directory containing files to rename",
+    "pattern": "Pattern to search for in filenames",
+    "replacement": "Replacement text for the pattern"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FIND_FILES_BY_PATTERN",
+      "parameters": {
+        "directory": "${directory}",
+        "pattern": "*${pattern}*",
+        "store_as": "matchingFiles"
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${matchingFiles}.length > 0",
+        "then": [
+          {
+            "command": "UIA_CREATE_DIRECTORY",
+            "parameters": {
+              "path": "${directory}\\renamed_files",
+              "store_as": "tempDir"
+            }
+          },
+          {
+            "command": "UIA_MOVE_FILES",
+            "parameters": {
+              "sourceFiles": "${matchingFiles}",
+              "targetDirectory": "${directory}\\renamed_files",
+              "store_as": "moveResult"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

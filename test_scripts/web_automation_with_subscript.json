@@ -1,0 +1,393 @@
+{
+  "name": "comprehensive_web_automation_with_nested_script",
+  "description": "Comprehensive UIA testing - nested script execution with direct Google search automation",
+  "version": "2.0",
+  "author": "Burwell Enhanced Test Suite",
+  "variables": {
+    "search_term": "artificial intelligence",
+    "wikipedia_url": "https://www.wikipedia.org",
+    "test_url": "https://httpbin.org/html"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_wins.json",
+        "result_variable": "minimize_result",
+        "continue_on_failure": false
+      },
+      "metadata": {
+        "description": "Execute nested script to minimize all windows first"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait after window minimization"
+      }
+    },
+    {
+      "step": 3,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "start msedge.exe \"https://www.google.com/search?q=${search_term}\""
+      },
+      "metadata": {
+        "description": "Open Microsoft Edge with Google search directly"
+      }
+    },
+    {
+      "step": 4,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "4000ms"
+      },
+      "metadata": {
+        "description": "Wait for browser to fully load"
+      }
+    },
+    {
+      "step": 5,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows.json",
+        "variables": {
+          "class_pattern": "Chrome_WidgetWin_1",
+          "app_name": "msedge",
+          "store_as": "edgeWindows"
+        }
+      },
+      "metadata": {
+        "description": "Find Edge browser windows using nested script"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${edgeWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the Edge browser window using atomic command"
+      }
+    },
+    {
+      "step": 7,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for search results to load"
+      }
+    },
+    {
+      "step": 8,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_extract_page_text.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "store_as": "page_content"
+        }
+      },
+      "metadata": {
+        "description": "Extract page text content using nested script"
+      }
+    },
+    {
+      "step": 9,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "T"
+        }
+      },
+      "metadata": {
+        "description": "Open new tab using nested script (Ctrl+T)"
+      }
+    },
+    {
+      "step": 10,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for new tab to open"
+      }
+    },
+    {
+      "step": 11,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "L"
+        }
+      },
+      "metadata": {
+        "description": "Focus address bar in new tab using nested script"
+      }
+    },
+    {
+      "step": 12,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "text": "${wikipedia_url}"
+        }
+      },
+      "metadata": {
+        "description": "Type Wikipedia URL using nested script"
+      }
+    },
+    {
+      "step": 13,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_RETURN"
+        }
+      },
+      "metadata": {
+        "description": "Navigate to Wikipedia using nested script"
+      }
+    },
+    {
+      "step": 14,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      },
+      "metadata": {
+        "description": "Wait for Wikipedia to load"
+      }
+    },
+    {
+      "step": 15,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait to verify Wikipedia page loaded"
+      }
+    },
+    {
+      "step": 16,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "T"
+        }
+      },
+      "metadata": {
+        "description": "Open another new tab using nested script"
+      }
+    },
+    {
+      "step": 17,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for third tab to open"
+      }
+    },
+    {
+      "step": 18,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "L"
+        }
+      },
+      "metadata": {
+        "description": "Focus address bar in third tab using nested script"
+      }
+    },
+    {
+      "step": 19,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "text": "${test_url}"
+        }
+      },
+      "metadata": {
+        "description": "Navigate to test HTML page using nested script"
+      }
+    },
+    {
+      "step": 20,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_RETURN"
+        }
+      },
+      "metadata": {
+        "description": "Navigate to test page using nested script"
+      }
+    },
+    {
+      "step": 21,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for test page to load"
+      }
+    },
+    {
+      "step": 22,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_extract_page_text.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "store_as": "test_page_content"
+        }
+      },
+      "metadata": {
+        "description": "Extract test page content using nested script"
+      }
+    },
+    {
+      "step": 23,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "W"
+        }
+      },
+      "metadata": {
+        "description": "Close current tab using nested script (Ctrl+W)"
+      }
+    },
+    {
+      "step": 24,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait after tab close"
+      }
+    },
+    {
+      "step": 25,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_page_back.json",
+        "variables": {
+          "window": "${edgeWindows[0]}"
+        }
+      },
+      "metadata": {
+        "description": "Navigate back in browser history using nested script"
+      }
+    },
+    {
+      "step": 26,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for page navigation"
+      }
+    },
+    {
+      "step": 27,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_page_forward.json",
+        "variables": {
+          "window": "${edgeWindows[0]}"
+        }
+      },
+      "metadata": {
+        "description": "Navigate forward in browser history using nested script"
+      }
+    },
+    {
+      "step": 28,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for forward navigation"
+      }
+    },
+    {
+      "step": 29,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "W"
+        }
+      },
+      "metadata": {
+        "description": "Close Wikipedia tab using nested script"
+      }
+    },
+    {
+      "step": 30,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait after tab close"
+      }
+    },
+    {
+      "step": 31,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${edgeWindows[0]}",
+          "modifier": "VK_MENU",
+          "key": "F4"
+        }
+      },
+      "metadata": {
+        "description": "Close browser using nested script (Alt+F4)"
+      }
+    }
+  ]
+}

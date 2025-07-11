@@ -1,0 +1,147 @@
+{
+  "name": "search_firefox_windows_for_deepseek",
+  "description": "Search tabs in a specific Firefox window for DeepSeek",
+  "version": "2.0",
+  "author": "Burwell Tab Search",
+  "variables": {
+    "currentTab": 1,
+    "maxTabs": 15,
+    "tabSearchComplete": false,
+    "deepseekTabFound": false
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${targetWindow}"
+      },
+      "metadata": {
+        "description": "Focus the target Firefox window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "currentTabTitle"
+      },
+      "metadata": {
+        "description": "Get current tab title"
+      }
+    },
+    {
+      "step": 3,
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "isDeepSeekTab"
+      },
+      "metadata": {
+        "description": "Check if current tab contains 'deepseek' (case-insensitive)"
+      }
+    },
+    {
+      "step": 4,
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "isDeepSeekTab",
+        "substring": "true",
+        "store_as": "foundDeepSeek"
+      },
+      "metadata": {
+        "description": "Convert boolean result to condition"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_FOUND: Tab '${currentTabTitle}' contains DeepSeek - proceeding with automation"
+      },
+      "metadata": {
+        "description": "Report DeepSeek found and set result for parent"
+      }
+    },
+    {
+      "step": 6,
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      },
+      "metadata": {
+        "description": "Stop here if DeepSeek found - success case"
+      }
+    },
+    {
+      "step": 7,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_firefox_tabs_efficient.json",
+        "result_variable": "tabCycleResult",
+        "variables": {
+          "firefoxWindows": "${firefoxWindows}",
+          "targetWindow": "${targetWindow}"
+        }
+      },
+      "metadata": {
+        "description": "Cycle to next tab to continue search"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "newTabTitle"
+      },
+      "metadata": {
+        "description": "Get new tab title after cycling"
+      }
+    },
+    {
+      "step": 9,
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "newTabTitle",
+        "substring": "deepseek",
+        "store_as": "isDeepSeekTab2"
+      },
+      "metadata": {
+        "description": "Check if new tab contains 'deepseek'"
+      }
+    },
+    {
+      "step": 10,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_FOUND: Tab '${newTabTitle}' contains DeepSeek - proceeding with automation"
+      },
+      "metadata": {
+        "description": "Report DeepSeek found in second tab"
+      }
+    },
+    {
+      "step": 11,
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTab2"
+      },
+      "metadata": {
+        "description": "Stop if DeepSeek found in second tab"
+      }
+    },
+    {
+      "step": 12,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Checked 2 tabs in window, DeepSeek not found"
+      },
+      "metadata": {
+        "description": "Report failure - DeepSeek not found in this window"
+      }
+    }
+  ]
+}

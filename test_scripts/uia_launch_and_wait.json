@@ -1,0 +1,29 @@
+{
+  "description": "Launch application and wait for window to appear",
+  "parameters": {
+    "path": "Application path to launch",
+    "windowTitle": "Window title pattern to wait for",
+    "timeoutMs": "Timeout in milliseconds (default: 5000)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_LAUNCH_APPLICATION",
+      "parameters": {
+        "path": "${path}",
+        "store_as": "launchResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 1000
+      }
+    },
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    }
+  ]
+}

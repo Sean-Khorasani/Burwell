@@ -1,0 +1,302 @@
+{
+  "meta": {
+    "provider_name": "OpenRouter",
+    "version": "1.0.0",
+    "description": "OpenRouter LLM Provider Configuration - Access to Multiple Models",
+    "last_modified": "2025-01-01T00:00:00Z",
+    "documentation_url": "https://openrouter.ai/docs"
+  },
+  "connection": {
+    "base_url": "https://openrouter.ai/api/v1",
+    "api_endpoint": "/chat/completions",
+    "authentication": {
+      "type": "bearer_token",
+      "header_name": "Authorization",
+      "token_prefix": "Bearer ",
+      "env_variable": "OPENROUTER_API_KEY",
+      "config_key": "api_key"
+    },
+    "timeout_ms": 30000,
+    "max_retries": 3,
+    "retry_delay_ms": 1000
+  },
+  "api_key": "",
+  "model_configuration": {
+    "default_model": "google/gemini-flash-1.5",
+    "vision_capabilities": {
+      "supports_vision": true,
+      "supported_image_formats": ["png", "jpeg", "webp", "gif"],
+      "max_image_size": 10485760,
+      "max_context_length": 1000000,
+      "preferred_input_mode": "hybrid"
+    },
+    "available_models": [
+      {
+        "name": "google/gemini-flash-1.5",
+        "display_name": "Gemini Flash 1.5",
+        "context_length": 1000000,
+        "cost_per_1k_tokens": 0.000075,
+        "supports_vision": true,
+        "recommended_for": ["automation", "vision", "fast_response", "multimodal"]
+      },
+      {
+        "name": "google/gemini-pro-1.5",
+        "display_name": "Gemini Pro 1.5",
+        "context_length": 2000000,
+        "cost_per_1k_tokens": 0.00125,
+        "supports_vision": true,
+        "recommended_for": ["complex_reasoning", "long_context", "vision", "automation"]
+      },
+      {
+        "name": "anthropic/claude-3.5-sonnet",
+        "display_name": "Claude 3.5 Sonnet",
+        "context_length": 200000,
+        "cost_per_1k_tokens": 0.003,
+        "supports_vision": true,
+        "recommended_for": ["reasoning", "analysis", "vision", "automation"]
+      },
+      {
+        "name": "openai/gpt-4o",
+        "display_name": "GPT-4o",
+        "context_length": 128000,
+        "cost_per_1k_tokens": 0.005,
+        "supports_vision": true,
+        "recommended_for": ["general", "vision", "automation", "multimodal"]
+      },
+      {
+        "name": "meta-llama/llama-3.1-70b-instruct",
+        "display_name": "Llama 3.1 70B Instruct",
+        "context_length": 131072,
+        "cost_per_1k_tokens": 0.0009,
+        "supports_vision": false,
+        "recommended_for": ["text_only", "reasoning", "fast_response"]
+      },
+      {
+        "name": "mistralai/mixtral-8x7b-instruct",
+        "display_name": "Mixtral 8x7B Instruct",
+        "context_length": 32768,
+        "cost_per_1k_tokens": 0.0006,
+        "supports_vision": false,
+        "recommended_for": ["text_only", "multilingual", "reasoning"]
+      }
+    ],
+    "parameters": {
+      "temperature": {
+        "default": 0.1,
+        "range": [0.0, 1.0],
+        "description": "Controls randomness. Lower = more focused"
+      },
+      "top_p": {
+        "default": 0.9,
+        "range": [0.0, 1.0],
+        "description": "Controls diversity via nucleus sampling"
+      },
+      "max_tokens": {
+        "default": 4000,
+        "range": [1, 8192],
+        "description": "Maximum tokens in response"
+      },
+      "frequency_penalty": {
+        "default": 0.0,
+        "range": [-2.0, 2.0],
+        "description": "Decreases likelihood of repeating tokens"
+      },
+      "presence_penalty": {
+        "default": 0.0,
+        "range": [-2.0, 2.0],
+        "description": "Increases likelihood of new topics"
+      }
+    }
+  },
+  "prompt_templates": {
+    "system_prompt": {
+      "template": "You are Burwell, an AI desktop automation assistant. Generate precise automation commands using the CPL (Command Processing Language) format.\n\nRULES:\n1. Return ONLY valid JSON responses\n2. Use exact CPL command syntax\n3. Include precise coordinates for automation\n4. Consider screen context and visual elements\n5. Provide clear reasoning for actions\n\nAvailable Commands:\n{{COMMAND_REFERENCE}}\n\nCurrent Context:\n{{CONTEXT}}\n\nRESPONSE FORMAT:\nCRITICAL: You must respond ONLY with valid JSON. No explanations, no markdown, no text outside the JSON.\nYour entire response must be a JSON object with this exact structure:\n{\n  \"reasoning\": \"Brief explanation of your approach\",\n  \"summary\": \"One-line summary of what will be done\",\n  \"commands\": [\n    {\"command\": \"COMMAND_NAME\", \"parameters\": {\"param1\": \"value1\"}},\n    {\"command\": \"COMMAND_NAME\", \"parameters\": {\"param2\": \"value2\"}}\n  ]\n}\n\nCRITICAL REQUIREMENTS:\n- ONLY use commands listed above - NO other commands exist (no WHILE, IF, FOR_EACH, etc.)\n- ABSOLUTELY NO programming comments in JSON (no //, no /* */, no #)\n- ALWAYS use 'parameters' field, NEVER use 'args' or 'params'\n- For POWERSHELL_COMMAND, use 'script' parameter, not 'command'\n- Use double quotes for JSON strings, NEVER use backticks or template literals\n- For multi-line scripts, use \\n for line breaks within double-quoted strings\n- Break complex tasks into simple, atomic commands\n- NEVER use non-existent PowerShell cmdlets - only use standard Windows cmdlets\n- ONLY use standard PowerShell cmdlets: Get-Process, Where-Object, Stop-Process, etc.\n- For application automation: Use Get-Process | Where-Object {$_.MainWindowTitle -match 'pattern'}\n- For precise automation, prefer WINDOW_FIND + WINDOW_ACTIVATE + KEY_COMBO over PowerShell\n- Generate valid JSON with reasoning, summary, and commands array",
+      "variables": {
+        "COMMAND_REFERENCE": "auto_generated",
+        "CONTEXT": "environmental_context"
+      }
+    },
+    "vision_prompt": {
+      "template": "Task: {{USER_REQUEST}}\n\nI can see the current screen state in the attached image. Based on the visual information and system context below, generate appropriate automation commands.\n\n{{SYSTEM_CONTEXT}}\n\nPlease analyze the screen and provide automation commands:",
+      "variables": {
+        "USER_REQUEST": "user_input",
+        "SYSTEM_CONTEXT": "structured_context"
+      }
+    },
+    "text_prompt": {
+      "template": "Task: {{USER_REQUEST}}\n\nCurrent Screen Description:\n{{SCREEN_DESCRIPTION}}\n\nSystem Context:\n{{SYSTEM_CONTEXT}}\n\nBased on the detailed screen description above, generate appropriate automation commands:",
+      "variables": {
+        "USER_REQUEST": "user_input",
+        "SCREEN_DESCRIPTION": "text_description",
+        "SYSTEM_CONTEXT": "structured_context"
+      }
+    },
+    "few_shot_examples": [
+      {
+        "user_request": "Click the close button of the current window",
+        "screen_description": "Active window: 'Notepad' at (100, 100) size 800x600. Close button at (875, 108).",
+        "cpl_output": "{\n  \"reasoning\": \"Clicking the close button in the top-right corner of the Notepad window\",\n  \"summary\": \"Close the Notepad window\",\n  \"commands\": [\n    {\"command\": \"MOUSE_CLICK\", \"parameters\": {\"x\": 875, \"y\": 108, \"button\": \"left\"}}\n  ]\n}"
+      },
+      {
+        "user_request": "Open calculator application",
+        "cpl_output": "{\n  \"reasoning\": \"Launching the Windows Calculator application\",\n  \"summary\": \"Open Calculator app\",\n  \"commands\": [\n    {\"command\": \"APP_LAUNCH\", \"parameters\": {\"path\": \"calc.exe\"}},\n    {\"command\": \"WAIT\", \"parameters\": {\"duration\": \"1000ms\"}}\n  ]\n}"
+      },
+      {
+        "user_request": "Close all Extensions tabs in Chrome windows",
+        "screen_description": "Multiple Chrome browser windows are open, some containing Extensions tabs",
+        "cpl_output": "{\n  \"reasoning\": \"Finding Chrome windows and using window management with keyboard shortcuts to close Extensions tabs reliably\",\n  \"summary\": \"Close Extensions tabs using targeted Chrome window activation and keyboard shortcuts\",\n  \"commands\": [\n    {\"command\": \"WINDOW_FIND\", \"parameters\": {\"title\": \"Chrome\", \"store_as\": \"chrome_windows\"}},\n    {\"command\": \"WINDOW_ACTIVATE\", \"parameters\": {\"handle\": \"{{chrome_window_handle}}\"}},\n    {\"command\": \"KEY_COMBO\", \"parameters\": {\"keys\": \"ctrl+w\"}},\n    {\"command\": \"WAIT\", \"parameters\": {\"duration\": \"200ms\"}}\n  ]\n}"
+      },
+      {
+        "user_request": "Find and close all browser windows with specific content",
+        "cpl_output": "{\n  \"reasoning\": \"Using PowerShell to find processes by window title pattern and close them\",\n  \"summary\": \"Close browser windows matching specific title pattern\",\n  \"commands\": [\n    {\"command\": \"POWERSHELL_COMMAND\", \"parameters\": {\"script\": \"Get-Process | Where-Object {$_.MainWindowTitle -match 'pattern'} | Stop-Process -Force\", \"elevated\": false}}\n  ]\n}"
+      }
+    ]
+  },
+  "parsing_rules": {
+    "response_format": "json",
+    "extraction_patterns": [
+      {
+        "name": "json_response",
+        "pattern": "^\\s*\\{[\\s\\S]*\\}\\s*$",
+        "description": "Direct JSON response format"
+      },
+      {
+        "name": "json_code_block",
+        "pattern": "```(?:json)?\\n(\\{[\\s\\S]*?\\})\\n```",
+        "group": 1,
+        "description": "JSON in code blocks"
+      }
+    ],
+    "cleaning_rules": [
+      {
+        "remove_patterns": [
+          "Here's the JSON response:",
+          "```json",
+          "```",
+          "The automation commands are:",
+          "//.*",
+          "/\\*[\\s\\S]*?\\*/",
+          ",\\s*#[^\\n]*",
+          "#[^\\n]*"
+        ]
+      },
+      {
+        "trim_whitespace": true,
+        "remove_empty_lines": false,
+        "normalize_line_endings": true
+      }
+    ],
+    "validation": {
+      "require_valid_json": true,
+      "require_commands_array": true,
+      "require_reasoning": true,
+      "max_commands_per_response": 15
+    }
+  },
+  "optimization": {
+    "context_learning": {
+      "enabled": true,
+      "remember_successful_patterns": true,
+      "adapt_to_screen_layouts": true,
+      "max_examples_in_prompt": 3
+    },
+    "response_improvement": {
+      "track_success_rates": true,
+      "adjust_temperature_based_on_performance": true,
+      "retry_on_parse_failure": true,
+      "confidence_threshold": 0.8
+    },
+    "vision_optimization": {
+      "compress_images": true,
+      "max_image_size": 2048,
+      "image_quality": 85,
+      "focus_on_ui_elements": true
+    }
+  },
+  "error_handling": {
+    "common_issues": [
+      {
+        "issue": "rate_limit",
+        "pattern": "rate limit|too many requests",
+        "action": "exponential_backoff",
+        "base_delay_ms": 1000,
+        "max_delay_ms": 30000
+      },
+      {
+        "issue": "context_length",
+        "pattern": "context length|token limit",
+        "action": "reduce_context",
+        "modifications": ["remove_old_examples", "compress_screen_description"]
+      },
+      {
+        "issue": "invalid_model",
+        "pattern": "model not found|invalid model",
+        "action": "fallback_to_default",
+        "fallback_model": "google/gemini-flash-1.5"
+      },
+      {
+        "issue": "vision_not_supported",
+        "pattern": "vision not supported|image not supported",
+        "action": "switch_to_text_mode",
+        "disable_vision": true
+      }
+    ],
+    "fallback_strategies": [
+      {
+        "condition": "repeated_failures",
+        "action": "switch_to_text_model",
+        "model": "meta-llama/llama-3.1-70b-instruct"
+      },
+      {
+        "condition": "vision_failures",
+        "action": "disable_vision_temporarily",
+        "duration_minutes": 10
+      }
+    ]
+  },
+  "performance_tuning": {
+    "request_optimization": {
+      "compress_requests": true,
+      "remove_unnecessary_context": true,
+      "cache_common_prompts": true,
+      "batch_similar_requests": false
+    },
+    "response_optimization": {
+      "cache_successful_responses": true,
+      "cache_duration_minutes": 30,
+      "max_cache_size": 500
+    },
+    "cost_optimization": {
+      "prefer_cheaper_models": false,
+      "switch_to_cheaper_for_simple_tasks": true,
+      "monitor_token_usage": true,
+      "warn_on_high_usage": true
+    }
+  },
+  "user_customization": {
+    "editable_sections": [
+      "model_configuration.default_model",
+      "model_configuration.parameters",
+      "prompt_templates",
+      "optimization.context_learning",
+      "error_handling.fallback_strategies"
+    ],
+    "protected_sections": [
+      "connection.base_url",
+      "connection.api_endpoint",
+      "connection.authentication"
+    ],
+    "backup_on_modification": true,
+    "validate_on_save": true
+  },
+  "monitoring": {
+    "log_all_requests": true,
+    "log_all_responses": true,
+    "track_token_usage": true,
+    "track_response_times": true,
+    "track_success_rates": true,
+    "track_cost_per_request": true,
+    "export_metrics": true,
+    "alert_on_high_costs": true
+  }
+}

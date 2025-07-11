@@ -1,0 +1,30 @@
+{
+  "description": "Open Windows File Explorer at specified path",
+  "parameters": {
+    "path": "Directory path to open (default: C:\\)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_SHELL_EXECUTE",
+      "parameters": {
+        "path": "explorer.exe",
+        "parameters": "${path}",
+        "operation": "open",
+        "store_as": "explorerResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 1500
+      }
+    },
+    {
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "CabinetWClass",
+        "store_as": "explorerWindows"
+      }
+    }
+  ]
+}

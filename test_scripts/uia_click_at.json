@@ -1,0 +1,23 @@
+{
+  "description": "Click at specific coordinates (move mouse then click)",
+  "parameters": {
+    "x": "X coordinate to click",
+    "y": "Y coordinate to click",
+    "button": "Mouse button (left/right/middle, default: left)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_MOUSE_MOVE",
+      "parameters": {
+        "x": "${x}",
+        "y": "${y}"
+      }
+    },
+    {
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "${button}"
+      }
+    }
+  ]
+}

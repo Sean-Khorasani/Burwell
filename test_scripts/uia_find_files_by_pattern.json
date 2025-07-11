@@ -1,0 +1,18 @@
+{
+  "description": "Find files by pattern using atomic operation",
+  "parameters": {
+    "directory": "Directory to search in",
+    "pattern": "File pattern to search for (e.g., *.txt, *.pdf)",
+    "store_as": "Variable name to store results (default: foundFiles)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FIND_FILES_BY_PATTERN",
+      "parameters": {
+        "directory": "${directory}",
+        "pattern": "${pattern}",
+        "store_as": "${store_as}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "description": "Wait for window with specific title pattern to appear",
+  "parameters": {
+    "titlePattern": "Window title pattern to wait for",
+    "timeoutMs": "Timeout in milliseconds (default: 5000)",
+    "exactMatch": "Exact title match flag (default: false)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FIND_WINDOWS_BY_TITLE",
+      "parameters": {
+        "titlePattern": "${titlePattern}",
+        "exactMatch": "${exactMatch}",
+        "store_as": "foundWindows"
+      }
+    }
+  ]
+}

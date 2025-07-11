@@ -1,0 +1,43 @@
+{
+  "name": "uia_close_window_safe",
+  "description": "Close window safely using Alt+F4 (replaces UIA_CLOSE_WINDOW_SAFE)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus window to close"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_MENU",
+          "key": "F4"
+        }
+      },
+      "metadata": {
+        "description": "Close window safely (Alt+F4)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for window to close"
+      }
+    }
+  ]
+}

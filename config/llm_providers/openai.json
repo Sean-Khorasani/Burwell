@@ -1,0 +1,264 @@
+{
+  "meta": {
+    "provider_name": "OpenAI",
+    "version": "1.0.0",
+    "description": "OpenAI LLM Provider Configuration - User Editable",
+    "last_modified": "2025-01-01T00:00:00Z",
+    "documentation_url": "https://platform.openai.com/docs"
+  },
+  "connection": {
+    "base_url": "https://api.openai.com/v1",
+    "api_endpoint": "/chat/completions",
+    "authentication": {
+      "type": "bearer_token",
+      "header_name": "Authorization",
+      "token_prefix": "Bearer ",
+      "env_variable": "OPENAI_API_KEY",
+      "config_key": "api_key"
+    },
+    "timeout_ms": 30000,
+    "max_retries": 3,
+    "retry_delay_ms": 1000
+  },
+  "model_configuration": {
+    "default_model": "gpt-4",
+    "vision_capabilities": {
+      "supports_vision": true,
+      "supported_image_formats": ["png", "jpeg", "webp", "gif"],
+      "max_image_size": 20971520,
+      "max_context_length": 128000,
+      "preferred_input_mode": "hybrid"
+    },
+    "available_models": [
+      {
+        "name": "gpt-4",
+        "display_name": "GPT-4",
+        "context_length": 8192,
+        "cost_per_1k_tokens": 0.03,
+        "recommended_for": ["complex_tasks", "reasoning", "automation"]
+      },
+      {
+        "name": "gpt-4-turbo",
+        "display_name": "GPT-4 Turbo",
+        "context_length": 128000,
+        "cost_per_1k_tokens": 0.01,
+        "recommended_for": ["long_context", "complex_automation"]
+      },
+      {
+        "name": "gpt-3.5-turbo",
+        "display_name": "GPT-3.5 Turbo",
+        "context_length": 4096,
+        "cost_per_1k_tokens": 0.0015,
+        "recommended_for": ["simple_tasks", "fast_response", "cost_effective"]
+      }
+    ],
+    "parameters": {
+      "temperature": {
+        "default": 0.1,
+        "range": [0.0, 2.0],
+        "description": "Controls randomness. Lower = more focused"
+      },
+      "top_p": {
+        "default": 1.0,
+        "range": [0.0, 1.0],
+        "description": "Controls diversity via nucleus sampling"
+      },
+      "max_tokens": {
+        "default": 1000,
+        "range": [1, 4096],
+        "description": "Maximum tokens in response"
+      },
+      "presence_penalty": {
+        "default": 0.0,
+        "range": [-2.0, 2.0],
+        "description": "Penalty for new topics"
+      },
+      "frequency_penalty": {
+        "default": 0.0,
+        "range": [-2.0, 2.0],
+        "description": "Penalty for repetition"
+      }
+    }
+  },
+  "prompt_templates": {
+    "system_prompt": {
+      "template": "You are Burwell, an expert desktop automation assistant. Your job is to convert user requests into precise CPL (Command Processing Language) commands.\n\nIMPORTANT RULES:\n1. Generate ONLY CPL commands - no explanations or commentary\n2. Use exact syntax: COMMAND_TYPE[param=value] @metadata\n3. Every command must be executable and precise\n4. Include meaningful @id for tracking\n5. Use appropriate wait times between actions\n\nAvailable CPL Commands:\n{{COMMAND_REFERENCE}}\n\nSuccessful Examples:\n{{EXAMPLES}}\n\nReturn only valid CPL commands.",
+      "variables": {
+        "COMMAND_REFERENCE": "auto_generated",
+        "EXAMPLES": "auto_generated"
+      }
+    },
+    "user_prompt": {
+      "template": "Convert this request to CPL commands:\n\n\"{{USER_REQUEST}}\"\n\n{{CONTEXT}}",
+      "variables": {
+        "USER_REQUEST": "user_input",
+        "CONTEXT": "optional_context"
+      }
+    },
+    "feedback_prompt": {
+      "template": "Previous automation failed. Fix the commands:\n\nUser wanted: \"{{USER_REQUEST}}\"\n\nFailed commands:\n{{COMMANDS}}\n\nErrors encountered:\n{{RESULTS}}\n\nGenerate corrected CPL commands:",
+      "variables": {
+        "USER_REQUEST": "original_request",
+        "COMMANDS": "failed_commands",
+        "RESULTS": "execution_results"
+      }
+    },
+    "few_shot_examples": [
+      {
+        "user_request": "Click the OK button at position 200, 400",
+        "cpl_output": "MOUSE_CLICK[x=200, y=400, button=left] @id=click_ok_button"
+      },
+      {
+        "user_request": "Open calculator and type 2+2",
+        "cpl_output": "APP_LAUNCH[path=calc.exe] @id=open_calculator\nWAIT[duration=2s] @reason=wait_for_calc_load\nKEY_TYPE[text=2+2] @id=enter_calculation"
+      },
+      {
+        "user_request": "Select all text and copy it",
+        "cpl_output": "KEY_COMBO[keys=ctrl+a] @id=select_all\nWAIT[duration=100ms] @reason=ensure_selection\nKEY_COMBO[keys=ctrl+c] @id=copy_selected"
+      },
+      {
+        "user_request": "Find the Notepad window and bring it to front",
+        "cpl_output": "WINDOW_FIND[title=Notepad] @store_as=notepad_win @timeout=5s\nWINDOW_ACTIVATE[window=notepad_win] @id=bring_to_front"
+      }
+    ]
+  },
+  "parsing_rules": {
+    "response_format": "cpl_commands",
+    "extraction_patterns": [
+      {
+        "name": "direct_cpl",
+        "pattern": "^[A-Z_]+\\[.*?\\](?:\\s*@.*?)?$",
+        "multiline": true,
+        "description": "Direct CPL command format"
+      },
+      {
+        "name": "code_block",
+        "pattern": "```(?:cpl)?\\n([\\s\\S]*?)```",
+        "group": 1,
+        "description": "CPL commands in code blocks"
+      },
+      {
+        "name": "numbered_list",
+        "pattern": "^\\d+\\.\\s*([A-Z_]+\\[.*?\\](?:\\s*@.*?)?)$",
+        "group": 1,
+        "multiline": true,
+        "description": "Numbered list of commands"
+      }
+    ],
+    "cleaning_rules": [
+      {
+        "remove_patterns": [
+          "Here are the CPL commands:",
+          "The commands you need are:",
+          "Commands:",
+          "```cpl",
+          "```",
+          "^\\d+\\.\\s*"
+        ]
+      },
+      {
+        "trim_whitespace": true,
+        "remove_empty_lines": true,
+        "normalize_line_endings": true
+      }
+    ],
+    "validation": {
+      "require_valid_syntax": true,
+      "require_known_commands": true,
+      "allow_partial_commands": false,
+      "max_commands_per_response": 15
+    }
+  },
+  "optimization": {
+    "context_learning": {
+      "enabled": true,
+      "remember_successful_patterns": true,
+      "adapt_examples_based_on_usage": true,
+      "max_examples_in_prompt": 4
+    },
+    "response_improvement": {
+      "track_success_rates": true,
+      "adjust_temperature_based_on_performance": true,
+      "retry_on_low_confidence": true,
+      "confidence_threshold": 0.8
+    },
+    "prompt_optimization": {
+      "auto_adjust_examples": true,
+      "remove_poor_performing_examples": true,
+      "add_successful_user_patterns": true,
+      "reorder_examples_by_relevance": true
+    }
+  },
+  "error_handling": {
+    "common_issues": [
+      {
+        "issue": "rate_limit",
+        "pattern": "Rate limit reached",
+        "action": "exponential_backoff",
+        "base_delay_ms": 1000,
+        "max_delay_ms": 32000
+      },
+      {
+        "issue": "context_length_exceeded",
+        "pattern": "maximum context length",
+        "action": "truncate_prompt",
+        "keep_essential_parts": ["system_prompt", "latest_examples"]
+      },
+      {
+        "issue": "invalid_request",
+        "pattern": "Invalid request",
+        "action": "simplify_prompt",
+        "remove_sections": ["detailed_examples"]
+      }
+    ],
+    "fallback_strategies": [
+      {
+        "condition": "repeated_failures",
+        "action": "switch_to_simpler_model",
+        "model": "gpt-3.5-turbo"
+      },
+      {
+        "condition": "context_too_long",
+        "action": "use_shorter_examples",
+        "max_examples": 2
+      }
+    ]
+  },
+  "performance_tuning": {
+    "request_optimization": {
+      "compress_whitespace": true,
+      "remove_unnecessary_examples": true,
+      "cache_command_reference": true
+    },
+    "response_optimization": {
+      "cache_successful_responses": true,
+      "cache_duration_minutes": 30,
+      "max_cache_size": 500
+    }
+  },
+  "user_customization": {
+    "editable_sections": [
+      "prompt_templates",
+      "few_shot_examples",
+      "model_configuration.parameters",
+      "optimization",
+      "error_handling.fallback_strategies"
+    ],
+    "protected_sections": [
+      "connection.base_url",
+      "connection.api_endpoint",
+      "connection.authentication"
+    ],
+    "backup_on_modification": true,
+    "validate_on_save": true
+  },
+  "monitoring": {
+    "log_all_requests": true,
+    "log_all_responses": true,
+    "track_token_usage": true,
+    "track_response_times": true,
+    "track_success_rates": true,
+    "track_costs": true,
+    "export_metrics": true
+  }
+}

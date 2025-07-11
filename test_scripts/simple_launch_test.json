@@ -1,0 +1,20 @@
+{
+  "meta": {
+    "name": "simple_launch_test",
+    "description": "Simple application launch test",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "LAUNCH_APPLICATION",
+      "params": {
+        "applicationPath": "notepad.exe"
+      },
+      "outputVariable": "notepadProcess",
+      "metadata": {
+        "description": "Launch Notepad application"
+      }
+    }
+  ]
+}

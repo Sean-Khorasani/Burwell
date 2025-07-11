@@ -1,0 +1,133 @@
+{
+  "description": "Tab cycling with fingerprint detection using new WHILE_LOOP functionality",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Focus the target window",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${targetWindow}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Get starting tab title as fingerprint",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "startingTabFingerprint"
+      }
+    },
+    {
+      "comment": "Check if starting tab contains DeepSeek",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "startingTabFingerprint",
+        "substring": "deepseek",
+        "store_as": "foundInStartingTab"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in starting tab",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInStartingTab"
+      }
+    },
+    {
+      "comment": "Initialize currentTabTitle to empty to start the loop",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": ""
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "comment": "Loop through all tabs until back to starting tab or DeepSeek found",
+      "command": "WHILE_LOOP",
+      "parameters": {
+        "always_true": true,
+        "max_iterations": 50,
+        "sequence": [
+          {
+            "comment": "Move to next tab",
+            "command": "EXECUTE_SCRIPT",
+            "parameters": {
+              "script_path": "test_scripts/uia_send_hotkey.json",
+              "variables": {
+                "window": "${targetWindow}",
+                "modifier": "VK_CONTROL",
+                "key": "VK_TAB"
+              }
+            }
+          },
+          {
+            "command": "WAIT",
+            "parameters": {
+              "duration": "200ms"
+            }
+          },
+          {
+            "comment": "Get current tab title",
+            "command": "UIA_GET_WINDOW_TITLE",
+            "parameters": {
+              "hwnd": "${targetWindow}",
+              "store_as": "currentTabTitle"
+            }
+          },
+          {
+            "comment": "Check if current tab contains DeepSeek",
+            "command": "IF_CONTAINS",
+            "parameters": {
+              "variable": "currentTabTitle",
+              "substring": "deepseek",
+              "store_as": "foundTarget"
+            }
+          },
+          {
+            "comment": "Break loop if DeepSeek found",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "foundTarget"
+            }
+          },
+          {
+            "comment": "Check if back to starting tab (full cycle completed)",
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "currentTabTitle",
+              "value": "${startingTabFingerprint}",
+              "store_as": "backToStart"
+            }
+          },
+          {
+            "comment": "Break loop if back to start (search completed, not found)",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "backToStart"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Set final result based on what was found",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "finalResult"
+      }
+    }
+  ]
+}

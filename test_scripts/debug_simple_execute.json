@@ -1,0 +1,17 @@
+{
+  "name": "debug_simple_execute",
+  "description": "Debug test for simple EXECUTE_SCRIPT command",
+  "version": "1.0",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/debug_simple_wait.json"
+      },
+      "metadata": {
+        "description": "Simple script execution without variables"
+      }
+    }
+  ]
+}

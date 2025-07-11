@@ -1,0 +1,17 @@
+{
+  "name": "debug_simple_wait",
+  "description": "Debug test with just a WAIT command",
+  "version": "1.0",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Simple wait command for debugging"
+      }
+    }
+  ]
+}

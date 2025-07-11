@@ -1,0 +1,270 @@
+{
+  "meta": {
+    "provider_name": "Local LLM",
+    "version": "1.0.0", 
+    "description": "Local LLM Provider Configuration (Ollama, LM Studio, etc.) - User Editable",
+    "last_modified": "2025-01-01T00:00:00Z",
+    "documentation_url": "https://ollama.ai/docs"
+  },
+  "connection": {
+    "base_url": "http://localhost:11434",
+    "api_endpoint": "/api/generate",
+    "authentication": {
+      "type": "none",
+      "header_name": null,
+      "token_prefix": "",
+      "env_variable": "",
+      "config_key": ""
+    },
+    "timeout_ms": 60000,
+    "max_retries": 2,
+    "retry_delay_ms": 2000
+  },
+  "model_configuration": {
+    "default_model": "llama3",
+    "available_models": [
+      {
+        "name": "llama3",
+        "display_name": "Llama 3 8B",
+        "context_length": 8192,
+        "cost_per_1k_tokens": 0.0,
+        "recommended_for": ["general", "automation", "offline"]
+      },
+      {
+        "name": "llama3:70b",
+        "display_name": "Llama 3 70B",
+        "context_length": 8192,
+        "cost_per_1k_tokens": 0.0,
+        "recommended_for": ["complex_tasks", "reasoning"]
+      },
+      {
+        "name": "codellama",
+        "display_name": "Code Llama 7B",
+        "context_length": 4096,
+        "cost_per_1k_tokens": 0.0,
+        "recommended_for": ["automation", "precise_commands"]
+      },
+      {
+        "name": "mistral",
+        "display_name": "Mistral 7B",
+        "context_length": 32768,
+        "cost_per_1k_tokens": 0.0,
+        "recommended_for": ["fast_response", "simple_tasks"]
+      }
+    ],
+    "parameters": {
+      "temperature": {
+        "default": 0.1,
+        "range": [0.0, 1.0],
+        "description": "Controls randomness. Lower = more focused"
+      },
+      "top_p": {
+        "default": 0.9,
+        "range": [0.0, 1.0],
+        "description": "Controls diversity via nucleus sampling"
+      },
+      "top_k": {
+        "default": 40,
+        "range": [1, 100],
+        "description": "Limits vocabulary for generation"
+      },
+      "num_predict": {
+        "default": 1000,
+        "range": [1, 4096],
+        "description": "Maximum tokens to generate"
+      },
+      "repeat_penalty": {
+        "default": 1.1,
+        "range": [0.0, 2.0],
+        "description": "Penalty for repetition"
+      }
+    }
+  },
+  "prompt_templates": {
+    "system_prompt": {
+      "template": "You are a desktop automation expert. Convert user requests to CPL (Command Processing Language) commands.\n\nRules:\n- Generate ONLY CPL commands\n- Use exact syntax: COMMAND_TYPE[param=value] @metadata\n- No explanations or extra text\n- Commands must be precise and executable\n\nCommands available:\n{{COMMAND_REFERENCE}}\n\nExamples:\n{{EXAMPLES}}\n\nGenerate CPL commands only.",
+      "variables": {
+        "COMMAND_REFERENCE": "auto_generated",
+        "EXAMPLES": "auto_generated"
+      }
+    },
+    "user_prompt": {
+      "template": "Task: {{USER_REQUEST}}\n\nCPL commands:",
+      "variables": {
+        "USER_REQUEST": "user_input"
+      }
+    },
+    "feedback_prompt": {
+      "template": "Task failed: {{USER_REQUEST}}\n\nFailed commands:\n{{COMMANDS}}\n\nErrors:\n{{RESULTS}}\n\nFixed CPL commands:",
+      "variables": {
+        "USER_REQUEST": "original_request",
+        "COMMANDS": "failed_commands",
+        "RESULTS": "execution_results"
+      }
+    },
+    "few_shot_examples": [
+      {
+        "user_request": "Click at 100, 200",
+        "cpl_output": "MOUSE_CLICK[x=100, y=200] @id=click"
+      },
+      {
+        "user_request": "Open notepad",
+        "cpl_output": "APP_LAUNCH[path=notepad.exe] @id=open_notepad"
+      },
+      {
+        "user_request": "Type hello",
+        "cpl_output": "KEY_TYPE[text=hello] @id=type_text"
+      },
+      {
+        "user_request": "Copy text",
+        "cpl_output": "KEY_COMBO[keys=ctrl+c] @id=copy"
+      }
+    ]
+  },
+  "parsing_rules": {
+    "response_format": "cpl_commands",
+    "extraction_patterns": [
+      {
+        "name": "direct_cpl",
+        "pattern": "^[A-Z_]+\\[.*?\\](?:\\s*@.*?)?$",
+        "multiline": true,
+        "description": "Direct CPL command format"
+      },
+      {
+        "name": "after_colon",
+        "pattern": "commands?:\\s*\\n([\\s\\S]*?)(?:\\n\\n|$)",
+        "group": 1,
+        "description": "Commands after colon label"
+      }
+    ],
+    "cleaning_rules": [
+      {
+        "remove_patterns": [
+          "CPL commands?:",
+          "Commands?:",
+          "Here are the commands:",
+          "The commands are:",
+          "Output:"
+        ]
+      },
+      {
+        "trim_whitespace": true,
+        "remove_empty_lines": true,
+        "normalize_line_endings": true
+      }
+    ],
+    "validation": {
+      "require_valid_syntax": true,
+      "require_known_commands": true,
+      "allow_partial_commands": false,
+      "max_commands_per_response": 10
+    }
+  },
+  "optimization": {
+    "context_learning": {
+      "enabled": true,
+      "remember_successful_patterns": true,
+      "adapt_examples_based_on_usage": true,
+      "max_examples_in_prompt": 3
+    },
+    "response_improvement": {
+      "track_success_rates": true,
+      "adjust_temperature_based_on_performance": false,
+      "retry_on_low_confidence": true,
+      "confidence_threshold": 0.6
+    },
+    "prompt_optimization": {
+      "auto_adjust_examples": true,
+      "remove_poor_performing_examples": true,
+      "add_successful_user_patterns": true,
+      "prefer_short_examples": true
+    }
+  },
+  "error_handling": {
+    "common_issues": [
+      {
+        "issue": "connection_refused",
+        "pattern": "Connection refused",
+        "action": "check_service_status",
+        "message": "Local LLM service not running. Start Ollama or LM Studio."
+      },
+      {
+        "issue": "model_not_found",
+        "pattern": "model.*not found",
+        "action": "suggest_model_download",
+        "message": "Model not available. Run: ollama pull {model_name}"
+      },
+      {
+        "issue": "timeout",
+        "pattern": "timeout",
+        "action": "retry_with_longer_timeout",
+        "timeout_multiplier": 2
+      }
+    ],
+    "fallback_strategies": [
+      {
+        "condition": "model_unavailable",
+        "action": "switch_to_smaller_model",
+        "model": "mistral"
+      },
+      {
+        "condition": "service_down",
+        "action": "show_setup_instructions"
+      }
+    ]
+  },
+  "performance_tuning": {
+    "request_optimization": {
+      "compress_whitespace": true,
+      "use_shorter_prompts": true,
+      "cache_command_reference": true
+    },
+    "response_optimization": {
+      "cache_successful_responses": true,
+      "cache_duration_minutes": 120,
+      "max_cache_size": 200
+    }
+  },
+  "local_setup": {
+    "service_detection": {
+      "ollama": {
+        "check_url": "http://localhost:11434/api/tags",
+        "install_instructions": "Visit https://ollama.ai to download and install Ollama"
+      },
+      "lm_studio": {
+        "check_url": "http://localhost:1234/v1/models",
+        "install_instructions": "Download LM Studio from https://lmstudio.ai"
+      },
+      "text_generation_webui": {
+        "check_url": "http://localhost:5000/api/v1/models",
+        "install_instructions": "Install text-generation-webui from GitHub"
+      }
+    },
+    "auto_discovery": {
+      "enabled": true,
+      "scan_ports": [11434, 1234, 5000, 8080],
+      "common_endpoints": ["/api/tags", "/v1/models", "/api/v1/models"]
+    }
+  },
+  "user_customization": {
+    "editable_sections": [
+      "connection.base_url",
+      "model_configuration.default_model",
+      "prompt_templates",
+      "few_shot_examples",
+      "model_configuration.parameters",
+      "local_setup"
+    ],
+    "protected_sections": [],
+    "backup_on_modification": true,
+    "validate_on_save": false
+  },
+  "monitoring": {
+    "log_all_requests": true,
+    "log_all_responses": true,
+    "track_response_times": true,
+    "track_success_rates": true,
+    "track_local_service_status": true,
+    "export_metrics": false
+  }
+}

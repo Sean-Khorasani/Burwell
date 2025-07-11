@@ -1,0 +1,46 @@
+{
+  "name": "test_variable_override",
+  "description": "Test EXECUTE_SCRIPT variable override functionality",
+  "version": "1.0",
+  "author": "Burwell Variable Override Test",
+  "variables": {
+    "parent_key": "PARENT_VALUE"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Parent: parent_key=${parent_key}"
+      },
+      "metadata": {
+        "description": "Set parent context"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/test_variable_priority.json",
+        "result_variable": "child_result",
+        "variables": {
+          "test_key": "EXECUTE_SCRIPT_VALUE",
+          "test_modifier": "EXECUTE_SCRIPT_MODIFIER"
+        }
+      },
+      "metadata": {
+        "description": "Execute child script with overriding variables"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "final_result"
+      },
+      "metadata": {
+        "description": "Get final result to verify override worked"
+      }
+    }
+  ]
+}

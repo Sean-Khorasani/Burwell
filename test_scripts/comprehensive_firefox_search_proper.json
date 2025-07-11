@@ -1,0 +1,114 @@
+{
+  "description": "Proper Firefox DeepSeek search with fingerprint-based tab cycling",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Minimize all windows first",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_wins.json"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Step 2: Find all Firefox windows",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 3: Search Window 1 (if exists)",
+      "command": "IF_NOT_CONTAINS",
+      "parameters": {
+        "variable": "firefoxWindows",
+        "substring": "[]",
+        "store_as": "hasWindow1"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "hasWindow1",
+        "invert": true
+      }
+    },
+    {
+      "comment": "Set target to window 1",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "targetWindow"
+      }
+    },
+    {
+      "comment": "Search all tabs in window 1",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/search_all_tabs_fingerprint.json",
+        "variables": {
+          "targetWindow": "${targetWindow}",
+          "windowIndex": "1"
+        },
+        "result_variable": "window1Result"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in window 1",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Step 4: Search Window 2 (if exists)",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[1]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "targetWindow2"
+      }
+    },
+    {
+      "comment": "Search all tabs in window 2",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/search_all_tabs_fingerprint.json",
+        "variables": {
+          "targetWindow": "${targetWindow2}",
+          "windowIndex": "2"
+        },
+        "result_variable": "window2Result"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in window 2",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "If we get here, DeepSeek not found in any window",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Searched all tabs in all Firefox windows"
+      }
+    }
+  ]
+}

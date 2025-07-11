@@ -1,0 +1,101 @@
+{
+  "name": "cycle_firefox_tabs_efficient", 
+  "description": "Efficiently cycle through Firefox tabs to find DeepSeek",
+  "version": "2.0",
+  "author": "Burwell Efficient Design",
+  "variables": {},
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      },
+      "metadata": {
+        "description": "Get current tab title to check for DeepSeek"
+      }
+    },
+    {
+      "step": 2, 
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Current tab: ${currentTabTitle}"
+      },
+      "metadata": {
+        "description": "Store current tab info for verification"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      },
+      "metadata": {
+        "description": "Press Ctrl down for tab cycling"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_KEY_PRESS", 
+      "parameters": {
+        "key": "VK_TAB"
+      },
+      "metadata": {
+        "description": "Press Tab to cycle to next tab"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      },
+      "metadata": {
+        "description": "Release Tab key"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      },
+      "metadata": {
+        "description": "Release Ctrl key"
+      }
+    },
+    {
+      "step": 7,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      },
+      "metadata": {
+        "description": "Wait for tab switch to complete"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "newTabTitle"
+      },
+      "metadata": {
+        "description": "Get new tab title after cycling"
+      }
+    },
+    {
+      "step": 9,
+      "command": "UIA_SET_CLIPBOARD", 
+      "parameters": {
+        "text": "Cycled to: ${newTabTitle}"
+      },
+      "metadata": {
+        "description": "Store result for verification - script should check if title contains 'deepseek'"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "name": "uia_filter_windows_by_class",
+  "description": "Filter windows by class pattern using atomic operations",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_iterate_windows.json",
+        "variables": {
+          "windows": "${windows}",
+          "class_pattern": "${class_pattern}",
+          "store_as": "${store_as}"
+        }
+      },
+      "metadata": {
+        "description": "Iterate through windows and filter by class - Note: This is a simplified version. Full implementation would require loop/conditional support in scripts"
+      }
+    }
+  ]
+}

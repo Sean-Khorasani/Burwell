@@ -1,0 +1,99 @@
+{
+  "name": "uia_fill_form_field",
+  "description": "Fill form field by clicking coordinates and typing (replaces UIA_FILL_FORM_FIELD)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus target window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_MOUSE_MOVE",
+      "parameters": {
+        "x": "${x}",
+        "y": "${y}"
+      },
+      "metadata": {
+        "description": "Move mouse to form field"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "left"
+      },
+      "metadata": {
+        "description": "Click on form field"
+      }
+    },
+    {
+      "step": 4,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Wait for field focus"
+      }
+    },
+    {
+      "step": 5,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "A"
+        }
+      },
+      "metadata": {
+        "description": "Select all existing text in field (Ctrl+A)"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${value}"
+      },
+      "metadata": {
+        "description": "Set clipboard to new value"
+      }
+    },
+    {
+      "step": 7,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "V"
+        }
+      },
+      "metadata": {
+        "description": "Paste new value (Ctrl+V)"
+      }
+    },
+    {
+      "step": 8,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Wait for paste operation"
+      }
+    }
+  ]
+}

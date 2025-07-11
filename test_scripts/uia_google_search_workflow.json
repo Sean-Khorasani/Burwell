@@ -1,0 +1,136 @@
+{
+  "description": "Complete Google search automation workflow",
+  "parameters": {
+    "searchTerm": "Term to search for",
+    "browserHwnd": "Browser window handle (optional - uses foreground if not specified)"
+  },
+  "sequence": [
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${browserHwnd} != null",
+        "then": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${browserHwnd}",
+              "store_as": "focusResult"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_browser_navigate_url.json",
+        "result_variable": "navigateResult",
+        "pass_variables": {
+          "browserHwnd": "${browserHwnd}",
+          "url": "https://www.google.com"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 2000
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "K"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "K"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${searchTerm}",
+        "store_as": "clipboardResult"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 3000
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_extract_page_text_browser.json",
+        "result_variable": "extractedResults",
+        "pass_variables": {
+          "browserHwnd": "${browserHwnd}"
+        }
+      }
+    }
+  ]
+}

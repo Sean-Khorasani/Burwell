@@ -1,0 +1,180 @@
+{
+  "description": "DeepSeek automation test using new WHILE_LOOP functionality for systematic tab cycling",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Comprehensive search using new loop-based tab cycling",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/comprehensive_tab_search_with_loops.json",
+        "result_variable": "deepseekSearchResult"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "searchResult"
+      }
+    },
+    {
+      "comment": "Check if DeepSeek was not found",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "searchResult",
+        "substring": "DEEPSEEK_NOT_FOUND",
+        "store_as": "deepseekNotFound"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek not found",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "deepseekNotFound"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 2: Reset focus and navigate to input field using F6 then Tab",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_F6"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_F6"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Navigate to page content with Tab",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "comment": "Step 3: Clear the prompt input area (only if DeepSeek found)",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "A"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "A"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "comment": "Step 4: Type the prompt using clipboard",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "What is the best template for a software engineer's resume?"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 5: Press Enter to submit prompt",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "comment": "Step 6: Wait for response to start generating",
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3s"
+      }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "description": "Test to prove parameter name mismatch",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Test 1: Using hwnd parameter (will fail)",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}"
+      }
+    }
+  ]
+}

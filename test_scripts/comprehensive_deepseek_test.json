@@ -1,0 +1,102 @@
+{
+  "name": "comprehensive_deepseek_test",
+  "description": "Complete test of DeepSeek automation with conditional logic, multi-window support, and response monitoring",
+  "version": "4.0",
+  "author": "Burwell Complete Solution",
+  "variables": {
+    "testStartTime": "2025-07-07",
+    "testPrompt": "Explain quantum computing in simple terms",
+    "automationMode": "PRODUCTION",
+    "debugLogging": true,
+    "maxResponseWaitMinutes": 5
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "========================================\n[COMPREHENSIVE TEST START]\nTimestamp: ${testStartTime}\nPrompt: ${testPrompt}\nMode: ${automationMode}\n========================================"
+      },
+      "metadata": {
+        "description": "Initialize comprehensive test with header logging"
+      }
+    },
+    {
+      "step": 2,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"Write-Host '[POWERSHELL INIT] Starting comprehensive DeepSeek automation test' -ForegroundColor Green\""
+      },
+      "metadata": {
+        "description": "PowerShell initialization message"
+      }
+    },
+    {
+      "step": 3,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/deepseek_automation_fixed.json",
+        "result_variable": "automationResult",
+        "variables": {
+          "prompt": "${testPrompt}",
+          "debugMode": "${debugLogging}"
+        }
+      },
+      "metadata": {
+        "description": "Execute complete DeepSeek automation with conditional logic"
+      }
+    },
+    {
+      "step": 4,
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "automationResult",
+        "substring": "DEEPSEEK_FOUND",
+        "store_as": "automationSuccessful"
+      },
+      "metadata": {
+        "description": "Check if automation found and used DeepSeek successfully"
+      }
+    },
+    {
+      "step": 5,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"if ('${automationSuccessful}' -eq 'true') { Write-Host '[POWERSHELL RESULT] Automation SUCCESSFUL - DeepSeek found and prompt submitted' -ForegroundColor Green } else { Write-Host '[POWERSHELL RESULT] Automation FAILED - DeepSeek tab not found or error occurred' -ForegroundColor Red }\""
+      },
+      "metadata": {
+        "description": "PowerShell result analysis"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "finalClipboardContent"
+      },
+      "metadata": {
+        "description": "Get final clipboard content for analysis"
+      }
+    },
+    {
+      "step": 7,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"$content = Get-Clipboard; $length = $content.Length; Write-Host '[POWERSHELL ANALYSIS] Final content length:' $length 'characters'; if ($length -gt 1000) { Write-Host '[POWERSHELL ANALYSIS] Large content detected - likely DeepSeek response captured' -ForegroundColor Cyan } else { Write-Host '[POWERSHELL ANALYSIS] Small content - may be status message only' -ForegroundColor Yellow }\""
+      },
+      "metadata": {
+        "description": "PowerShell content analysis"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "========================================\n[COMPREHENSIVE TEST COMPLETE]\nAutomation Success: ${automationSuccessful}\nFinal Result: ${automationResult}\nTest completed at: ${testStartTime}\n========================================"
+      },
+      "metadata": {
+        "description": "Final test summary with results"
+      }
+    }
+  ]
+}

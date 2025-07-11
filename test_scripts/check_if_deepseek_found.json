@@ -1,0 +1,35 @@
+{
+  "description": "Check if current tab contains DeepSeek and set appropriate result",
+  "parameters": {},
+  "sequence": [
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "DeepSeek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "foundDeepSeek",
+        "value": "true",
+        "store_as": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    }
+  ]
+}

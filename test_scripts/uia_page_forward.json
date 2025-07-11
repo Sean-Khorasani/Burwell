@@ -1,0 +1,43 @@
+{
+  "name": "uia_page_forward",
+  "description": "Navigate browser page forward using Alt+Right (replaces UIA_PAGE_FORWARD)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus browser window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_MENU",
+          "key": "VK_RIGHT"
+        }
+      },
+      "metadata": {
+        "description": "Navigate forward (Alt+Right)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for page navigation"
+      }
+    }
+  ]
+}

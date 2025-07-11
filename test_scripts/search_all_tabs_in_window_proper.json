@@ -1,0 +1,72 @@
+{
+  "description": "Proper tab search: Remember starting tab, cycle until back to start",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Focus the target window first",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${targetWindow}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Get starting tab title as fingerprint",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "startingTabTitle"
+      }
+    },
+    {
+      "comment": "Check if starting tab contains DeepSeek",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "startingTabCheck"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in starting tab",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Move to next tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "comment": "Start cycling through tabs until back to starting tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_tabs_until_start.json",
+        "variables": {
+          "startingTabTitle": "${startingTabTitle}",
+          "targetWindow": "${targetWindow}"
+        },
+        "result_variable": "cycleResult"
+      }
+    }
+  ]
+}

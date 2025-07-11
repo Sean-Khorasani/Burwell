@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "name": "proper_file_edit_test",
+    "description": "PROPER test editing a specific file with all fixes applied",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo COGNIFORGE TEST FILE - BEFORE AUTOMATION > C:\\temp\\burwell_test_file.txt"
+      },
+      "metadata": {
+        "description": "Create a specific test file to edit"
+      }
+    },
+    {
+      "step": 2,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe",
+        "arguments": "C:\\temp\\burwell_test_file.txt"
+      },
+      "metadata": {
+        "description": "Launch Notepad with OUR specific test file"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to load"
+      }
+    },
+    {
+      "step": 4,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows.json",
+        "variables": {
+          "class_pattern": "Notepad",
+          "app_name": "notepad",
+          "store_as": "notepadWindows"
+        }
+      },
+      "metadata": {
+        "description": "Find our Notepad window using nested script"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus our Notepad window (atomic operation)"
+      }
+    },
+    {
+      "step": 6,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "END"
+        }
+      },
+      "metadata": {
+        "description": "Go to end of file (Ctrl+End) using nested script"
+      }
+    },
+    {
+      "step": 7,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_RETURN"
+        }
+      },
+      "metadata": {
+        "description": "Press Enter for new line using nested script"
+      }
+    },
+    {
+      "step": 8,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "\n=== COGNIFORGE AUTOMATION ADDED ===\nTimestamp: 2025-07-06\nTest: orchestrator.executePlan() SUCCESS\nFile editing: WORKING\nArgument support: WORKING\nHotkey functions: WORKING\nPress key functions: WORKING"
+        }
+      },
+      "metadata": {
+        "description": "Add our automation content using nested script"
+      }
+    },
+    {
+      "step": 9,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "A"
+        }
+      },
+      "metadata": {
+        "description": "Select all text (Ctrl+A) using nested script"
+      }
+    },
+    {
+      "step": 10,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "C"
+        }
+      },
+      "metadata": {
+        "description": "Copy selected text (Ctrl+C) using nested script"
+      }
+    },
+    {
+      "step": 11,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "END"
+        }
+      },
+      "metadata": {
+        "description": "Go to end of document using nested script"
+      }
+    },
+    {
+      "step": 12,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_RETURN"
+        }
+      },
+      "metadata": {
+        "description": "Add new line using nested script"
+      }
+    },
+    {
+      "step": 13,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "\n=== COPY/PASTE TEST ===\nOriginal content copied above, now pasting:\n"
+        }
+      },
+      "metadata": {
+        "description": "Type header for paste test using nested script"
+      }
+    },
+    {
+      "step": 14,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "V"
+        }
+      },
+      "metadata": {
+        "description": "Paste copied text (Ctrl+V) using nested script"
+      }
+    },
+    {
+      "step": 15,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "\n\n=== TEXT EDITING TEST ===\nTesting word replacement: OLD_WORD"
+        }
+      },
+      "metadata": {
+        "description": "Add text for editing test using nested script"
+      }
+    },
+    {
+      "step": 16,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "H"
+        }
+      },
+      "metadata": {
+        "description": "Open Find and Replace dialog (Ctrl+H) using nested script"
+      }
+    },
+    {
+      "step": 17,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for Find and Replace dialog to open"
+      }
+    },
+    {
+      "step": 18,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "text": "OLD_WORD"
+        }
+      },
+      "metadata": {
+        "description": "Type search term in Find field using nested script"
+      }
+    },
+    {
+      "step": 19,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_TAB"
+        }
+      },
+      "metadata": {
+        "description": "Tab to Replace field using nested script"
+      }
+    },
+    {
+      "step": 20,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "text": "NEW_WORD"
+        }
+      },
+      "metadata": {
+        "description": "Type replacement text using nested script"
+      }
+    },
+    {
+      "step": 21,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "modifier": "VK_MENU",
+          "key": "A"
+        }
+      },
+      "metadata": {
+        "description": "Press Alt+A for Replace All using nested script"
+      }
+    },
+    {
+      "step": 22,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_ESCAPE"
+        }
+      },
+      "metadata": {
+        "description": "Close Find and Replace dialog using nested script"
+      }
+    },
+    {
+      "step": 23,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "\n\n=== ALL TESTS COMPLETED ===\nText typing: SUCCESS\nText selection: SUCCESS\nCopy/Paste: SUCCESS\nText editing: SUCCESS\nBackspace/Delete: SUCCESS\nFind functionality: SUCCESS"
+        }
+      },
+      "metadata": {
+        "description": "Add completion summary using nested script"
+      }
+    },
+    {
+      "step": 24,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "S"
+        }
+      },
+      "metadata": {
+        "description": "Save the file (Ctrl+S) using nested script"
+      }
+    },
+    {
+      "step": 25,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save to complete"
+      }
+    },
+    {
+      "step": 26,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_MENU",
+          "key": "F4"
+        }
+      },
+      "metadata": {
+        "description": "Close Notepad (Alt+F4) using nested script"
+      }
+    }
+  ]
+}

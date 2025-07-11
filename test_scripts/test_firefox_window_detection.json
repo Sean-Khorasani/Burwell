@@ -1,0 +1,133 @@
+{
+  "description": "Test Firefox window detection with detailed logging",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Enumerate ALL windows first",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "comment": "Log total window count",
+      "command": "UIA_SET_CLIPBOARD", 
+      "parameters": {
+        "text": "Total windows found: ${allWindows}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 2: Find Firefox windows with class filter",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Log Firefox window count",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Firefox windows found: ${firefoxWindows}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 3: Find Firefox windows excluding tool windows",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "exclude_tool_windows": true,
+        "store_as": "firefoxMainWindows"
+      }
+    },
+    {
+      "comment": "Log Firefox main window count",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Firefox main windows (no tool windows): ${firefoxMainWindows}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 4: Try to get first window handle if exists",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxMainWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "firstWindowHandle"
+      }
+    },
+    {
+      "comment": "Check if we got a handle",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "firstWindowHandle",
+        "value": "",
+        "store_as": "noHandle"
+      }
+    },
+    {
+      "comment": "Log handle status",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "First window handle: ${firstWindowHandle} (empty=${noHandle})"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 5: If we have a handle, get window title",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "noHandle",
+        "value": "false",
+        "store_as": "hasHandle"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "noHandle"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firstWindowHandle}",
+        "store_as": "windowTitle"
+      }
+    },
+    {
+      "comment": "Log window title",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "First Firefox window title: ${windowTitle}"
+      }
+    }
+  ]
+}

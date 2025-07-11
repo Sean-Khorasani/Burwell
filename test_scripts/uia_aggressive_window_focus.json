@@ -1,0 +1,54 @@
+{
+  "description": "Aggressive window focus using multiple techniques",
+  "parameters": {
+    "hwnd": "Window handle to focus",
+    "retries": "Number of focus attempts (default: 3)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}",
+        "store_as": "focusAttempt1"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "UIA_GET_FOREGROUND_WINDOW",
+      "parameters": {
+        "store_as": "currentForeground"
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${currentForeground.hwnd} != ${hwnd}",
+        "then": [
+          {
+            "command": "EXECUTE_SCRIPT",
+            "parameters": {
+              "script_path": "test_scripts/uia_send_hotkey.json",
+              "result_variable": "altTabResult",
+              "pass_variables": {
+                "modifierKey": "VK_MENU",
+                "key": "VK_TAB"
+              }
+            }
+          },
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${hwnd}",
+              "store_as": "focusAttempt2"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

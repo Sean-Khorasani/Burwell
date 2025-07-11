@@ -1,0 +1,197 @@
+{
+  "description": "Cycle through Firefox tabs looking for DeepSeek with conditional logic",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Tab 1 - Check current tab",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_FOUND: Found DeepSeek tab - ${currentTabTitle}"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      }
+    },
+    {
+      "comment": "Move to Tab 2",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${firefoxWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      }
+    },
+    {
+      "comment": "Move to Tab 3",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${firefoxWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      }
+    },
+    {
+      "comment": "Move to Tab 4",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${firefoxWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      }
+    },
+    {
+      "comment": "Move to Tab 5",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${firefoxWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundDeepSeek"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundDeepSeek"
+      }
+    },
+    {
+      "comment": "DeepSeek not found in first 5 tabs - set failure result",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Checked 5 tabs, DeepSeek not found in this window"
+      }
+    }
+  ]
+}

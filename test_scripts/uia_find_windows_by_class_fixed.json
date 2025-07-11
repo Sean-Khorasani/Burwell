@@ -1,0 +1,19 @@
+{
+  "description": "Find windows by class name pattern using UIA_ENUM_WINDOWS",
+  "parameters": {
+    "className": "Class name pattern to search for",
+    "store_as": "Variable name to store results (default: foundWindows)"
+  },
+  "variables": {
+    "store_as": "${store_as:foundWindows}"
+  },
+  "sequence": [
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "${className}",
+        "store_as": "${store_as}"
+      }
+    }
+  ]
+}

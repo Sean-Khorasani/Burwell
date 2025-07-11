@@ -1,0 +1,16 @@
+{
+  "description": "Find windows by class name pattern",
+  "parameters": {
+    "className": "Class name pattern to search for",
+    "store_as": "Variable name to store results (default: foundWindows)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "${className}",
+        "store_as": "${store_as}"
+      }
+    }
+  ]
+}

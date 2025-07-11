@@ -1,0 +1,124 @@
+{
+  "name": "type_prompt_to_deepseek",
+  "description": "Type prompt to DeepSeek and monitor response status",
+  "version": "1.0",
+  "author": "Burwell Prompt Automation",
+  "variables": {
+    "prompt": "What are the latest AI developments in 2025?",
+    "typingComplete": false,
+    "responseMonitoring": true
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[INFO] DeepSeek tab found - typing prompt: ${prompt}"
+      },
+      "metadata": {
+        "description": "Log prompt typing start"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "x": 400,
+        "y": 500,
+        "button": "left"
+      },
+      "metadata": {
+        "description": "Click in text area to focus"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for focus"
+      }
+    },
+    {
+      "step": 4,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "result_variable": "typingResult",
+        "variables": {
+          "text": "${prompt}"
+        }
+      },
+      "metadata": {
+        "description": "Safely type the prompt using clipboard"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      },
+      "metadata": {
+        "description": "Press Enter to submit prompt"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      },
+      "metadata": {
+        "description": "Release Enter key"
+      }
+    },
+    {
+      "step": 7,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for submission"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[INFO] Prompt submitted - starting response monitoring"
+      },
+      "metadata": {
+        "description": "Log monitoring start"
+      }
+    },
+    {
+      "step": 9,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/monitor_deepseek_response.json",
+        "result_variable": "monitoringResult",
+        "variables": {
+          "maxWaitCycles": 30,
+          "waitInterval": "2000ms"
+        }
+      },
+      "metadata": {
+        "description": "Monitor DeepSeek response completion"
+      }
+    },
+    {
+      "step": 10,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[COMPLETED] DeepSeek automation finished - result: ${monitoringResult}"
+      },
+      "metadata": {
+        "description": "Log completion"
+      }
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "description": "Basic Firefox window test",
+  "sequence": [
+    {
+      "comment": "Find Firefox windows",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Minimize all windows",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "D"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "D"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Get first Firefox window handle",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "firstWindowHandle"
+      }
+    },
+    {
+      "comment": "Focus first Firefox window",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firstWindowHandle}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Get window title",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firstWindowHandle}",
+        "store_as": "windowTitle"
+      }
+    },
+    {
+      "comment": "Store title in clipboard for verification",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Firefox window: ${windowTitle}"
+      }
+    }
+  ]
+}

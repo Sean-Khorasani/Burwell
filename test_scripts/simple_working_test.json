@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "name": "simple_working_test",
+    "description": "Simple test using only PROVEN working functions",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo COGNIFORGE SIMPLE TEST FILE > C:\\temp\\simple_test.txt"
+      },
+      "metadata": {
+        "description": "Create a simple test file"
+      }
+    },
+    {
+      "step": 2,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe",
+        "arguments": "C:\\temp\\simple_test.txt"
+      },
+      "metadata": {
+        "description": "Launch Notepad with our test file"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to load"
+      }
+    },
+    {
+      "step": 4,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows.json",
+        "variables": {
+          "class_pattern": "Notepad",
+          "app_name": "notepad",
+          "store_as": "notepadWindows"
+        }
+      },
+      "metadata": {
+        "description": "Find our Notepad window using nested script"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus our Notepad window (atomic operation)"
+      }
+    },
+    {
+      "step": 6,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_END"
+        }
+      },
+      "metadata": {
+        "description": "Go to end of line using nested script"
+      }
+    },
+    {
+      "step": 7,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "VK_RETURN"
+        }
+      },
+      "metadata": {
+        "description": "Press Enter for new line using nested script"
+      }
+    },
+    {
+      "step": 8,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "\n=== AUTOMATION SUCCESS ===\nBurwell orchestrator.executePlan() is working!\nFile argument support: SUCCESS\nWindow finding: SUCCESS\nWindow focusing: SUCCESS\nKey pressing: SUCCESS\nText typing: SUCCESS"
+        }
+      },
+      "metadata": {
+        "description": "Add our content using nested script text typing"
+      }
+    },
+    {
+      "step": 9,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      },
+      "metadata": {
+        "description": "Wait to show the result"
+      }
+    },
+    {
+      "step": 10,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_CONTROL",
+          "key": "S"
+        }
+      },
+      "metadata": {
+        "description": "Save the file (Ctrl+S) using nested script"
+      }
+    },
+    {
+      "step": 11,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save"
+      }
+    }
+  ]
+}

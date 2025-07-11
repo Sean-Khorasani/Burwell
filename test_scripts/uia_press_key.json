@@ -1,0 +1,38 @@
+{
+  "name": "uia_press_key",
+  "description": "Press a single key using atomic UIA commands (replaces UIA_PRESS_KEY)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Press key down"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Release key"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "50ms"
+      },
+      "metadata": {
+        "description": "Brief wait for key press to register"
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "name": "minimize_all_windows",
+  "description": "Minimizes all open windows by pressing Windows+D twice",
+  "version": "1.0",
+  "author": "Burwell",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_global_hotkey.json",
+        "variables": {
+          "modifier": "VK_LWIN",
+          "key": "D"
+        }
+      },
+      "metadata": {
+        "description": "Show desktop (minimize all windows) - Windows+D using nested script"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for windows to minimize"
+      }
+    },
+    {
+      "step": 3,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_global_hotkey.json",
+        "variables": {
+          "modifier": "VK_LWIN",
+          "key": "D"
+        }
+      },
+      "metadata": {
+        "description": "Restore windows (bring back from minimized) - Windows+D again using nested script"
+      }
+    },
+    {
+      "step": 4,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for windows to restore"
+      }
+    }
+  ]
+}

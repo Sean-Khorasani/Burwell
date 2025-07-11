@@ -1,0 +1,11 @@
+{
+  "description": "Basic test with just a wait command",
+  "sequence": [
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      }
+    }
+  ]
+}

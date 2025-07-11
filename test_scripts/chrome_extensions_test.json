@@ -1,0 +1,240 @@
+{
+  "meta": {
+    "name": "chrome_extensions_test",
+    "description": "Chrome Extensions automation test - equivalent to UIA TEST 7 from main_tests.cpp",
+    "version": "1.0.0",
+    "author": "Burwell Test Suite",
+    "category": "browser_automation"
+  },
+  "variables": {
+    "extensions_url": {
+      "type": "string",
+      "value": "chrome://extensions/"
+    }
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FIND_BROWSER_WINDOWS",
+      "parameters": {
+        "browserType": "CHROME",
+        "windowClass": "Chrome_WidgetWin_1", 
+        "titlePatterns": ["google chrome"],
+        "excludePatterns": ["visual studio code", "discord", "electron"]
+      },
+      "outputVariable": "chromeWindows",
+      "metadata": {
+        "description": "Find Chrome windows using proven filtering approach"
+      }
+    },
+    {
+      "step": 2,
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${chromeWindows.length} == 0",
+        "if_true": [
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO", 
+              "message": "No Chrome found for Extensions workflow test"
+            }
+          },
+          {
+            "command": "EXIT_SCRIPT",
+            "parameters": {
+              "reason": "No Chrome browser available"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Check if Chrome is available"
+      }
+    },
+    {
+      "step": 3,
+      "command": "LOG_MESSAGE",
+      "parameters": {
+        "level": "INFO",
+        "message": "EXACT REPLICATION: Starting complete Extensions workflow..."
+      },
+      "metadata": {
+        "description": "Log start of complete workflow"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_AGGRESSIVE_WINDOW_FOCUS",
+      "parameters": {
+        "window": "${chromeWindows[0]}"
+      },
+      "metadata": {
+        "description": "Step 1: BringWindowToFront() with verification",
+        "required": true
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_OPEN_NEW_TAB",
+      "parameters": {
+        "browser": "${chromeWindows[0]}"
+      },
+      "metadata": {
+        "description": "Step 2: OpenNewTab()"
+      }
+    },
+    {
+      "step": 6,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for new tab to open"
+      }
+    },
+    {
+      "step": 7,
+      "command": "UIA_NAVIGATE_TO_URL",
+      "parameters": {
+        "browser": "${chromeWindows[0]}",
+        "url": "${extensions_url}"
+      },
+      "metadata": {
+        "description": "Step 3: NavigateToURL(chrome://extensions/)"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_WAIT_FOR_PAGE_LOAD",
+      "parameters": {
+        "browser": "${chromeWindows[0]}",
+        "timeout_ms": 2000
+      },
+      "metadata": {
+        "description": "Step 4: WaitForPageLoad()"
+      }
+    },
+    {
+      "step": 9,
+      "command": "UIA_HAS_TAB_WITH_PATTERN",
+      "parameters": {
+        "browser": "${chromeWindows[0]}",
+        "pattern": "extensions"
+      },
+      "outputVariable": "hasExtensions",
+      "metadata": {
+        "description": "Step 5: HasExtensionsTabActive()"
+      }
+    },
+    {
+      "step": 10,
+      "command": "LOG_MESSAGE",
+      "parameters": {
+        "level": "INFO",
+        "message": "Extensions page active: ${hasExtensions ? 'YES' : 'NO'}"
+      },
+      "metadata": {
+        "description": "Log Extensions page verification"
+      }
+    },
+    {
+      "step": 11,
+      "command": "UIA_CLOSE_CURRENT_TAB",
+      "parameters": {
+        "browser": "${chromeWindows[0]}"
+      },
+      "metadata": {
+        "description": "Step 6: CloseCurrentTab()"
+      }
+    },
+    {
+      "step": 12,
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${hasExtensions} == true",
+        "if_true": [
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "EXACT REPLICATION: Complete Extensions workflow SUCCESS!"
+            }
+          },
+          {
+            "command": "LOG_MESSAGE", 
+            "parameters": {
+              "level": "INFO",
+              "message": "   ✓ Window focused and brought to front"
+            }
+          },
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO", 
+              "message": "   ✓ New tab opened successfully"
+            }
+          },
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "   ✓ Navigated to chrome://extensions/"
+            }
+          },
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "   ✓ Page loaded and verified" 
+            }
+          },
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "   ✓ Extensions tab closed successfully"
+            }
+          },
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "This EXACTLY replicates test_atomic_functions.cpp workflow!"
+            }
+          }
+        ],
+        "if_false": [
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "ERROR",
+              "message": "Failed to verify Extensions page"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Report complete workflow results"
+      }
+    }
+  ],
+  "validation": {
+    "expected_results": [
+      "chromeWindows.length >= 1",
+      "hasExtensions == true"
+    ],
+    "success_criteria": {
+      "minimum_steps_completed": 10,
+      "required_steps": [1, 4, 5, 7, 9, 11],
+      "cleanup_required": true
+    }
+  },
+  "error_handling": {
+    "on_step_failure": "continue_if_optional",
+    "cleanup_on_error": true,
+    "rollback_steps": [11],
+    "max_retries": 1
+  }
+}

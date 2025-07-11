@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "name": "firefox_automation_test",
+    "description": "Firefox browser automation test - equivalent to web automation tests in main.cpp",
+    "version": "1.0.0",
+    "author": "Burwell Test Suite", 
+    "category": "web_automation"
+  },
+  "variables": {
+    "search_term": {
+      "type": "string",
+      "value": "Burwell automation"
+    },
+    "test_url": {
+      "type": "string",
+      "value": "google.com"
+    }
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FIND_BROWSER_WINDOWS",
+      "parameters": {
+        "browserType": "FIREFOX",
+        "windowClass": "MozillaWindowClass",
+        "titlePatterns": ["firefox", "mozilla"]
+      },
+      "outputVariable": "firefoxWindows",
+      "metadata": {
+        "description": "Find Firefox browser windows using application-agnostic detection"
+      }
+    },
+    {
+      "step": 2,
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${firefoxWindows.length} == 0",
+        "if_true": [
+          {
+            "command": "LOG_MESSAGE",
+            "parameters": {
+              "level": "INFO",
+              "message": "No Firefox found - please open Firefox to test web automation"
+            }
+          },
+          {
+            "command": "EXIT_SCRIPT",
+            "parameters": {
+              "reason": "No Firefox browser available"
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Check if Firefox is available for testing"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_ENABLE_WEB_FOCUSED_SESSION_MODE",
+      "parameters": {},
+      "metadata": {
+        "description": "Enable focused session mode to prevent redundant focus calls"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_BRING_BROWSER_TO_FRONT",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus Firefox browser using enhanced focus handling",
+        "required": true
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_OPEN_NEW_TAB",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Open new tab for Google search"
+      }
+    },
+    {
+      "step": 6,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for new tab to open"
+      }
+    },
+    {
+      "step": 7,
+      "command": "UIA_NAVIGATE_TO_URL",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}",
+        "url": "${test_url}"
+      },
+      "metadata": {
+        "description": "Navigate to Google using address bar"
+      }
+    },
+    {
+      "step": 8,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      },
+      "metadata": {
+        "description": "Wait for Google page to load"
+      }
+    },
+    {
+      "step": 9,
+      "command": "UIA_CALCULATE_SEARCH_BOX_COORDINATES",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "outputVariable": "searchBoxCoords",
+      "metadata": {
+        "description": "Calculate Google search box coordinates based on window size"
+      }
+    },
+    {
+      "step": 10,
+      "command": "UIA_FILL_FORM_FIELD",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}",
+        "x": "${searchBoxCoords.x}",
+        "y": "${searchBoxCoords.y}",
+        "text": "${search_term}"
+      },
+      "metadata": {
+        "description": "Fill Google search box with search term"
+      }
+    },
+    {
+      "step": 11,
+      "command": "UIA_PRESS_ENTER",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Execute search by pressing Enter"
+      }
+    },
+    {
+      "step": 12,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      },
+      "metadata": {
+        "description": "Wait for search results to load"
+      }
+    },
+    {
+      "step": 13,
+      "command": "UIA_EXTRACT_PAGE_TEXT",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "outputVariable": "searchResults",
+      "metadata": {
+        "description": "Extract search results content"
+      }
+    },
+    {
+      "step": 14,
+      "command": "VALIDATE_CONTENT",
+      "parameters": {
+        "content": "${searchResults}",
+        "expectedKeywords": ["burwell", "automation", "search", "results"],
+        "requireAny": true
+      },
+      "outputVariable": "contentValidation",
+      "metadata": {
+        "description": "Validate search results contain relevant keywords"
+      }
+    },
+    {
+      "step": 15,
+      "command": "LOG_MESSAGE",
+      "parameters": {
+        "level": "INFO",
+        "message": "Google Search Scenario: ${contentValidation.success ? 'SUCCESSFUL' : 'PARTIAL'} - ${contentValidation.message}"
+      },
+      "metadata": {
+        "description": "Log search scenario results"
+      }
+    },
+    {
+      "step": 16,
+      "command": "UIA_PAGE_BACK",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Test page back navigation"
+      }
+    },
+    {
+      "step": 17,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for navigation to complete"
+      }
+    },
+    {
+      "step": 18,
+      "command": "UIA_PAGE_FORWARD",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Test page forward navigation"
+      }
+    },
+    {
+      "step": 19,
+      "command": "UIA_FIND_ELEMENT_BY_TEXT",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}",
+        "searchText": "search"
+      },
+      "metadata": {
+        "description": "Test text search functionality on page"
+      }
+    },
+    {
+      "step": 20,
+      "command": "UIA_CLOSE_CURRENT_TAB",
+      "parameters": {
+        "browser": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Close the test tab",
+        "cleanup": true
+      }
+    },
+    {
+      "step": 21,
+      "command": "UIA_DISABLE_WEB_FOCUSED_SESSION_MODE",
+      "parameters": {},
+      "metadata": {
+        "description": "Disable focused session mode"
+      }
+    }
+  ],
+  "validation": {
+    "expected_results": [
+      "firefoxWindows.length >= 1",
+      "searchResults.length > 0",
+      "contentValidation.success == true"
+    ],
+    "success_criteria": {
+      "minimum_steps_completed": 15,
+      "required_steps": [1, 4, 5, 7, 10, 11, 13],
+      "cleanup_required": true
+    }
+  },
+  "error_handling": {
+    "on_step_failure": "continue_if_optional",
+    "cleanup_on_error": true,
+    "rollback_steps": [20, 21],
+    "max_retries": 1
+  }
+}

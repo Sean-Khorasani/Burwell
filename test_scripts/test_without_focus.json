@@ -1,0 +1,66 @@
+{
+  "description": "Test DeepSeek automation without window focus",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Test array indexing by setting clipboard",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Found Firefox window: ${firefoxWindows[0]}"
+      }
+    },
+    {
+      "comment": "Step 3: Type the DeepSeek prompt",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "What is the best template for a software engineer's resume?"
+      }
+    },
+    {
+      "comment": "Step 4: Test key simulation",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "comment": "Step 5: Press Enter",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    }
+  ]
+}

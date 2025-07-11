@@ -1,0 +1,115 @@
+{
+  "description": "Navigate to URL using address bar (Ctrl+L + type + Enter)",
+  "parameters": {
+    "browserHwnd": "Browser window handle (optional - uses foreground if not specified)",
+    "url": "URL to navigate to"
+  },
+  "sequence": [
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${browserHwnd} != null",
+        "then": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${browserHwnd}",
+              "store_as": "focusResult"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "L"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "L"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${url}",
+        "store_as": "clipboardResult"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 1000
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "description": "Find Firefox window with DeepSeek tab using proven logic from test_firefox_automation_proven.cpp",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Get the first Firefox window from the array",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Get current window title to check if DeepSeek is already active",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTitle"
+      }
+    },
+    {
+      "comment": "Remember starting tab title for cycle detection",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${currentTitle}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "startingTitle"
+      }
+    },
+    {
+      "comment": "Begin tab cycling to find DeepSeek with conditional logic",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_firefox_tabs_clean.json",
+        "result_variable": "cycleResult"
+      }
+    }
+  ]
+}

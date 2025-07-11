@@ -1,0 +1,106 @@
+{
+  "description": "Showcase complete transformation from hardcoded functions to atomic operations + nested scripts",
+  "parameters": {},
+  "sequence": [
+    {
+      "command": "LOG",
+      "parameters": {
+        "message": "=== ATOMIC OPERATION SHOWCASE ==="
+      }
+    },
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "Shell_TrayWnd",
+        "store_as": "taskbar"
+      }
+    },
+    {
+      "command": "UIA_GET_MOUSE_POSITION",
+      "parameters": {
+        "store_as": "mousePos"
+      }
+    },
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "C:\\temp\\uia_showcase",
+        "store_as": "dirResult"
+      }
+    },
+    {
+      "command": "LOG",
+      "parameters": {
+        "message": "=== NESTED SCRIPT SHOWCASE ==="
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_clear_desktop.json",
+        "result_variable": "clearResult"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_open_file_explorer.json",
+        "result_variable": "explorerResult",
+        "pass_variables": {
+          "path": "C:\\temp"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 2000
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows_by_title.json",
+        "result_variable": "explorerWindows",
+        "pass_variables": {
+          "titlePattern": "temp",
+          "exactMatch": false,
+          "store_as": "explorerWindows"
+        }
+      }
+    },
+    {
+      "command": "LOG",
+      "parameters": {
+        "message": "=== FILE OPERATIONS SHOWCASE ==="
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "C:\\Windows\\System32",
+        "extension": ".exe",
+        "store_as": "systemExecutables"
+      }
+    },
+    {
+      "command": "UIA_GET_FILE_INFO",
+      "parameters": {
+        "filePath": "C:\\Windows\\System32\\calc.exe",
+        "store_as": "calcInfo"
+      }
+    },
+    {
+      "command": "LOG",
+      "parameters": {
+        "message": "=== TRANSFORMATION COMPLETE - ALL HARDCODED FUNCTIONS REPLACED ==="
+      }
+    }
+  ]
+}

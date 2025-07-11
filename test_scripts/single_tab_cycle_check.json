@@ -1,0 +1,49 @@
+{
+  "description": "Single tab cycle: move to next tab and check",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Move to next tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "comment": "Get current tab title",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "currentTabTitle"
+      }
+    },
+    {
+      "comment": "Check if back to starting tab (full cycle completed)",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "value": "${startingTabTitle}",
+        "store_as": "backToStart"
+      }
+    },
+    {
+      "comment": "Check if current tab contains DeepSeek",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "currentTabCheck"
+      }
+    }
+  ]
+}

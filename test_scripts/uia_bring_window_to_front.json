@@ -1,0 +1,27 @@
+{
+  "description": "Bring window to front and focus using atomic operations",
+  "parameters": {
+    "hwnd": "Window handle to bring to front"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}",
+        "store_as": "focusResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "UIA_GET_FOREGROUND_WINDOW",
+      "parameters": {
+        "store_as": "currentForeground"
+      }
+    }
+  ]
+}

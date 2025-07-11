@@ -1,0 +1,136 @@
+{
+  "description": "Complete Firefox search using new loop functionality for systematic tab cycling",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Find all Firefox windows BEFORE minimizing",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Minimize all windows for clean automation",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_windows_direct.json"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 3: Check if any Firefox windows exist",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "firefoxWindows",
+        "value": "[]",
+        "store_as": "noFirefoxWindows"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "noFirefoxWindows"
+      }
+    },
+    {
+      "comment": "Log that we found Firefox windows and are proceeding",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Found Firefox windows, proceeding with tab search..."
+      }
+    },
+    {
+      "comment": "Step 4: Search Window 1 with loop-based tab cycling",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "targetWindow"
+      }
+    },
+    {
+      "comment": "Search all tabs in window 1 using new loop functionality",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/tab_cycle_with_loops.json",
+        "variables": {
+          "targetWindow": "${targetWindow}"
+        },
+        "result_variable": "window1SearchResult"
+      }
+    },
+    {
+      "comment": "Check if DeepSeek was found in window 1",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundInWindow1"
+      }
+    },
+    {
+      "comment": "Stop if found in window 1",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInWindow1"
+      }
+    },
+    {
+      "comment": "Step 5: Search Window 2 if it exists",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[1]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "targetWindow2"
+      }
+    },
+    {
+      "comment": "Search all tabs in window 2 using new loop functionality",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/tab_cycle_with_loops.json",
+        "variables": {
+          "targetWindow": "${targetWindow2}"
+        },
+        "result_variable": "window2SearchResult"
+      }
+    },
+    {
+      "comment": "Check if DeepSeek was found in window 2",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundInWindow2"
+      }
+    },
+    {
+      "comment": "Stop if found in window 2",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInWindow2"
+      }
+    },
+    {
+      "comment": "If we get here, DeepSeek not found in any window",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Searched all tabs in all Firefox windows using systematic loop-based cycling"
+      }
+    }
+  ]
+}

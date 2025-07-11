@@ -1,0 +1,185 @@
+{
+  "description": "Simplified DeepSeek web automation test using existing commands",
+  "parameters": {
+    "targetTabTitle": "deepseek",
+    "userPrompt": "What is the best template for a software engineer's resume?",
+    "powershellScript": "test_scripts/parse_deepseek_response.ps1",
+    "outputFile": "deepseek_response.txt"
+  },
+  "sequence": [
+    {
+      "comment": "Step 1: Minimize all windows",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_wins.json",
+        "result_variable": "minimizeResult"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 2: Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Note: Manual process - focus each Firefox window and check tabs",
+      "comment2": "For now, assuming the DeepSeek tab is active in one of the windows",
+      "comment3": "In real implementation, we'd need loop support"
+    },
+    {
+      "comment": "Step 3: Focus first Firefox window (simplified approach)",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1s"
+      }
+    },
+    {
+      "comment": "Step 4: Clear input area - click and select all",
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "left"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "pass_variables": {
+          "modifiers": ["VK_CONTROL"],
+          "key": "A"
+        }
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_DELETE"
+      }
+    },
+    {
+      "comment": "Step 5: Type the prompt",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "pass_variables": {
+          "text": "${userPrompt}"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 6: Press Enter",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "comment": "Step 7: Wait for initial response",
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3s"
+      }
+    },
+    {
+      "comment": "Step 8: Execute checking sequence multiple times",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_response.json",
+        "pass_variables": {
+          "powershellScript": "${powershellScript}",
+          "outputFile": "${outputFile}"
+        },
+        "result_variable": "checkResult1"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2s"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_response.json",
+        "pass_variables": {
+          "powershellScript": "${powershellScript}",
+          "outputFile": "${outputFile}"
+        },
+        "result_variable": "checkResult2"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2s"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_response.json",
+        "pass_variables": {
+          "powershellScript": "${powershellScript}",
+          "outputFile": "${outputFile}"
+        },
+        "result_variable": "checkResult3"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2s"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_deepseek_response.json",
+        "pass_variables": {
+          "powershellScript": "${powershellScript}",
+          "outputFile": "${outputFile}"
+        },
+        "result_variable": "finalCheckResult"
+      }
+    }
+  ]
+}

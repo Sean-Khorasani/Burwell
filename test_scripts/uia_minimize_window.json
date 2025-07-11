@@ -1,0 +1,38 @@
+{
+  "description": "Minimize window using Windows keyboard shortcut",
+  "parameters": {
+    "hwnd": "Window handle to minimize"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS", 
+      "parameters": {
+        "key": "VK_DOWN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_DOWN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "description": "Test new WHILE_LOOP, BREAK_IF, and CONTINUE_IF functionality",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Test 1: Simple loop with break condition",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "0"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "counter"
+      }
+    },
+    {
+      "comment": "Loop that increments counter and breaks at 3",
+      "command": "WHILE_LOOP",
+      "parameters": {
+        "always_true": true,
+        "max_iterations": 10,
+        "sequence": [
+          {
+            "comment": "Increment counter (simulate by setting to known values)",
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "counter",
+              "value": "0",
+              "store_as": "isZero"
+            }
+          },
+          {
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "isZero",
+              "value": "true",
+              "store_as": "shouldSetOne"
+            }
+          },
+          {
+            "comment": "Set counter to 1 if it was 0",
+            "command": "UIA_SET_CLIPBOARD",
+            "parameters": {
+              "text": "1"
+            }
+          },
+          {
+            "command": "UIA_GET_CLIPBOARD",
+            "parameters": {
+              "store_as": "counter"
+            }
+          },
+          {
+            "comment": "Check if counter is 1 to set to 2",
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "counter",
+              "value": "1",
+              "store_as": "isOne"
+            }
+          },
+          {
+            "comment": "Break if we've reached our test condition",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "isOne"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Check final result",
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "finalCounter"
+      }
+    }
+  ]
+}

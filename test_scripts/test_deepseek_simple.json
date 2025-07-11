@@ -1,0 +1,19 @@
+{
+  "description": "Simple DeepSeek test without array indexing",
+  "parameters": {},
+  "sequence": [
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Firefox windows found"
+      }
+    }
+  ]
+}

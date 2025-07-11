@@ -1,0 +1,117 @@
+{
+  "description": "Scroll page in browser using arrow keys or Page Up/Down",
+  "parameters": {
+    "browserHwnd": "Browser window handle (optional - uses foreground if not specified)",
+    "direction": "Scroll direction: up, down, pageup, pagedown",
+    "scrollAmount": "Number of scroll operations (default: 3)"
+  },
+  "sequence": [
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${browserHwnd} != null",
+        "then": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${browserHwnd}",
+              "store_as": "focusResult"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'up'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_UP"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_UP"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'down'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_DOWN"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_DOWN"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'pageup'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_PRIOR"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_PRIOR"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'pagedown'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_NEXT"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_NEXT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 100
+      }
+    }
+  ]
+}

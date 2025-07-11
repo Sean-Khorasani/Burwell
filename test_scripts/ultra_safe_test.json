@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "name": "ultra_safe_test",
+    "description": "ULTRA SAFE test using a temp file",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo COGNIFORGE TEST FILE - SAFE TO DELETE > %TEMP%\\burwell_test.txt"
+      },
+      "metadata": {
+        "description": "Create a safe temp file"
+      }
+    },
+    {
+      "step": 2,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe",
+        "arguments": "%TEMP%\\burwell_test.txt"
+      },
+      "metadata": {
+        "description": "Launch Notepad with our safe temp file"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to load"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_FIND_WINDOWS",
+      "parameters": {
+        "app": "notepad",
+        "class": "Notepad"
+      },
+      "outputVariable": "notepadWindows",
+      "metadata": {
+        "description": "Find Notepad window"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_FOCUS_WINDOW_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the Notepad window"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_TYPE_TEXT_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "text": "\n\n=== COGNIFORGE ORCHESTRATOR TEST ===\nJSON Script Execution: SUCCESS!\nVariable Substitution: SUCCESS!\nUIA Automation: SUCCESS!\n\nAll core functionality working perfectly!\n"
+      },
+      "metadata": {
+        "description": "Add test content to the SAFE temp file"
+      }
+    },
+    {
+      "step": 7,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Show the result"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_MENU",
+        "key": "VK_F4"
+      },
+      "metadata": {
+        "description": "Close with Alt+F4"
+      }
+    },
+    {
+      "step": 9,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for save dialog"
+      }
+    },
+    {
+      "step": 10,
+      "command": "UIA_PRESS_KEY",
+      "parameters": {
+        "key": "VK_Y"
+      },
+      "metadata": {
+        "description": "Press Y to save (safe since it's our temp file)"
+      }
+    }
+  ]
+}

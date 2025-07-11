@@ -1,0 +1,78 @@
+{
+  "description": "Organize files by extension into categorized folders",
+  "parameters": {
+    "sourceDirectory": "Source directory to organize",
+    "targetDirectory": "Target directory for organized files"
+  },
+  "sequence": [
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${targetDirectory}\\Documents",
+        "store_as": "docsDir"
+      }
+    },
+    {
+      "command": "UIA_CREATE_DIRECTORY", 
+      "parameters": {
+        "path": "${targetDirectory}\\Images",
+        "store_as": "imagesDir"
+      }
+    },
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${targetDirectory}\\Media",
+        "store_as": "mediaDir"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${sourceDirectory}",
+        "extension": ".pdf",
+        "store_as": "pdfFiles"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${sourceDirectory}",
+        "extension": ".jpg",
+        "store_as": "jpgFiles"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${sourceDirectory}",
+        "extension": ".mp4",
+        "store_as": "mp4Files"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${pdfFiles}",
+        "targetDirectory": "${targetDirectory}\\Documents",
+        "store_as": "pdfMoveResult"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${jpgFiles}",
+        "targetDirectory": "${targetDirectory}\\Images",
+        "store_as": "jpgMoveResult"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${mp4Files}",
+        "targetDirectory": "${targetDirectory}\\Media",
+        "store_as": "mp4MoveResult"
+      }
+    }
+  ]
+}

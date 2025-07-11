@@ -1,0 +1,78 @@
+{
+  "description": "Clean up Downloads folder by organizing files by type",
+  "parameters": {
+    "downloadsPath": "Downloads directory path (default: C:\\Users\\%USERNAME%\\Downloads)",
+    "targetPath": "Target organization directory"
+  },
+  "sequence": [
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${targetPath}\\Organized_Documents",
+        "store_as": "docsDir"
+      }
+    },
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${targetPath}\\Organized_Images",
+        "store_as": "imagesDir"
+      }
+    },
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${targetPath}\\Organized_Archives",
+        "store_as": "archivesDir"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${downloadsPath}",
+        "extension": ".pdf",
+        "store_as": "pdfFiles"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${downloadsPath}",
+        "extension": ".jpg",
+        "store_as": "jpgFiles"
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_EXTENSION",
+      "parameters": {
+        "directory": "${downloadsPath}",
+        "extension": ".zip",
+        "store_as": "zipFiles"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${pdfFiles}",
+        "targetDirectory": "${targetPath}\\Organized_Documents",
+        "store_as": "pdfMoveResult"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${jpgFiles}",
+        "targetDirectory": "${targetPath}\\Organized_Images",
+        "store_as": "jpgMoveResult"
+      }
+    },
+    {
+      "command": "UIA_MOVE_FILES",
+      "parameters": {
+        "sourceFiles": "${zipFiles}",
+        "targetDirectory": "${targetPath}\\Organized_Archives",
+        "store_as": "zipMoveResult"
+      }
+    }
+  ]
+}

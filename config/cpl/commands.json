@@ -1,0 +1,556 @@
+{
+  "meta": {
+    "version": "2.0.0",
+    "description": "Minimal CPL Command Definitions - Only Commands Actually Used",
+    "last_modified": "2025-07-07T00:00:00Z",
+    "author": "Burwell Team",
+    "note": "Streamlined from 3785 lines to ~300 lines by removing unused commands"
+  },
+  "command_categories": {
+    "application": {
+      "description": "UIA automation commands",
+      "color": "#96CEB4",
+      "icon": "app"
+    },
+    "system": {
+      "description": "System-level commands",
+      "color": "#FFEAA7",
+      "icon": "system"
+    },
+    "control": {
+      "description": "Control flow commands",
+      "color": "#DDA0DD",
+      "icon": "flow"
+    }
+  },
+  "commands": {
+    "SYSTEM_COMMAND": {
+      "category": "system",
+      "description": "Execute system shell command",
+      "parameters": {
+        "command": {
+          "type": "string",
+          "description": "Command to execute",
+          "required": true
+        }
+      }
+    },
+    "WAIT": {
+      "category": "control",
+      "description": "Wait for specified duration",
+      "parameters": {
+        "duration": {
+          "type": "duration",
+          "description": "Time to wait (ms, s, m)",
+          "required": true,
+          "validation": "^[0-9]+(ms|s|m)$"
+        }
+      }
+    },
+    "EXECUTE_SCRIPT": {
+      "category": "control",
+      "description": "Execute nested script with result handling",
+      "parameters": {
+        "script_path": {
+          "type": "string",
+          "description": "Path to script file to execute",
+          "required": true,
+          "validation": "^.+\\.json$"
+        },
+        "result_variable": {
+          "type": "string",
+          "description": "Variable name to store execution result",
+          "required": false,
+          "validation": "^[a-zA-Z_][a-zA-Z0-9_]*$"
+        },
+        "continue_on_failure": {
+          "type": "boolean",
+          "description": "Continue execution if nested script fails",
+          "required": false,
+          "default": false
+        }
+      }
+    },
+    "LAUNCH_APPLICATION": {
+      "category": "application", 
+      "description": "Launch application with arguments",
+      "parameters": {
+        "executable": {
+          "type": "string",
+          "description": "Application executable path or name",
+          "required": true
+        },
+        "arguments": {
+          "type": "string",
+          "description": "Command line arguments",
+          "required": false
+        }
+      }
+    },
+    "UIA_ENUM_WINDOWS": {
+      "category": "application",
+      "description": "Enumerate all windows (atomic operation)",
+      "parameters": {
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store window handles array",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_WINDOW_TITLE": {
+      "category": "application",
+      "description": "Get window title (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to query",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store title",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_WINDOW_CLASS": {
+      "category": "application",
+      "description": "Get window class name (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to query",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store class name",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_WINDOW_RECT": {
+      "category": "application",
+      "description": "Get window position and size (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to query",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store rectangle data",
+          "required": false
+        }
+      }
+    },
+    "UIA_KEY_PRESS": {
+      "category": "application",
+      "description": "Press a key down (atomic operation)",
+      "parameters": {
+        "key": {
+          "type": "string",
+          "description": "Key to press (VK_RETURN, VK_ESCAPE, A-Z, etc.)",
+          "required": true
+        }
+      }
+    },
+    "UIA_KEY_RELEASE": {
+      "category": "application", 
+      "description": "Release a key (atomic operation)",
+      "parameters": {
+        "key": {
+          "type": "string",
+          "description": "Key to release (VK_RETURN, VK_ESCAPE, A-Z, etc.)",
+          "required": true
+        }
+      }
+    },
+    "UIA_MOUSE_CLICK": {
+      "category": "application",
+      "description": "Click mouse button (atomic operation)",
+      "parameters": {
+        "button": {
+          "type": "string",
+          "description": "Mouse button (left, right, middle)",
+          "required": false,
+          "default": "left"
+        }
+      }
+    },
+    "UIA_MOUSE_MOVE": {
+      "category": "application",
+      "description": "Move mouse cursor (atomic operation)",
+      "parameters": {
+        "x": {
+          "type": "integer",
+          "description": "X coordinate",
+          "required": true
+        },
+        "y": {
+          "type": "integer",
+          "description": "Y coordinate",
+          "required": true
+        }
+      }
+    },
+    "UIA_FOCUS_WINDOW": {
+      "category": "application",
+      "description": "Focus window (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to focus",
+          "required": true
+        }
+      }
+    },
+    "UIA_GET_CLIPBOARD": {
+      "category": "application",
+      "description": "Get clipboard text content (atomic operation)",
+      "parameters": {
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store clipboard content",
+          "required": false
+        }
+      }
+    },
+    "UIA_SET_CLIPBOARD": {
+      "category": "application",
+      "description": "Set clipboard text content (atomic operation)",
+      "parameters": {
+        "text": {
+          "type": "string",
+          "description": "Text to set in clipboard",
+          "required": true
+        }
+      }
+    },
+    "UIA_WINDOW_RESIZE": {
+      "category": "application",
+      "description": "Resize window (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to resize",
+          "required": true
+        },
+        "width": {
+          "type": "integer",
+          "description": "New width in pixels",
+          "required": true
+        },
+        "height": {
+          "type": "integer",
+          "description": "New height in pixels",
+          "required": true
+        }
+      }
+    },
+    "UIA_WINDOW_MOVE": {
+      "category": "application",
+      "description": "Move window position (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to move",
+          "required": true
+        },
+        "x": {
+          "type": "integer",
+          "description": "X coordinate",
+          "required": true
+        },
+        "y": {
+          "type": "integer",
+          "description": "Y coordinate",
+          "required": true
+        }
+      }
+    },
+    "UIA_FIND_WINDOWS_BY_CLASS": {
+      "category": "application",
+      "description": "Find windows by class name pattern (atomic operation)",
+      "parameters": {
+        "className": {
+          "type": "string",
+          "description": "Class name pattern to search for",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store results",
+          "required": false
+        }
+      }
+    },
+    "UIA_FIND_WINDOWS_BY_TITLE": {
+      "category": "application",
+      "description": "Find windows by title pattern (atomic operation)",
+      "parameters": {
+        "titlePattern": {
+          "type": "string",
+          "description": "Title pattern to search for",
+          "required": true
+        },
+        "exactMatch": {
+          "type": "boolean",
+          "description": "Whether to require exact match",
+          "required": false
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store results",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_WINDOW_INFO": {
+      "category": "application",
+      "description": "Get comprehensive window information (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to query",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store window info",
+          "required": false
+        }
+      }
+    },
+    "UIA_IS_WINDOW_MINIMIZED": {
+      "category": "application",
+      "description": "Check if window is minimized (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to check",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store result",
+          "required": false
+        }
+      }
+    },
+    "UIA_IS_WINDOW_MAXIMIZED": {
+      "category": "application",
+      "description": "Check if window is maximized (atomic operation)",
+      "parameters": {
+        "hwnd": {
+          "type": "window_handle",
+          "description": "Window handle to check",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store result",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_FOREGROUND_WINDOW": {
+      "category": "application",
+      "description": "Get currently focused window (atomic operation)",
+      "parameters": {
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store window handle",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_MOUSE_POSITION": {
+      "category": "application",
+      "description": "Get current mouse position (atomic operation)",
+      "parameters": {
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store position",
+          "required": false
+        }
+      }
+    },
+    "UIA_LAUNCH_APPLICATION": {
+      "category": "application",
+      "description": "Launch application process (atomic operation)",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Application path to launch",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store process info",
+          "required": false
+        }
+      }
+    },
+    "UIA_TERMINATE_PROCESS": {
+      "category": "application",
+      "description": "Terminate process by ID (atomic operation)",
+      "parameters": {
+        "processId": {
+          "type": "integer",
+          "description": "Process ID to terminate",
+          "required": true
+        }
+      }
+    },
+    "UIA_SHELL_EXECUTE": {
+      "category": "application",
+      "description": "Execute shell command or application (atomic operation)",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Path to executable or file",
+          "required": true
+        },
+        "operation": {
+          "type": "string",
+          "description": "Operation to perform (open, edit, etc.)",
+          "required": false
+        },
+        "parameters": {
+          "type": "string",
+          "description": "Command line parameters",
+          "required": false
+        },
+        "directory": {
+          "type": "string",
+          "description": "Working directory",
+          "required": false
+        },
+        "showCmd": {
+          "type": "integer",
+          "description": "Show command flag",
+          "required": false
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store execution info",
+          "required": false
+        }
+      }
+    },
+    "UIA_CREATE_DIRECTORY": {
+      "category": "application",
+      "description": "Create directory (atomic operation)",
+      "parameters": {
+        "path": {
+          "type": "string",
+          "description": "Directory path to create",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store result",
+          "required": false
+        }
+      }
+    },
+    "UIA_FIND_FILES_BY_PATTERN": {
+      "category": "application",
+      "description": "Find files by pattern (atomic operation)",
+      "parameters": {
+        "directory": {
+          "type": "string",
+          "description": "Directory to search in",
+          "required": true
+        },
+        "pattern": {
+          "type": "string",
+          "description": "File pattern to search for",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store results",
+          "required": false
+        }
+      }
+    },
+    "UIA_FIND_FILES_BY_EXTENSION": {
+      "category": "application",
+      "description": "Find files by extension (atomic operation)",
+      "parameters": {
+        "directory": {
+          "type": "string",
+          "description": "Directory to search in",
+          "required": true
+        },
+        "extension": {
+          "type": "string",
+          "description": "File extension to search for",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store results",
+          "required": false
+        }
+      }
+    },
+    "UIA_MOVE_FILES": {
+      "category": "application",
+      "description": "Move files to target directory (atomic operation)",
+      "parameters": {
+        "sourceFiles": {
+          "type": "array",
+          "description": "Array of source file paths",
+          "required": true
+        },
+        "targetDirectory": {
+          "type": "string",
+          "description": "Target directory path",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store move results",
+          "required": false
+        }
+      }
+    },
+    "UIA_DELETE_FILES": {
+      "category": "application",
+      "description": "Delete specified files (atomic operation)",
+      "parameters": {
+        "filePaths": {
+          "type": "array",
+          "description": "Array of file paths to delete",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store delete results",
+          "required": false
+        }
+      }
+    },
+    "UIA_GET_FILE_INFO": {
+      "category": "application",
+      "description": "Get file information (atomic operation)",
+      "parameters": {
+        "filePath": {
+          "type": "string",
+          "description": "Path to file",
+          "required": true
+        },
+        "store_as": {
+          "type": "string",
+          "description": "Variable name to store file info",
+          "required": false
+        }
+      }
+    }
+  }
+}

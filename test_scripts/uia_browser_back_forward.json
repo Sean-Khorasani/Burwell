@@ -1,0 +1,88 @@
+{
+  "description": "Navigate browser page back or forward using Alt+Left/Right",
+  "parameters": {
+    "browserHwnd": "Browser window handle (optional - uses foreground if not specified)",
+    "direction": "Navigation direction: back or forward"
+  },
+  "sequence": [
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${browserHwnd} != null",
+        "then": [
+          {
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${browserHwnd}",
+              "store_as": "focusResult"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 200
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_MENU"
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'back'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_LEFT"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_LEFT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${direction} == 'forward'",
+        "then": [
+          {
+            "command": "UIA_KEY_PRESS",
+            "parameters": {
+              "key": "VK_RIGHT"
+            }
+          },
+          {
+            "command": "UIA_KEY_RELEASE",
+            "parameters": {
+              "key": "VK_RIGHT"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_MENU"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    }
+  ]
+}

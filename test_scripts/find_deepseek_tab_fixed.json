@@ -1,0 +1,55 @@
+{
+  "name": "find_deepseek_tab_fixed",
+  "description": "Properly find DeepSeek tab with conditional logic",
+  "version": "1.0", 
+  "author": "Burwell Fixed Logic",
+  "variables": {
+    "maxTabs": 10,
+    "currentTab": 1,
+    "deepseekFound": false
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus Firefox window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTabTitle"
+      },
+      "metadata": {
+        "description": "Get current tab title to check for DeepSeek"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Checking tab: ${currentTabTitle}"
+      },
+      "metadata": {
+        "description": "Log current tab for debugging"
+      }
+    },
+    {
+      "step": 4,
+      "comment": "THIS IS WHERE CONDITIONAL LOGIC SHOULD GO",
+      "command": "UIA_SET_CLIPBOARD", 
+      "parameters": {
+        "text": "ERROR: This script has no conditional logic to check if currentTabTitle contains 'deepseek'. It will blindly cycle through tabs and extract content from wrong pages. The script needs IF/THEN logic: IF title contains 'deepseek' THEN extract content, ELSE cycle to next tab."
+      },
+      "metadata": {
+        "description": "Placeholder showing the missing conditional logic flaw"
+      }
+    }
+  ]
+}

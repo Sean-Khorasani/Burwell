@@ -1,0 +1,126 @@
+{
+  "description": "Search all Firefox windows and tabs for a pattern with proper variable handling",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Find all Firefox windows",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Check if any Firefox windows exist",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "windowCount",
+        "value": "${firefoxWindows.length:0}"
+      }
+    },
+    {
+      "comment": "Initialize search result",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "deepseekFound",
+        "value": "false"
+      }
+    },
+    {
+      "comment": "Initialize window index",
+      "command": "SET_VARIABLE",
+      "parameters": {
+        "name": "windowIndex",
+        "value": "0"
+      }
+    },
+    {
+      "comment": "Search through all windows",
+      "command": "WHILE_LOOP",
+      "parameters": {
+        "condition": {
+          "type": "AND",
+          "conditions": [
+            {
+              "type": "LESS_THAN",
+              "variable": "windowIndex",
+              "value": "${windowCount}"
+            },
+            {
+              "type": "EQUALS",
+              "variable": "deepseekFound",
+              "value": "false"
+            }
+          ]
+        },
+        "body": [
+          {
+            "comment": "Get current window handle",
+            "command": "SET_VARIABLE",
+            "parameters": {
+              "name": "currentWindowHwnd",
+              "value": "${firefoxWindows[${windowIndex}]}"
+            }
+          },
+          {
+            "comment": "Focus the current window",
+            "command": "UIA_FOCUS_WINDOW",
+            "parameters": {
+              "hwnd": "${currentWindowHwnd}"
+            }
+          },
+          {
+            "command": "WAIT",
+            "parameters": {
+              "duration": "500ms"
+            }
+          },
+          {
+            "comment": "Search tabs in this window",
+            "command": "EXECUTE_SCRIPT",
+            "parameters": {
+              "script_path": "test_scripts/firefox_tab_cycle_proper.json",
+              "variables": {
+                "hwnd": "${currentWindowHwnd}",
+                "searchPattern": "deepseek",
+                "maxIterations": "50"
+              },
+              "result_variable": "tabSearchResult"
+            }
+          },
+          {
+            "comment": "Check if DeepSeek was found in this window",
+            "command": "IF_EQUALS",
+            "parameters": {
+              "variable": "tabSearchResult",
+              "value": "true",
+              "store_as": "deepseekFound"
+            }
+          },
+          {
+            "comment": "Break if found",
+            "command": "BREAK_IF",
+            "parameters": {
+              "condition_variable": "deepseekFound"
+            }
+          },
+          {
+            "comment": "Increment window index",
+            "command": "SET_VARIABLE",
+            "parameters": {
+              "name": "windowIndex",
+              "value": "${windowIndex}+1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comment": "Set clipboard with result",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DeepSeek search result: ${deepseekFound}"
+      }
+    }
+  ]
+}

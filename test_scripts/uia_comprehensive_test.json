@@ -1,0 +1,46 @@
+{
+  "description": "Comprehensive UIA test combining all automation functions",
+  "parameters": {
+    "applicationPath": "Application to test with (default: notepad.exe)"
+  },
+  "sequence": [
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_launch_and_wait.json",
+        "result_variable": "launchResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "path": "${applicationPath}",
+          "windowTitle": "notepad",
+          "timeoutMs": 5000
+        }
+      }
+    },
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "result_variable": "typeResult",
+        "continue_on_failure": true,
+        "pass_variables": {
+          "text": "UIA Test Content\\nSuccessful automation test."
+        }
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_close_window.json",
+        "result_variable": "closeResult",
+        "continue_on_failure": false
+      }
+    }
+  ]
+}

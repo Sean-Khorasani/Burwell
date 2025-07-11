@@ -1,0 +1,71 @@
+{
+  "description": "Extract page text via clipboard (Ctrl+A, Ctrl+C)",
+  "parameters": {
+    "browserHwnd": "Browser window handle"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${browserHwnd}",
+        "store_as": "focusResult"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "",
+        "store_as": "clearResult"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "result_variable": "selectAllResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "modifierKey": "VK_CONTROL",
+          "key": "A"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "result_variable": "copyResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "modifierKey": "VK_CONTROL",
+          "key": "C"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 500
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "extractedText"
+      }
+    },
+    {
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "left",
+        "store_as": "deselectResult"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "description": "Clear desktop by minimizing all windows using Windows+D",
+  "parameters": {},
+  "sequence": [
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_global_hotkey.json",
+        "result_variable": "minimizeResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "modifierKey": "VK_LWIN",
+          "key": "D"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 1000
+      }
+    },
+    {
+      "command": "UIA_GET_FOREGROUND_WINDOW",
+      "parameters": {
+        "store_as": "currentForeground"
+      }
+    }
+  ]
+}

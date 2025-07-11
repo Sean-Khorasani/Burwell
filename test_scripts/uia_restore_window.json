@@ -1,0 +1,69 @@
+{
+  "description": "Restore window from minimized/maximized state",
+  "parameters": {
+    "hwnd": "Window handle to restore"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}"
+      }
+    },
+    {
+      "command": "UIA_IS_WINDOW_MAXIMIZED",
+      "parameters": {
+        "hwnd": "${hwnd}",
+        "store_as": "windowState"
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${windowState.isMaximized}",
+        "action_if_true": {
+          "command": "UIA_KEY_PRESS",
+          "parameters": {
+            "key": "VK_LWIN"
+          }
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL", 
+      "parameters": {
+        "condition": "${windowState.isMaximized}",
+        "action_if_true": {
+          "command": "UIA_KEY_PRESS",
+          "parameters": {
+            "key": "VK_DOWN"
+          }
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${windowState.isMaximized}",
+        "action_if_true": {
+          "command": "UIA_KEY_RELEASE",
+          "parameters": {
+            "key": "VK_DOWN"
+          }
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${windowState.isMaximized}",
+        "action_if_true": {
+          "command": "UIA_KEY_RELEASE",
+          "parameters": {
+            "key": "VK_LWIN"
+          }
+        }
+      }
+    }
+  ]
+}

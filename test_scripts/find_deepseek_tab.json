@@ -1,0 +1,49 @@
+{
+  "description": "Find and focus Firefox tab containing DeepSeek",
+  "parameters": {
+    "targetText": "deepseek"
+  },
+  "sequence": [
+    {
+      "comment": "Find all Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Try first Firefox window",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Check current tab",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firefoxWindows[0]}",
+        "store_as": "currentTitle"
+      }
+    },
+    {
+      "comment": "Navigate through tabs with Ctrl+Tab up to 10 times",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/navigate_firefox_tabs.json",
+        "pass_variables": {
+          "targetText": "${targetText}",
+          "maxTabs": 10
+        },
+        "result_variable": "tabFound"
+      }
+    }
+  ]
+}

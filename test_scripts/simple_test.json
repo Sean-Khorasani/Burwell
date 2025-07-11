@@ -1,0 +1,18 @@
+{
+  "description": "Simple test script",
+  "parameters": {},
+  "sequence": [
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Test message"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "testResult"
+      }
+    }
+  ]
+}

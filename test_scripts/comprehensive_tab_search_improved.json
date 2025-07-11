@@ -1,0 +1,221 @@
+{
+  "description": "Improved Firefox search with better error handling and window management",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Find all Firefox windows BEFORE minimizing",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "exclude_tool_windows": true,
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Log window count for debugging",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Found windows: ${firefoxWindows}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "windowDebugInfo"
+      }
+    },
+    {
+      "comment": "Step 3: Check if any Firefox windows exist",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "firefoxWindows",
+        "value": "[]",
+        "store_as": "noFirefoxWindows"
+      }
+    },
+    {
+      "comment": "Set error message and stop if no windows",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "noFirefoxWindows", 
+        "value": "true",
+        "store_as": "shouldStop"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "ERROR: No Firefox windows found. Ensure Firefox is running."
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "shouldStop"
+      }
+    },
+    {
+      "comment": "Step 4: Minimize all windows for clean automation",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/minimize_all_windows_only.json"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 5: Process first Firefox window",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "window1Handle"
+      }
+    },
+    {
+      "comment": "Check if we got a valid window handle",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "window1Handle",
+        "value": "",
+        "store_as": "noWindow1"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "noWindow1"
+      }
+    },
+    {
+      "comment": "Restore and search first window",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_restore_window_simple.json",
+        "variables": {
+          "hwnd": "${window1Handle}"
+        }
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/tab_cycle_with_loops.json",
+        "variables": {
+          "targetWindow": "${window1Handle}"
+        },
+        "result_variable": "window1Result"
+      }
+    },
+    {
+      "comment": "Check if found in window 1",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundInWindow1"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "foundInWindow1"
+      }
+    },
+    {
+      "comment": "Step 6: Try second window if exists",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[1]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "window2Handle"
+      }
+    },
+    {
+      "comment": "Check if we have a second window",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "window2Handle",
+        "value": "",
+        "store_as": "noWindow2"
+      }
+    },
+    {
+      "comment": "Set not found message if no second window",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "noWindow2",
+        "value": "true",
+        "store_as": "shouldSetNotFound"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Only one Firefox window exists, DeepSeek tab not found"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "noWindow2"
+      }
+    },
+    {
+      "comment": "Restore and search second window",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_restore_window_simple.json",
+        "variables": {
+          "hwnd": "${window2Handle}"
+        }
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/tab_cycle_with_loops.json",
+        "variables": {
+          "targetWindow": "${window2Handle}"
+        },
+        "result_variable": "window2Result"
+      }
+    },
+    {
+      "comment": "Final check",
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "currentTabTitle",
+        "substring": "deepseek",
+        "store_as": "foundInWindow2"
+      }
+    },
+    {
+      "comment": "Set final result",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "foundInWindow2",
+        "value": "false",
+        "store_as": "notFoundAnywhere"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Searched all Firefox windows and tabs"
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "name": "test_deepseek_tab_cycling",
+  "description": "Test tab cycling to find DeepSeek tab in Firefox",
+  "version": "1.0",
+  "author": "Burwell Tab Cycling Test",
+  "variables": {},
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {},
+      "metadata": {
+        "description": "Enumerate all windows to find Firefox"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${firefoxWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the first Firefox window"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {},
+      "metadata": {
+        "description": "Get current tab title via Ctrl+Shift+A, Ctrl+C"
+      }
+    },
+    {
+      "step": 4,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "result_variable": "tab_cycle_result",
+        "continue_on_failure": true,
+        "window": "${firefoxWindows[0]}",
+        "modifier": "VK_CONTROL",
+        "key": "VK_TAB"
+      },
+      "metadata": {
+        "description": "Send Ctrl+Tab to cycle to next tab"
+      }
+    },
+    {
+      "step": 5,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for tab switch to complete"
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {},
+      "metadata": {
+        "description": "Get new tab title after cycling"
+      }
+    }
+  ]
+}

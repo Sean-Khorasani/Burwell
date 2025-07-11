@@ -1,0 +1,56 @@
+{
+  "description": "Debug variable storage and substitution",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Step 1: Find Firefox windows",
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Use SYSTEM_COMMAND to check what was stored",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo Variable firefoxWindows should contain window data"
+      }
+    },
+    {
+      "comment": "Step 3: Try to extract just the variable content using UIA_GET_CLIPBOARD",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Testing if variables work: ${firefoxWindows}"
+      }
+    },
+    {
+      "comment": "Step 4: Get the clipboard to see if substitution worked",
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "clipboardTest"
+      }
+    },
+    {
+      "comment": "Step 5: Try array indexing",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Testing array indexing: ${firefoxWindows[0]}"
+      }
+    },
+    {
+      "comment": "Step 6: Get clipboard again to see array indexing result",
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "arrayTest"
+      }
+    },
+    {
+      "comment": "Step 7: Try with both parameter names",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo Testing window parameter with value: ${firefoxWindows[0]}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "name": "emergency_close_notepad",
+    "description": "EMERGENCY: Close any open notepad safely without saving",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FIND_WINDOWS",
+      "parameters": {
+        "app": "notepad",
+        "class": "Notepad"
+      },
+      "outputVariable": "notepadWindows",
+      "metadata": {
+        "description": "Find any open Notepad windows"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_FOCUS_WINDOW_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the Notepad window"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_MENU",
+        "key": "VK_F4"
+      },
+      "metadata": {
+        "description": "Send Alt+F4 to close"
+      }
+    },
+    {
+      "step": 4,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save dialog"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_PRESS_KEY",
+      "parameters": {
+        "key": "VK_N"
+      },
+      "metadata": {
+        "description": "Press N for Don't Save"
+      }
+    }
+  ]
+}

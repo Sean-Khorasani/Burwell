@@ -1,0 +1,58 @@
+{
+  "name": "uia_send_global_hotkey",
+  "description": "Send global hotkey combination (no window focus required)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "${modifier}"
+      },
+      "metadata": {
+        "description": "Press modifier key down"
+      }
+    },
+    {
+      "step": 2,
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Press main key down"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "${key}"
+      },
+      "metadata": {
+        "description": "Release main key"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "${modifier}"
+      },
+      "metadata": {
+        "description": "Release modifier key"
+      }
+    },
+    {
+      "step": 5,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      },
+      "metadata": {
+        "description": "Brief wait for hotkey to take effect"
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "debug_minimal_nested",
+  "description": "Minimal test with one EXECUTE_SCRIPT",
+  "version": "1.0",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/debug_simple_wait.json"
+      },
+      "metadata": {
+        "description": "Simple nested script call"
+      }
+    }
+  ]
+}

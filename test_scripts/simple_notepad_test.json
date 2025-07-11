@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "name": "simple_notepad_test",
+    "description": "Simple Notepad test with focus and window management",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe",
+        "arguments": ""
+      },
+      "outputVariable": "notepadProcess",
+      "metadata": {
+        "description": "Launch Notepad application"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to fully load"
+      }
+    },
+    {
+      "step": 3,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_find_windows.json",
+        "variables": {
+          "class_pattern": "Notepad",
+          "app_name": "notepad",
+          "store_as": "notepadWindows"
+        }
+      },
+      "metadata": {
+        "description": "Find Notepad window using nested script"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the Notepad window (atomic operation)"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_WINDOW_RESIZE",
+      "parameters": {
+        "hwnd": "${notepadWindows[0]}",
+        "width": 600,
+        "height": 400
+      },
+      "metadata": {
+        "description": "Resize window to specific size (atomic operation)"
+      }
+    },
+    {
+      "step": 6,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "text": "Hello from Burwell orchestrator.executePlan()!\n\nThis demonstrates:\n- JSON script execution\n- Variable substitution\n- UIA window management\n- Text input automation\n\nSuccess!"
+        }
+      },
+      "metadata": {
+        "description": "Type test text into Notepad using nested script"
+      }
+    },
+    {
+      "step": 7,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      },
+      "metadata": {
+        "description": "Wait to show the result"
+      }
+    },
+    {
+      "step": 8,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${notepadWindows[0]}",
+          "modifier": "VK_MENU",
+          "key": "F4"
+        }
+      },
+      "metadata": {
+        "description": "Close Notepad using Alt+F4 (nested script)"
+      }
+    },
+    {
+      "step": 9,
+      "command": "WAIT", 
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save dialog"
+      }
+    },
+    {
+      "step": 10,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_press_key.json",
+        "variables": {
+          "key": "N"
+        }
+      },
+      "metadata": {
+        "description": "Press N for 'Don't Save' (nested script)"
+      }
+    }
+  ]
+}

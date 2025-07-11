@@ -1,0 +1,346 @@
+{
+  "description": "Working DeepSeek automation that finds Firefox, searches tabs, and types prompt",
+  "sequence": [
+    {
+      "comment": "Step 1: Find all Firefox windows",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "class_name": "MozillaWindowClass",
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Step 2: Check if any Firefox windows exist",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Found Firefox windows: ${firefoxWindows}"
+      }
+    },
+    {
+      "comment": "Step 3: Minimize all windows with Windows+D",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "D"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "D"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_LWIN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Step 4: Get first Firefox window handle and focus it",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${firefoxWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "firstFirefoxHwnd"
+      }
+    },
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${firstFirefoxHwnd}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      }
+    },
+    {
+      "comment": "Step 5: Get current tab title to check if it's DeepSeek",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firstFirefoxHwnd}",
+        "store_as": "currentTitle"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "Current tab: ${currentTitle}"
+      }
+    },
+    {
+      "comment": "Step 6: Navigate through tabs to find DeepSeek using Ctrl+Tab",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 7: Get title again after tab switch",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${firstFirefoxHwnd}",
+        "store_as": "newTitle"
+      }
+    },
+    {
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "After tab switch: ${newTitle}"
+      }
+    },
+    {
+      "comment": "Step 8: Navigate to DeepSeek using address bar",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "L"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "L"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Type DeepSeek URL",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "deepseek.com"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "5000ms"
+      }
+    },
+    {
+      "comment": "Step 9: Click in the page to ensure focus, then Tab to input area",
+      "command": "UIA_MOUSE_CLICK",
+      "parameters": {
+        "button": "left"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Tab multiple times to reach the input box",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_TAB"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Step 10: Type the prompt",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "What is the best template for a software engineer's resume?"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "V"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_CONTROL"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      }
+    },
+    {
+      "comment": "Step 11: Submit the prompt",
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_RETURN"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "3000ms"
+      }
+    },
+    {
+      "comment": "Final: Confirmation message",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DeepSeek automation completed!"
+      }
+    }
+  ]
+}

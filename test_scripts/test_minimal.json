@@ -1,0 +1,11 @@
+{
+  "description": "Minimal test",
+  "sequence": [
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "100ms"
+      }
+    }
+  ]
+}

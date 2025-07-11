@@ -1,0 +1,28 @@
+{
+  "name": "uia_restore_window_simple",
+  "description": "Restore window by focusing it (auto-restores if minimized)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}"
+      },
+      "metadata": {
+        "description": "Focus window - automatically restores if minimized"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      },
+      "metadata": {
+        "description": "Wait for window to restore and become active"
+      }
+    }
+  ]
+}

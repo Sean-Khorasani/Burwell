@@ -1,0 +1,123 @@
+{
+  "description": "Proper tab search with starting tab fingerprint - systematic approach",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Focus the target window",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${targetWindow}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Get starting tab title as fingerprint",
+      "command": "UIA_GET_WINDOW_TITLE",
+      "parameters": {
+        "hwnd": "${targetWindow}",
+        "store_as": "startingTabFingerprint"
+      }
+    },
+    {
+      "comment": "Check starting tab for DeepSeek",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Cycle 1: Next tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_and_check_tab.json",
+        "variables": {
+          "startingFingerprint": "${startingTabFingerprint}",
+          "targetWindow": "${targetWindow}",
+          "cycleNum": "1"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStartingTab"
+      }
+    },
+    {
+      "comment": "Cycle 2: Next tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_and_check_tab.json",
+        "variables": {
+          "startingFingerprint": "${startingTabFingerprint}",
+          "targetWindow": "${targetWindow}",
+          "cycleNum": "2"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStartingTab"
+      }
+    },
+    {
+      "comment": "Cycle 3: Next tab",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/cycle_and_check_tab.json",
+        "variables": {
+          "startingFingerprint": "${startingTabFingerprint}",
+          "targetWindow": "${targetWindow}",
+          "cycleNum": "3"
+        }
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "backToStartingTab"
+      }
+    },
+    {
+      "comment": "Cycles 4-20: Continue until full cycle or max tabs",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/continue_tab_cycling.json",
+        "variables": {
+          "startingFingerprint": "${startingTabFingerprint}",
+          "targetWindow": "${targetWindow}"
+        }
+      }
+    }
+  ]
+}

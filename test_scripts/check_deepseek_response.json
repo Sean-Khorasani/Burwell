@@ -1,0 +1,36 @@
+{
+  "description": "Check if DeepSeek has finished generating response",
+  "parameters": {
+    "powershellScript": "PowerShell script path",
+    "outputFile": "Output file path"
+  },
+  "sequence": [
+    {
+      "comment": "Extract page text",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_extract_page_text.json"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "pageContent"
+      }
+    },
+    {
+      "comment": "Save content to temp file for PowerShell",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "echo ${pageContent} > temp_page_content.txt"
+      }
+    },
+    {
+      "comment": "Run PowerShell parser",
+      "command": "SYSTEM_COMMAND",
+      "parameters": {
+        "command": "powershell -ExecutionPolicy Bypass -Command \"$content = Get-Content -Path 'temp_page_content.txt' -Raw; & '.\\${powershellScript}' -PageContent $content -OutputFile '${outputFile}'\""
+      }
+    }
+  ]
+}

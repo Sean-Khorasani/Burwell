@@ -1,0 +1,43 @@
+{
+  "name": "uia_open_tab",
+  "description": "Open new browser tab using atomic operations (replaces UIA_OPEN_TAB)",
+  "version": "1.0",
+  "author": "Burwell Atomic UIA",
+  "sequence": [
+    {
+      "step": 1,
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${window}"
+      },
+      "metadata": {
+        "description": "Focus browser window"
+      }
+    },
+    {
+      "step": 2,
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${window}",
+          "modifier": "VK_CONTROL",
+          "key": "T"
+        }
+      },
+      "metadata": {
+        "description": "Open new tab (Ctrl+T)"
+      }
+    },
+    {
+      "step": 3,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "500ms"
+      },
+      "metadata": {
+        "description": "Wait for new tab to open"
+      }
+    }
+  ]
+}

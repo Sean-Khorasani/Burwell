@@ -1,0 +1,57 @@
+{
+  "description": "Find element by text using browser's find function (Ctrl+F)",
+  "parameters": {
+    "browserHwnd": "Browser window handle",
+    "searchText": "Text to search for"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${browserHwnd}",
+        "store_as": "focusResult"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "result_variable": "openFindResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "modifierKey": "VK_CONTROL",
+          "key": "F"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 300
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "result_variable": "typeResult",
+        "continue_on_failure": false,
+        "pass_variables": {
+          "text": "${searchText}"
+        }
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_ESCAPE"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_ESCAPE"
+      }
+    }
+  ]
+}

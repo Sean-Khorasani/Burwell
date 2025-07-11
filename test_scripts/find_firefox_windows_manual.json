@@ -1,0 +1,99 @@
+{
+  "description": "Manually find Firefox windows by checking window classes",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Get all windows (will return 400+ handles)",
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "comment": "Check first few windows for Firefox class",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${allWindows[0]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "window1"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_CLASS",
+      "parameters": {
+        "hwnd": "${window1}",
+        "store_as": "window1Class"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "window1Class",
+        "substring": "mozilla",
+        "store_as": "isWindow1Firefox"
+      }
+    },
+    {
+      "comment": "Check second window",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "${allWindows[1]}"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "window2"
+      }
+    },
+    {
+      "command": "UIA_GET_WINDOW_CLASS",
+      "parameters": {
+        "hwnd": "${window2}",
+        "store_as": "window2Class"
+      }
+    },
+    {
+      "command": "IF_CONTAINS",
+      "parameters": {
+        "variable": "window2Class",
+        "substring": "mozilla",
+        "store_as": "isWindow2Firefox"
+      }
+    },
+    {
+      "comment": "Set final result with found Firefox windows",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "[]"
+      }
+    },
+    {
+      "command": "UIA_GET_CLIPBOARD",
+      "parameters": {
+        "store_as": "firefoxWindows"
+      }
+    },
+    {
+      "comment": "Build firefox windows array manually",
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "isWindow1Firefox",
+        "value": "true",
+        "store_as": "foundFirefox1"
+      }
+    },
+    {
+      "command": "IF_EQUALS",
+      "parameters": {
+        "variable": "isWindow2Firefox", 
+        "value": "true",
+        "store_as": "foundFirefox2"
+      }
+    }
+  ]
+}

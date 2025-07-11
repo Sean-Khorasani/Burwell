@@ -1,0 +1,127 @@
+{
+  "meta": {
+    "name": "safe_notepad_test",
+    "description": "SAFE Notepad test with new document and proper cleanup",
+    "version": "1.0.0"
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe"
+      },
+      "outputVariable": "notepadProcess",
+      "metadata": {
+        "description": "Launch Notepad application"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to fully load"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_FIND_WINDOWS",
+      "parameters": {
+        "app": "notepad",
+        "class": "Notepad"
+      },
+      "outputVariable": "notepadWindows",
+      "metadata": {
+        "description": "Find Notepad window"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_FOCUS_WINDOW_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus the Notepad window safely"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_CONTROL",
+        "key": "VK_N"
+      },
+      "metadata": {
+        "description": "Create new document (Ctrl+N) to ensure blank document"
+      }
+    },
+    {
+      "step": 6,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for new document"
+      }
+    },
+    {
+      "step": 7,
+      "command": "UIA_TYPE_TEXT_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "text": "SAFE TEST from Burwell orchestrator.executePlan()!\n\nThis demonstrates successful JSON script execution.\n\n✅ Variable substitution working\n✅ UIA automation working  \n✅ Window management working\n✅ Text input working\n\nTest completed successfully!"
+      },
+      "metadata": {
+        "description": "Type test text into NEW document"
+      }
+    },
+    {
+      "step": 8,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "2000ms"
+      },
+      "metadata": {
+        "description": "Wait to show the result"
+      }
+    },
+    {
+      "step": 9,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_MENU",
+        "key": "VK_F4"
+      },
+      "metadata": {
+        "description": "Close Notepad using Alt+F4"
+      }
+    },
+    {
+      "step": 10,
+      "command": "WAIT", 
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save dialog"
+      }
+    },
+    {
+      "step": 11,
+      "command": "UIA_PRESS_KEY",
+      "parameters": {
+        "key": "VK_N"
+      },
+      "metadata": {
+        "description": "Press N for 'Don't Save' - safe since it's test content"
+      }
+    }
+  ]
+}

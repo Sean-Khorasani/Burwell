@@ -1,0 +1,245 @@
+{
+  "meta": {
+    "name": "notepad_automation_test",
+    "description": "Complete Notepad application automation test - equivalent to UIA TEST in main.cpp",
+    "version": "1.0.0",
+    "author": "Burwell Test Suite",
+    "category": "application_testing"
+  },
+  "variables": {
+    "test_text": {
+      "type": "string",
+      "value": "UIA Windows Control Library Test\\n\\nComplete Function Testing:\\n- Application Launch: TESTED\\n- Window Detection: TESTED\\n- Enhanced Focus: TESTED\\n- Window Management: TESTED\\n- Keyboard Input: TESTING NOW\\n\\nEnhanced focus with thread input attachment WORKS!\\nReady for Burwell integration."
+    },
+    "target_window_title": {
+      "type": "string", 
+      "value": "Notepad"
+    }
+  },
+  "sequence": [
+    {
+      "step": 1,
+      "command": "LAUNCH_APPLICATION",
+      "parameters": {
+        "applicationPath": "notepad.exe"
+      },
+      "outputVariable": "notepadProcess",
+      "metadata": {
+        "description": "Launch Notepad application with process tracking",
+        "timeout_ms": 5000,
+        "expected_result": "process_started"
+      }
+    },
+    {
+      "step": 2,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for application to fully load"
+      }
+    },
+    {
+      "step": 3,
+      "command": "UIA_FIND_WINDOWS",
+      "parameters": {
+        "app": "notepad",
+        "class": "Notepad"
+      },
+      "outputVariable": "notepadWindows",
+      "metadata": {
+        "description": "Find Notepad window using universal window detection",
+        "expected_count": ">=1"
+      }
+    },
+    {
+      "step": 4,
+      "command": "UIA_GET_WINDOW_INFO",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "outputVariable": "windowInfo",
+      "metadata": {
+        "description": "Get detailed window information"
+      }
+    },
+    {
+      "step": 5,
+      "command": "UIA_FOCUS_WINDOW_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Focus window using enhanced thread attachment method",
+        "required": true
+      }
+    },
+    {
+      "step": 6,
+      "command": "UIA_RESIZE_WINDOW",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "width": 700,
+        "height": 500
+      },
+      "metadata": {
+        "description": "Resize window to specific dimensions"
+      }
+    },
+    {
+      "step": 7,
+      "command": "UIA_MOVE_WINDOW",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "x": 150,
+        "y": 150
+      },
+      "metadata": {
+        "description": "Move window to specific position"
+      }
+    },
+    {
+      "step": 8,
+      "command": "UIA_TYPE_TEXT_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "text": "${test_text}"
+      },
+      "metadata": {
+        "description": "Type comprehensive test content using Unicode input",
+        "timeout_ms": 3000
+      }
+    },
+    {
+      "step": 9,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_CONTROL",
+        "key": "A"
+      },
+      "metadata": {
+        "description": "Send Ctrl+A hotkey to select all text"
+      }
+    },
+    {
+      "step": 10,
+      "command": "UIA_SEND_HOTKEY_SEQUENCE",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "sequence": [
+          {"modifier": "VK_CONTROL", "key": "C"},
+          {"modifier": "VK_CONTROL", "key": "V"}
+        ],
+        "delay_between_ms": 200
+      },
+      "metadata": {
+        "description": "Send hotkey sequence (Ctrl+C, then Ctrl+V)"
+      }
+    },
+    {
+      "step": 11,
+      "command": "UIA_PRESS_KEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "key": "VK_END"
+      },
+      "metadata": {
+        "description": "Press End key to move to end of document"
+      }
+    },
+    {
+      "step": 12,
+      "command": "UIA_SEND_HOTKEY",
+      "parameters": {
+        "window": "${notepadWindows[0]}",
+        "modifier": "VK_CONTROL",
+        "key": "S"
+      },
+      "metadata": {
+        "description": "Open Save dialog using Ctrl+S"
+      }
+    },
+    {
+      "step": 13,
+      "command": "UIA_WAIT_FOR_WINDOW",
+      "parameters": {
+        "titlePattern": "Save As",
+        "timeout_ms": 3000
+      },
+      "outputVariable": "saveDialog",
+      "metadata": {
+        "description": "Wait for Save As dialog to appear",
+        "optional": true
+      }
+    },
+    {
+      "step": 14,
+      "command": "CONDITIONAL",
+      "parameters": {
+        "condition": "${saveDialog} != null",
+        "if_true": [
+          {
+            "command": "UIA_TYPE_TEXT_SAFE",
+            "parameters": {
+              "window": "${saveDialog}",
+              "text": "UIA_Complete_Test_File.txt"
+            }
+          },
+          {
+            "command": "UIA_HANDLE_DIALOG",
+            "parameters": {
+              "dialogTitle": "Save As",
+              "buttonText": "OK",
+              "timeout_ms": 1000
+            }
+          }
+        ]
+      },
+      "metadata": {
+        "description": "Handle Save dialog if it appears"
+      }
+    },
+    {
+      "step": 15,
+      "command": "WAIT",
+      "parameters": {
+        "duration": "1000ms"
+      },
+      "metadata": {
+        "description": "Wait for save operation to complete"
+      }
+    },
+    {
+      "step": 16,
+      "command": "UIA_CLOSE_WINDOW_SAFE",
+      "parameters": {
+        "window": "${notepadWindows[0]}"
+      },
+      "metadata": {
+        "description": "Close Notepad window safely",
+        "cleanup": true
+      }
+    }
+  ],
+  "validation": {
+    "expected_results": [
+      "notepadProcess.success == true",
+      "notepadWindows.length >= 1", 
+      "windowInfo.title.contains('Notepad')",
+      "windowInfo.processId > 0"
+    ],
+    "success_criteria": {
+      "minimum_steps_completed": 12,
+      "required_steps": [1, 3, 5, 8],
+      "cleanup_required": true
+    }
+  },
+  "error_handling": {
+    "on_step_failure": "continue_if_optional",
+    "cleanup_on_error": true,
+    "rollback_steps": [16],
+    "max_retries": 2
+  }
+}

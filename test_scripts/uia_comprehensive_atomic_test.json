@@ -1,0 +1,102 @@
+{
+  "description": "Comprehensive test of all atomic operations and nested scripts",
+  "parameters": {
+    "testDirectory": "Test directory for file operations (default: C:\\temp\\uia_test)"
+  },
+  "sequence": [
+    {
+      "command": "UIA_CREATE_DIRECTORY",
+      "parameters": {
+        "path": "${testDirectory}",
+        "store_as": "testDirResult"
+      }
+    },
+    {
+      "command": "UIA_GET_FOREGROUND_WINDOW",
+      "parameters": {
+        "store_as": "currentWindow"
+      }
+    },
+    {
+      "command": "UIA_ENUM_WINDOWS",
+      "parameters": {
+        "store_as": "allWindows"
+      }
+    },
+    {
+      "command": "UIA_FIND_WINDOWS_BY_CLASS",
+      "parameters": {
+        "className": "Shell_TrayWnd",
+        "store_as": "taskbarWindows"
+      }
+    },
+    {
+      "command": "UIA_FIND_WINDOWS_BY_TITLE",
+      "parameters": {
+        "titlePattern": "Desktop",
+        "exactMatch": false,
+        "store_as": "desktopWindows"
+      }
+    },
+    {
+      "command": "UIA_GET_MOUSE_POSITION",
+      "parameters": {
+        "store_as": "mousePosition"
+      }
+    },
+    {
+      "command": "UIA_SHELL_EXECUTE",
+      "parameters": {
+        "path": "notepad.exe",
+        "operation": "open",
+        "store_as": "notepadLaunch"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": 2000
+      }
+    },
+    {
+      "command": "UIA_FIND_WINDOWS_BY_TITLE",
+      "parameters": {
+        "titlePattern": "Notepad",
+        "exactMatch": false,
+        "store_as": "notepadWindows"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_type_text_safe.json",
+        "result_variable": "textResult",
+        "pass_variables": {
+          "text": "Testing atomic operations and nested scripts!"
+        }
+      }
+    },
+    {
+      "command": "UIA_FIND_FILES_BY_PATTERN",
+      "parameters": {
+        "directory": "C:\\Windows\\System32",
+        "pattern": "*.exe",
+        "store_as": "systemFiles"
+      }
+    },
+    {
+      "command": "UIA_GET_FILE_INFO",
+      "parameters": {
+        "filePath": "C:\\Windows\\System32\\notepad.exe",
+        "store_as": "notepadInfo"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_close_window.json",
+        "result_variable": "closeResult"
+      }
+    }
+  ]
+}

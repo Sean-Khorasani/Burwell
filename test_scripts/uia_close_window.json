@@ -1,0 +1,38 @@
+{
+  "description": "Close window using Alt+F4 keyboard shortcut",
+  "parameters": {
+    "hwnd": "Window handle to close"
+  },
+  "sequence": [
+    {
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "hwnd": "${hwnd}"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_MENU"
+      }
+    },
+    {
+      "command": "UIA_KEY_PRESS",
+      "parameters": {
+        "key": "VK_F4"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE",
+      "parameters": {
+        "key": "VK_F4"
+      }
+    },
+    {
+      "command": "UIA_KEY_RELEASE", 
+      "parameters": {
+        "key": "VK_MENU"
+      }
+    }
+  ]
+}

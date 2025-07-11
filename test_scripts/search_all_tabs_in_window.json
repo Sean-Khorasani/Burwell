@@ -1,0 +1,489 @@
+{
+  "description": "Search ALL tabs in a single Firefox window (up to 20 tabs)",
+  "parameters": {},
+  "sequence": [
+    {
+      "comment": "Focus the target window first",
+      "command": "UIA_FOCUS_WINDOW",
+      "parameters": {
+        "window": "${targetWindow}"
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "300ms"
+      }
+    },
+    {
+      "comment": "Check Tab 1",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab1Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab1",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 2",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab2Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab2",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 3",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab3Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab3",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 4",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab4Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab4",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 5",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab5Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab5",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 6",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab6Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab6",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 7",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab7Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab7",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 8",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab8Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab8",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 9",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab9Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab9",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 10",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab10Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab10",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 11",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab11Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab11",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 12",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab12Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab12",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 13",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab13Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab13",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 14",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab14Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab14",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "Tab 15",
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/uia_send_hotkey.json",
+        "variables": {
+          "window": "${targetWindow}",
+          "modifier": "VK_CONTROL",
+          "key": "VK_TAB"
+        }
+      }
+    },
+    {
+      "command": "WAIT",
+      "parameters": {
+        "duration": "200ms"
+      }
+    },
+    {
+      "command": "EXECUTE_SCRIPT",
+      "parameters": {
+        "script_path": "test_scripts/check_if_deepseek_found.json",
+        "result_variable": "tab15Check"
+      }
+    },
+    {
+      "comment": "Stop if DeepSeek found in tab15",
+      "command": "CONDITIONAL_STOP",
+      "parameters": {
+        "condition_variable": "isDeepSeekTrue"
+      }
+    },
+    {
+      "comment": "If we get here, checked 15 tabs in this window - not found",
+      "command": "UIA_SET_CLIPBOARD",
+      "parameters": {
+        "text": "DEEPSEEK_NOT_FOUND: Window ${windowIndex} - Checked 15 tabs, DeepSeek not found"
+      }
+    }
+  ]
+}
