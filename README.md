@@ -7,7 +7,7 @@
 
 Burwell is an enterprise-grade desktop automation agent that learns, abstracts, and reuses solutions. Built with modern C++17, it currently provides a secure, scalable, and maintainable platform for Windows automation, with Linux and macOS support planned for future releases.
 
-## 🌟 Key Features
+## 🔵 Key Features
 
 - **Learn, Abstract, Reuse**: Learns from user requests, abstracts solutions into reusable tasks
 - **Enterprise Security**: Encrypted credentials, comprehensive input validation, secure by design
@@ -15,7 +15,7 @@ Burwell is an enterprise-grade desktop automation agent that learns, abstracts, 
 - **Extensible**: Plugin architecture with dependency injection
 - **Windows Native**: Currently Windows 10/11 only, with cross-platform support planned
 
-## 🚀 Quick Start
+## 🔵 Quick Start
 
 ### Prerequisites
 
@@ -94,14 +94,14 @@ burwell
 
 Burwell uses JSON scripts for complex automation sequences. See the [User Guide](docs/user_guide.md) for complete script documentation and examples.
 
-## 📚 Documentation
+## 🔵 Documentation
 
 - [User Guide](docs/user_guide.md) - Script system and command reference
 - [Developer Guide](docs/developer_guide.md) - Architecture and development workflow
 - [API Reference](docs/api_reference.md) - Complete API documentation
 - [Coding Standards](docs/coding_standards.md) - Code style and best practices
 
-## 🏗️ Architecture
+## 🔵 Architecture
 
 Burwell follows a modular architecture with clear separation of concerns:
 
@@ -125,7 +125,7 @@ Burwell follows a modular architecture with clear separation of concerns:
 - **LLM Connector**: Integrates with language models for intelligent automation
 - **State Manager**: Thread-safe state and context management
 
-## 🔧 Configuration
+## 🔵 Configuration
 
 Configuration files are located in the `config/` directory:
 
@@ -149,7 +149,7 @@ Example configuration:
 }
 ```
 
-## 🧪 Testing
+## 🔵 Testing
 
 Run the test suite:
 
@@ -162,7 +162,7 @@ ctest --test-dir build
 ./build/bin/test_dependency_injection.exe
 ```
 
-## 🛡️ Security
+## 🔵 Security
 
 Burwell implements multiple security layers:
 
@@ -173,7 +173,7 @@ Burwell implements multiple security layers:
 
 For security vulnerabilities, please email shahin@resket.ca with details.
 
-## 🤝 Contributing
+## 🔵 Contributing
 
 We welcome contributions! Please fork the repository and submit pull requests.
 
@@ -194,7 +194,7 @@ clang-format -i src/**/*.cpp src/**/*.h
 ```
 
 
-## 🗺️ Roadmap
+## 🔵 Roadmap
 
 ### Version 2.1 (Current)
 - [x] Enterprise security framework
@@ -214,17 +214,17 @@ clang-format -i src/**/*.cpp src/**/*.h
 - [ ] Natural language understanding
 - [ ] Visual automation designer
 
-## 📝 License
+## 🔵 License
 
 This project is licensed under the MIT License. For commercial use, please contact the author at shahin@resket.ca.
 
-## 🙏 Acknowledgments
+## 🔵 Acknowledgments
 
 - Windows API documentation and examples
 - nlohmann/json for JSON parsing
 - The C++ community for best practices and guidelines
 
-## 📞 Support
+## 🔵 Support
 
 - **Issues**: [GitHub Issues](https://github.com/Sean-Khorasani/Burwell/issues)
 - **Email**: shahin@resket.ca
