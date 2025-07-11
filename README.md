@@ -3,7 +3,7 @@
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue.svg)](https://isocpp.org/std/the-standard)
 [![CMake](https://img.shields.io/badge/CMake-3.10%2B-green.svg)](https://cmake.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%2F11-blue.svg)](https://www.microsoft.com/windows)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 Burwell is an enterprise-grade desktop automation agent that learns, abstracts, and reuses solutions. Built with modern C++17, it currently provides a secure, scalable, and maintainable platform for Windows automation, with Linux and macOS support planned for future releases.
 
@@ -100,7 +100,6 @@ Burwell uses JSON scripts for complex automation sequences. See the [User Guide]
 - [Developer Guide](docs/developer_guide.md) - Architecture and development workflow
 - [API Reference](docs/api_reference.md) - Complete API documentation
 - [Coding Standards](docs/coding_standards.md) - Code style and best practices
-- [Changelog](CHANGELOG.md) - Version history and migration guides
 
 ## 🏗️ Architecture
 
@@ -172,11 +171,11 @@ Burwell implements multiple security layers:
 - **RAII Pattern**: Automatic resource management prevents leaks
 - **Sandboxing**: Commands run with minimum required privileges
 
-See [Security Policy](SECURITY.md) for vulnerability reporting.
+For security vulnerabilities, please email shahin@resket.ca with details.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please fork the repository and submit pull requests.
 
 ### Development Setup
 
@@ -194,14 +193,6 @@ We use clang-format for code formatting:
 clang-format -i src/**/*.cpp src/**/*.h
 ```
 
-## 📊 Performance
-
-Burwell is optimized for performance:
-
-- **Concurrent Operations**: 70% improvement with reader-writer locks
-- **Memory Usage**: 40% reduction through resource pooling
-- **Task Scheduling**: 85% improvement with priority queues
-- **Startup Time**: 30% faster with lazy initialization
 
 ## 🗺️ Roadmap
 
@@ -225,7 +216,7 @@ Burwell is optimized for performance:
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. For commercial use, please contact the author at shahin@resket.ca.
 
 ## 🙏 Acknowledgments
 
@@ -236,9 +227,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Support
 
 - **Issues**: [GitHub Issues](https://github.com/Sean-Khorasani/Burwell/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Sean-Khorasani/Burwell/discussions)
 - **Email**: shahin@resket.ca
 
 ---
 
-**Note**: Burwell is under active development. APIs may change between versions. See [CHANGELOG.md](CHANGELOG.md) for migration guides.
+**Note**: Burwell is under active development. APIs may change between versions.
