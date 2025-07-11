@@ -27,11 +27,11 @@ echo -e "\n${YELLOW}🔵 Cleaning build directory...${NC}"
 if [ -d "build" ]; then
     cd build
     rm -rf *
-    echo "🔵 Build directory cleaned"
+    echo "✅ Build directory cleaned"
 else
     mkdir -p build
     cd build
-    echo "🔵 Created build directory"
+    echo "✅ Created build directory"
 fi
 
 # Step 2: Configure with CMake
@@ -39,9 +39,9 @@ echo -e "\n${YELLOW}🔵 Configuring with CMake...${NC}"
 cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release
 
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}🔵 CMake configuration successful${NC}"
+    echo -e "${GREEN}✅ CMake configuration successful${NC}"
 else
-    echo -e "${RED}🔵 CMake configuration failed${NC}"
+    echo -e "${RED}❌ CMake configuration failed${NC}"
     exit 1
 fi
 
@@ -50,9 +50,9 @@ echo -e "\n${YELLOW}🔵 Building project...${NC}"
 mingw32-make -j4
 
 if [ $? -eq 0 ]; then
-    echo -e "${GREEN}🔵 Build successful${NC}"
+    echo -e "${GREEN}✅ Build successful${NC}"
 else
-    echo -e "${RED}🔵 Build failed${NC}"
+    echo -e "${RED}❌ Build failed${NC}"
     exit 1
 fi
 
@@ -82,20 +82,20 @@ for item in "${CONFIG_SOURCES[@]}"; do
             echo "📄 Copying file: ${item}"
             cp "$SOURCE_PATH" .
         fi
-        echo -e "${GREEN}   🔵 ${item} copied successfully${NC}"
+        echo -e "${GREEN}   ✅ ${item} copied successfully${NC}"
     else
-        echo -e "${YELLOW}   🔵 ${item} not found, skipping${NC}"
+        echo -e "${YELLOW}   ⚠️  ${item} not found, skipping${NC}"
     fi
 done
 
 # Step 6: Create logs directory
 echo "🔵 Creating logs directory..."
 mkdir -p logs
-echo -e "${GREEN}   🔵 logs/ directory created${NC}"
+echo -e "${GREEN}   ✅ logs/ directory created${NC}"
 
 # Step 7: Verify executable exists
 if [ -f "burwell.exe" ]; then
-    echo -e "\n${GREEN}🔵 Build completed successfully!${NC}"
+    echo -e "\n${GREEN}✅ Build completed successfully!${NC}"
     echo -e "${BLUE}🔵 Executable location: $(pwd)/burwell.exe${NC}"
     
     # List all files in bin directory
@@ -118,8 +118,8 @@ if [ -f "burwell.exe" ]; then
     echo ""
     
 else
-    echo -e "${RED}🔵 Build failed - burwell.exe not found${NC}"
+    echo -e "${RED}❌ Build failed - burwell.exe not found${NC}"
     exit 1
 fi
 
-echo -e "${GREEN}🔵 Ready to run Burwell!${NC}"
+echo -e "${GREEN}✅ Ready to run Burwell!${NC}"
