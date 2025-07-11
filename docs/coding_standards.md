@@ -21,8 +21,6 @@
 4. **Performance** - Efficient but not at the cost of clarity
 5. **Security** - Secure by default, validate all inputs
 
-### The Boy Scout Rule
-Always leave the code better than you found it. If you touch a file, improve it.
 
 ## File Organization
 
@@ -52,8 +50,8 @@ burwell/
 ### File Structure
 ```cpp
 // Header file structure
-#ifndef COGNIFORGE_MODULE_CLASS_NAME_H
-#define COGNIFORGE_MODULE_CLASS_NAME_H
+#ifndef BURWELL_MODULE_CLASS_NAME_H
+#define BURWELL_MODULE_CLASS_NAME_H
 
 // System headers
 #include <memory>
@@ -73,7 +71,7 @@ class ClassName {
 
 } // namespace burwell
 
-#endif // COGNIFORGE_MODULE_CLASS_NAME_H
+#endif // BURWELL_MODULE_CLASS_NAME_H
 ```
 
 ## Naming Conventions
@@ -291,8 +289,6 @@ if (!isValid(input)) {
 /**
  * @file thread_pool.h
  * @brief High-performance thread pool implementation
- * @author Your Name
- * @date 2024-01-01
  */
 ```
 
@@ -369,10 +365,6 @@ TEST_F(ComponentTest, MethodShouldReturnExpectedValue) {
 - Test class: `ComponentNameTest`
 - Test method: `MethodName_StateUnderTest_ExpectedBehavior`
 
-### Coverage Requirements
-- Minimum 80% line coverage
-- 100% coverage for critical paths
-- Test error conditions and edge cases
 
 ## Performance
 
@@ -436,27 +428,7 @@ auto validated = validateCommand(userInput);
 executeSecureCommand(validated);
 ```
 
-## Code Review Checklist
 
-Before submitting code for review, ensure:
+## Code Quality
 
-- [ ] Code compiles without warnings
-- [ ] All tests pass
-- [ ] Code follows naming conventions
-- [ ] Complex logic is documented
-- [ ] No hardcoded values (use constants/config)
-- [ ] Error cases are handled
-- [ ] Resources are properly managed (RAII)
-- [ ] Input validation is present
-- [ ] No commented-out code
-- [ ] No TODO items (or they're tracked)
-
-## Enforcement
-
-These standards are enforced through:
-1. Compiler flags: `-Wall -Wextra -Werror`
-2. Static analysis: clang-tidy with project configuration
-3. Code reviews: All changes require peer review
-4. Automated formatting: clang-format with project style
-
-Remember: Consistency is key. When in doubt, follow the existing pattern in the codebase.
+Burwell maintains high code quality through automated formatting and static analysis. The codebase follows consistent patterns that make it easy for contributors to understand and extend the functionality.
