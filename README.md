@@ -213,7 +213,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Issues**: [GitHub Issues](https://github.com/yourusername/burwell/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/yourusername/burwell/discussions)
-- **Email**: support@burwell.example.com
+- **Email**: shahin@resket.ca
 
 ---
 
