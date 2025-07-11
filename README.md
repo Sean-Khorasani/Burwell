@@ -29,7 +29,7 @@ Burwell is an enterprise-grade desktop automation agent that learns, abstracts, 
 
 #### Windows Build
 ```bash
-git clone https://github.com/yourusername/burwell.git
+git clone https://github.com/Sean-Khorasani/Burwell.git
 cd burwell
 mkdir build && cd build
 cmake ..
@@ -38,7 +38,7 @@ cmake --build . --config Release
 
 #### Linux Cross-Compilation
 ```bash
-git clone https://github.com/yourusername/burwell.git
+git clone https://github.com/Sean-Khorasani/Burwell.git
 cd burwell
 mkdir build && cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchain-mingw.cmake
@@ -211,8 +211,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/burwell/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/burwell/discussions)
+- **Issues**: [GitHub Issues](https://github.com/Sean-Khorasani/Burwell/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/Sean-Khorasani/Burwell/discussions)
 - **Email**: shahin@resket.ca
 
 ---
