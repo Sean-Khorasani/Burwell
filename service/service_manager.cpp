@@ -12,9 +12,18 @@ bool ServiceManager::installService(const std::string& burwellPath,
                                    const std::string& serviceName,
                                    const std::string& displayName,
                                    const std::string& description) {
+    // Convert to absolute path
+    std::string absolutePath;
+    try {
+        absolutePath = std::filesystem::absolute(burwellPath).string();
+    } catch (const std::exception& e) {
+        m_lastError = "Failed to resolve absolute path for: " + burwellPath + " (" + e.what() + ")";
+        return false;
+    }
+
     // Validate burwell.exe exists
-    if (!std::filesystem::exists(burwellPath)) {
-        m_lastError = "Burwell executable not found at: " + burwellPath;
+    if (!std::filesystem::exists(absolutePath)) {
+        m_lastError = "Burwell executable not found at: " + absolutePath;
         return false;
     }
 
@@ -24,8 +33,8 @@ bool ServiceManager::installService(const std::string& burwellPath,
         return false;
     }
 
-    // Create service command line with daemon flag
-    std::string serviceCommand = "\"" + burwellPath + "\" --daemon";
+    // Create service command line with daemon flag using absolute path
+    std::string serviceCommand = "\"" + absolutePath + "\" --daemon";
 
     SC_HANDLE service = CreateServiceA(
         scManager,                    // SCM database handle

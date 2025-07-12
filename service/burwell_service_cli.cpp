@@ -61,11 +61,23 @@ int main(int argc, char* argv[]) {
         std::cout << "Installing Burwell service...\n";
         std::cout << "Service name: " << serviceName << "\n";
         std::cout << "Burwell path: " << burwellPath << "\n";
+        
+        // Show absolute path that will be used
+        try {
+            std::string absPath = std::filesystem::absolute(burwellPath).string();
+            std::cout << "Absolute path: " << absPath << "\n";
+        } catch (...) {
+            // Continue even if we can't show absolute path
+        }
 
         if (manager.installService(burwellPath, serviceName)) {
             std::cout << "Success: Burwell service installed successfully!\n";
             std::cout << "The service is configured to start automatically with Windows.\n";
-            std::cout << "Use 'burwell-service start' to start it now.\n";
+            std::cout << "You can now manage the service using:\n";
+            std::cout << "  burwell-service start/stop/status\n";
+            std::cout << "  net start BurwellAgent\n";
+            std::cout << "  net stop BurwellAgent\n";
+            std::cout << "  sc query BurwellAgent\n";
             return 0;
         } else {
             std::cerr << "Error: Failed to install service\n";
