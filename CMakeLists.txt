@@ -37,9 +37,13 @@ endif()
 
 # Find required packages
 # For cross-compilation, we'll use the header-only version
-if(CMAKE_CROSSCOMPILING)
-    # Use the nlohmann/json header directly
-    include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/include)
+if(CMAKE_CROSSCOMPILING OR NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    # For Linux cross-compilation to Windows, try to find system package first
+    find_package(nlohmann_json 3.11.0 QUIET)
+    if(NOT nlohmann_json_FOUND)
+        # Fallback to header-only version
+        include_directories(SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    endif()
 else()
     find_package(nlohmann_json 3.11.0 REQUIRED)
 endif()
@@ -76,6 +80,7 @@ add_subdirectory(src/command_parser)
 add_subdirectory(src/task_engine)
 add_subdirectory(src/ui_module)
 add_subdirectory(src/environmental_perception)
+add_subdirectory(service)
 
 # Main executable
 add_executable(burwell src/main.cpp)

@@ -37,7 +37,20 @@ fi
 # Step 2: Configure with CMake
 echo -e "\n${YELLOW}🔵 Configuring with CMake...${NC}"
 # Configure for Windows native build without MSYS2 runtime dependencies
-cmake .. -G "MinGW Makefiles" \
+# Detect build environment and choose appropriate generator
+if command -v mingw32-make >/dev/null 2>&1; then
+    # MSYS2/MinGW environment
+    GENERATOR="MinGW Makefiles"
+    MAKE_COMMAND="mingw32-make"
+else
+    # Unix environment with cross-compilation
+    GENERATOR="Unix Makefiles"
+    MAKE_COMMAND="make"
+    export CC=x86_64-w64-mingw32-gcc
+    export CXX=x86_64-w64-mingw32-g++
+fi
+
+cmake .. -G "$GENERATOR" \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_CXX_FLAGS="-D_WIN32_WINNT=0x0601" \
     -DCMAKE_EXE_LINKER_FLAGS="-static -Wl,--subsystem,console"
@@ -51,7 +64,7 @@ fi
 
 # Step 3: Build the project
 echo -e "\n${YELLOW}🔵 Building project...${NC}"
-mingw32-make -j4
+$MAKE_COMMAND -j4
 
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}✅ Build successful${NC}"

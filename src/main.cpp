@@ -91,8 +91,14 @@ void printUsage() {
     std::cout << "Options:\n";
     std::cout << "  --config <path>    Specify configuration file path\n";
     std::cout << "  --script <path>    Execute automation script\n";
+    std::cout << "  --daemon, -d       Run in daemon mode (no console output)\n";
     std::cout << "  --help, -h         Show this help message\n";
     std::cout << "  --version, -v      Show version information\n";
+    std::cout << "\nDaemon Mode:\n";
+    std::cout << "  When running with --daemon flag:\n";
+    std::cout << "  - Console output is disabled\n";
+    std::cout << "  - Only file logging is active\n";
+    std::cout << "  - Suitable for Windows service execution\n";
 }
 
 /**
@@ -543,6 +549,7 @@ int main(int argc, char* argv[]) {
         std::string specificScript = "";  // If user specifies a specific script
         
         // Parse command line arguments
+        bool daemonMode = false;
         for (int i = 1; i < argc; i++) {
             std::string arg = argv[i];
             if (arg == "--help" || arg == "-h") {
@@ -552,6 +559,9 @@ int main(int argc, char* argv[]) {
             else if (arg == "--version" || arg == "-v") {
                 std::cout << "Burwell v0.1.0 - AI Desktop Automation Agent\n";
                 return 0;
+            }
+            else if (arg == "--daemon" || arg == "-d") {
+                daemonMode = true;
             }
             else if (arg == "--config") {
                 if (i + 1 < argc) {
@@ -622,6 +632,20 @@ int main(int argc, char* argv[]) {
         auto jsonFormatter = std::make_shared<JsonLogFormatter>();
         auto fileSink = std::make_shared<RotatingFileLogSink>(fileConfig, jsonFormatter);
         slogger.addSink(fileSink);
+        
+        // Add console logging only if not in daemon mode
+        if (!daemonMode) {
+            auto textFormatter = std::make_shared<TextLogFormatter>();
+            auto consoleSink = std::make_shared<ConsoleLogSink>(textFormatter);
+            slogger.addSink(consoleSink);
+        }
+        
+        // In daemon mode, hide console window on Windows
+        #ifdef _WIN32
+        if (daemonMode) {
+            FreeConsole(); // Detach from console
+        }
+        #endif
         
         // Enable async logging for better performance
         slogger.setAsyncLogging(true);

@@ -195,6 +195,28 @@ Example configuration:
 }
 ```
 
+## 🔵 Windows Service
+
+Burwell can run as a Windows service for background operation:
+
+```cmd
+# Install as service (run as Administrator)
+cd build\bin
+burwell-service install %CD%\burwell.exe
+
+# Start the service
+burwell-service start
+
+# Check status
+burwell-service status
+
+# Stop and uninstall when done
+burwell-service stop
+burwell-service uninstall
+```
+
+See [Service Manager Documentation](service/README.md) for complete details.
+
 ## 🔵 Testing
 
 Run the test suite:
