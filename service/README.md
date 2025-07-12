@@ -141,22 +141,44 @@ The service manager also logs its operations to the Windows Event Log under "App
 
 ```cmd
 # Run as Administrator
+cd C:\burwell\build\bin
 
 # Install the service
-burwell-service install C:\burwell\burwell.exe
+burwell-service.exe install burwell.exe
+
+# Expected output:
+# Installing Burwell service...
+# Service name: BurwellAgent
+# Burwell path: burwell.exe
+# Success: Burwell service installed successfully!
+# The service is configured to start automatically with Windows.
+# Use 'burwell-service start' to start it now.
 
 # Check it was installed
-burwell-service status
+burwell-service.exe status
+# Output: Service: BurwellAgent
+#         Status: STOPPED
 
 # Start the service
-burwell-service start
+burwell-service.exe start
+# Output: Starting Burwell service...
+#         Success: Burwell service started successfully!
+#         Status: RUNNING
 
 # Verify it's running
-burwell-service status
+burwell-service.exe status
+# Output: Service: BurwellAgent
+#         Status: RUNNING
+#         The service is running normally.
+
+# Alternative: Use Windows commands
+net start BurwellAgent
+net stop BurwellAgent
+sc query BurwellAgent
 
 # When done, stop and uninstall
-burwell-service stop
-burwell-service uninstall
+burwell-service.exe stop
+burwell-service.exe uninstall
 ```
 
 ## Integration with System

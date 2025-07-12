@@ -202,17 +202,32 @@ Burwell can run as a Windows service for background operation:
 ```cmd
 # Install as service (run as Administrator)
 cd build\bin
-burwell-service install %CD%\burwell.exe
+burwell-service.exe install burwell.exe
+
+# Expected output:
+# Installing Burwell service...
+# Service name: BurwellAgent
+# Burwell path: burwell.exe
+# Success: Burwell service installed successfully!
+# The service is configured to start automatically with Windows.
+# Use 'burwell-service start' to start it now.
 
 # Start the service
-burwell-service start
+burwell-service.exe start
 
 # Check status
-burwell-service status
+burwell-service.exe status
 
-# Stop and uninstall when done
-burwell-service stop
-burwell-service uninstall
+# Stop the service
+burwell-service.exe stop
+
+# Alternative: Use Windows built-in commands
+net start BurwellAgent
+net stop BurwellAgent
+sc query BurwellAgent
+
+# Uninstall when done
+burwell-service.exe uninstall
 ```
 
 See [Service Manager Documentation](service/README.md) for complete details.
